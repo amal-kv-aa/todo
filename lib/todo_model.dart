@@ -9,7 +9,6 @@ class TodoGroup {
   String title;
   @HiveField(1)
   List<Todo> todos;
-
   TodoGroup({required this.title, required this.todos});
 }
 
