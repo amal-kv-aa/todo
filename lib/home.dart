@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/provider/home_provider.dart';
 import 'package:todo_app/todo_model.dart';
 import 'package:tuple/tuple.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  var box;
+
+  @override
+  void initState() {
+    box = Hive.box('hive_todo');
+    context.read<HomeProvider>().getGroupsFromHive(box);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,96 +54,80 @@ class Home extends StatelessWidget {
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
           ),
-          Selector<Homeprovider, Tuple2<int, List<TodoGroup>>>(
-              selector: (_, provider) =>
-                  Tuple2(provider.selectedIndex, provider.toDoGroupList ?? []),
+          Selector<HomeProvider, List<TodoGroup>>(
+              selector: (_, provider) => provider.toDoGroupList,
+              shouldRebuild: (previous, next) => true,
               builder: (context, value, child) {
                 return ListView.builder(
                   physics: const BouncingScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: value.item2.length,
+                  itemCount: value.length,
                   itemBuilder: (context, index) {
-                    if (true) {
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 11),
-                            child: GestureDetector(
-                              onTap: () {
-                                context
-                                    .read<Homeprovider>()
-                                    .updateCurrentIndex(index);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: const [
-                                      BoxShadow(
-                                          color: Color.fromARGB(83, 13, 13, 13),
-                                          offset: Offset(2, 2))
-                                    ],
-                                    borderRadius: BorderRadius.circular(10)),
-                                child:  ExpansionTile(
-                                  trailing: IconButton(onPressed: (){}, icon: const Icon(Icons.delete)),
-                                  title:  Text(value.item2[index].title),
-                                  subtitle:
-                                      const Text('Todos'),
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 11),
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: const [
+                                    BoxShadow(
+                                        color: Color.fromARGB(83, 13, 13, 13),
+                                        offset: Offset(2, 2))
+                                  ],
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: ExpansionTile(
+                                  trailing: IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.delete)),
+                                  title: Text(value[index].title),
+                                  subtitle: const Text('Todos'),
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
-                                  children: 
-                                  List.generate(value.item2[value.item1].todos.length, (index){
-                                    return
-                                      ListTile(
-                                            leading: Checkbox(
-                                              value: value
-                                                  .item2[value.item1]
-                                                  .todos[index]
-                                                  .isDone,
-                                              onChanged: (v) {
-                                                // setState(() {
-                                                //   widget.todoGroups[selectedGroupIndex]
-                                                //       .todos[index].isDone = value!;
-                                                // });
-                                                value
-                                                    .item2[value.item1]
-                                                    .todos[index]
-                                                    .isDone = v!;
-                                              },
-                                            ),
-                                            title: Text(
-                                              value.item2[value.item1]
-                                                  .todos[index].title,
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                            ),
-                                            trailing: IconButton(
-                                              onPressed: () {
-                                                // _deleteTodoItem(index);
-                                              },
-                                              icon: Icon(
-                                                Icons.delete,
-                                                color: Colors.grey,
-                                                size: 16.sp,
-                                              ),
-                                            ),
-                                           );
-
+                                  children: List.generate(
+                                      value[index].todos.length, (j) {
+                                    return ListTile(
+                                      leading: Checkbox(
+                                        value: value[index].todos[j].isDone,
+                                        onChanged: (v) {
+                                          // setState(() {
+                                          //   widget.todoGroups[selectedGroupIndex]
+                                          //       .todos[index].isDone = value!;
+                                          // });
+                                        },
+                                      ),
+                                      title: Text(
+                                        value[index].todos[j].title,
+                                        style: const TextStyle(
+                                            color: Colors.black),
+                                      ),
+                                      trailing: IconButton(
+                                        onPressed: () {
+                                          // _deleteTodoItem(index);
+                                        },
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color: Colors.grey,
+                                          size: 16.sp,
+                                        ),
+                                      ),
+                                    );
                                   })
                                   // const <Widget>[
                                   //   ListTile(
                                   //       title: Text('This is tile number 3')),
                                   // ],
-                                ),
-                               
-                              ),
+                                  ),
                             ),
                           ),
+                        ),
 
-                          ///==============================///
-                        ],
-                      );
-                    }
+                        ///==============================///
+                      ],
+                    );
                   },
                 );
               })
@@ -162,6 +161,10 @@ class Home extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
+                context
+                    .read<HomeProvider>()
+                    .addGroupToHive(box, newTodoGroupTitle);
+
                 Navigator.of(context).pop();
               },
               child: const Text('Add'),
@@ -210,78 +213,75 @@ class Home extends StatelessWidget {
   }
 }
 
-
-
-
 // index == value.item1
-                          //     ? ListView.builder(
-                          //         shrinkWrap: true,
-                          //         itemCount:
-                          //             value.item2[value.item1].todos.length,
-                          //         itemBuilder: (context, index) {
-                          //           if (index == 0) {
-                          //             return Column(
-                          //               children: [
-                          //                 Row(
-                          //                   mainAxisAlignment:
-                          //                       MainAxisAlignment.end,
-                          //                   children: [
-                          //                     ElevatedButton.icon(
-                          //                       onPressed: () {
-                          //                         _addTodo(context);
-                          //                       },
-                          //                       icon: const Icon(Icons.add),
-                          //                       label:
-                          //                           const Text("Add To do"),
-                          //                       style: ElevatedButton
-                          //                           .styleFrom(
-                          //                               foregroundColor:
-                          //                                   Colors.white),
-                          //                     ),
-                          //                     11.w.horizontalSpace
-                          //                   ],
-                          //                 ),
-                                          // ListTile(
-                                          //   leading: Checkbox(
-                                          //     value: value
-                                          //         .item2[value.item1]
-                                          //         .todos[index]
-                                          //         .isDone,
-                                          //     onChanged: (v) {
-                                          //       // setState(() {
-                                          //       //   widget.todoGroups[selectedGroupIndex]
-                                          //       //       .todos[index].isDone = value!;
-                                          //       // });
-                                          //       value
-                                          //           .item2[value.item1]
-                                          //           .todos[index]
-                                          //           .isDone = v!;
-                                          //     },
-                                          //   ),
-                                          //   title: Text(
-                                          //     value.item2[value.item1]
-                                          //         .todos[index].title,
-                                          //     style: const TextStyle(
-                                          //         color: Colors.cyan),
-                                          //   ),
-                                          //   trailing: IconButton(
-                                          //     onPressed: () {
-                                          //       // _deleteTodoItem(index);
-                                          //     },
-                                          //     icon: Icon(
-                                          //       Icons.delete,
-                                          //       color: Colors.grey,
-                                          //       size: 16.sp,
-                                          //     ),
-                                          //   ),
-                                          //  ),
-                          //               ],
-                          //             );
-                          //           }
-                          //           return const SizedBox();
-                          //           //  _buildTodoItem(
-                          //           //     widget.todoGroups[selectedGroupIndex].todos[index],
-                          //           //     index);
-                          //         },
-                          //       )
-                          //     : const SizedBox.shrink()
+//     ? ListView.builder(
+//         shrinkWrap: true,
+//         itemCount:
+//             value.item2[value.item1].todos.length,
+//         itemBuilder: (context, index) {
+//           if (index == 0) {
+//             return Column(
+//               children: [
+//                 Row(
+//                   mainAxisAlignment:
+//                       MainAxisAlignment.end,
+//                   children: [
+//                     ElevatedButton.icon(
+//                       onPressed: () {
+//                         _addTodo(context);
+//                       },
+//                       icon: const Icon(Icons.add),
+//                       label:
+//                           const Text("Add To do"),
+//                       style: ElevatedButton
+//                           .styleFrom(
+//                               foregroundColor:
+//                                   Colors.white),
+//                     ),
+//                     11.w.horizontalSpace
+//                   ],
+//                 ),
+// ListTile(
+//   leading: Checkbox(
+//     value: value
+//         .item2[value.item1]
+//         .todos[index]
+//         .isDone,
+//     onChanged: (v) {
+//       // setState(() {
+//       //   widget.todoGroups[selectedGroupIndex]
+//       //       .todos[index].isDone = value!;
+//       // });
+//       value
+//           .item2[value.item1]
+//           .todos[index]
+//           .isDone = v!;
+//     },
+//   ),
+//   title: Text(
+//     value.item2[value.item1]
+//         .todos[index].title,
+//     style: const TextStyle(
+//         color: Colors.cyan),
+//   ),
+//   trailing: IconButton(
+//     onPressed: () {
+//       // _deleteTodoItem(index);
+//     },
+//     icon: Icon(
+//       Icons.delete,
+//       color: Colors.grey,
+//       size: 16.sp,
+//     ),
+//   ),
+//  ),
+//               ],
+//             );
+//           }
+//           return const SizedBox();
+//           //  _buildTodoItem(
+//           //     widget.todoGroups[selectedGroupIndex].todos[index],
+//           //     index);
+//         },
+//       )
+//     : const SizedBox.shrink()

@@ -1,18 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:todo_app/todo_model.dart';
 
-class Homeprovider with ChangeNotifier{
+class HomeProvider with ChangeNotifier {
+  int selectedIndex = 0;
+  List<TodoGroup> toDoGroupList = [];
 
- int selectedIndex = 0;
- List<TodoGroup>? toDoGroupList=[
-  TodoGroup(title: "amew", todos: [Todo(title: "maksm",isDone: false),Todo(title: "maksm",isDone: false),Todo(title: "maksm",isDone: false),Todo(title: "maksm",isDone: false)])
- ,TodoGroup(title: "ne22w", todos: [Todo(title: "maksm",isDone: false),Todo(title: "maksm",isDone: false),Todo(title: "maksm",isDone: false),Todo(title: "maksm",isDone: false)])
- ,TodoGroup(title: "newal,", todos: [Todo(title: "maksm",isDone: false),Todo(title: "maksm",isDone: false),Todo(title: "maksm",isDone: false),Todo(title: "maksm",isDone: false)])
- ];
- void updateCurrentIndex(int index){
-  selectedIndex = index;
-  notifyListeners();
- }
+  void updateCurrentIndex(int index) {
+    selectedIndex = index;
+    notifyListeners();
+  }
 
+  addGroupToHive(box, groupTitle) {
+    List<TodoGroup> todoGroup = [TodoGroup(title: groupTitle, todos: [])];
+    toDoGroupList.add(todoGroup);
+    notifyListeners();
+    box.put('group', todoGroup);
+  }
 
+  getGroupsFromHive(box) {
+    TodoGroup data = box.get('group');
+    print(data);
+  }
 }
