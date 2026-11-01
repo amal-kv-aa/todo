@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import WelcomeScreen from '../components/WelcomeScreen.astro';
+import Invitation from '../components/Invitation.astro';
+import MusicToggle from '../components/MusicToggle.astro';
+import { wedding } from '../data/wedding';
+
+const runtime = {
+  musicSrc: wedding.music.src,
+  musicVolume: wedding.music.volume,
+};
+---
+
+<Layout>
+  <MusicToggle />
+
+  <main>
+    <WelcomeScreen />
+    <Invitation />
+  </main>
+
+  <!-- Runtime config consumed by the orchestration script -->
+  <script type="application/json" data-wedding-runtime set:html={JSON.stringify(runtime)} />
+</Layout>
+
+<script>
+  import '../scripts/app';
+</script>

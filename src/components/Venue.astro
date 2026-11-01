@@ -1,0 +1,104 @@
+---
+import { wedding } from '../data/wedding';
+import { mapsDirectionsUrl } from '../data/format';
+import Ornament from './Ornament.astro';
+
+const { venue } = wedding;
+const mapsUrl = mapsDirectionsUrl();
+---
+
+<section class="venue" aria-labelledby="venue-heading">
+  <div class="container">
+    <p class="eyebrow reveal" style="text-align:center">Join us at</p>
+    <h2 id="venue-heading" class="section-title reveal">The Venue</h2>
+    <div class="divider reveal"><Ornament type="flourish" /></div>
+
+    <div class="venue-card glass-card reveal">
+      {venue.photo && (
+        <div class="venue-photo">
+          <img src={venue.photo} alt={`Photo of ${venue.name}`} loading="lazy" />
+        </div>
+      )}
+
+      <div class="venue-body">
+        <div class="pin">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true">
+            <path d="M12 22s7-6.3 7-12a7 7 0 1 0-14 0c0 5.7 7 12 7 12Z" stroke="currentColor" stroke-width="1.6"/>
+            <circle cx="12" cy="10" r="2.6" stroke="currentColor" stroke-width="1.6"/>
+          </svg>
+        </div>
+        <h3 class="venue-name">{venue.name}</h3>
+        <p class="venue-address">{venue.address}</p>
+        {venue.note && <p class="venue-note">{venue.note}</p>}
+
+        <a class="btn-gold" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true">
+            <path d="M3 11l18-8-8 18-2-8-8-2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg>
+          Get Directions
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .venue {
+    padding: 56px 0;
+  }
+  .section-title {
+    text-align: center;
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+  .venue-card {
+    margin-top: 6px;
+    border-radius: 24px;
+  }
+  .venue-photo {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-bottom: 1px solid var(--gold-pale);
+  }
+  .venue-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .venue-body {
+    padding: 32px 26px 34px;
+    text-align: center;
+  }
+  .pin {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--gold-deep);
+    background: var(--gold-pale);
+  }
+  .venue-name {
+    font-size: 1.7rem;
+  }
+  .venue-address {
+    color: var(--ink-soft);
+    margin-top: 8px;
+    max-width: 440px;
+    margin-inline: auto;
+  }
+  .venue-note {
+    color: var(--muted-gold);
+    font-style: italic;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    margin: 16px auto 24px;
+    max-width: 460px;
+  }
+  .venue-note + .btn-gold {
+    margin-top: 0;
+  }
+  .venue-body .btn-gold {
+    margin-top: 20px;
+  }
+</style>

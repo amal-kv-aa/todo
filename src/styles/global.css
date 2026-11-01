@@ -1,0 +1,343 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   Premium gold-and-white wedding theme — design tokens & base styles
+   ─────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Surfaces — warm parchment base to match the welcome card */
+  --cream: #ede1d3; /* page background (parchment) */
+  --cream-deep: #e3d4bf; /* slightly deeper tone for accents */
+  --white: #f6ecdd; /* soft parchment for cards */
+  --panel: #f6ecdd;
+
+  /* Warm gold / brown accent palette (parchment theme) */
+  --gold: #b0894a; /* primary accent (gold) */
+  --gold-soft: #c89b50; /* light gold */
+  --gold-deep: #8a6a2f; /* deep gold for emphasis */
+  --gold-pale: #e3d4bf; /* pale divider lines */
+  --gold-line: #c6a86a; /* borders on parchment */
+
+  /* Text */
+  --ink: #7c5c30; /* primary text / headings (script brown) */
+  --ink-soft: #6b5433; /* secondary body text */
+  --muted-gold: #8a6a2f; /* labels / eyebrows */
+
+  /* Effects */
+  --shadow-sm: 0 2px 10px rgba(80, 60, 20, 0.08);
+  --shadow-md: 0 10px 40px rgba(90, 65, 20, 0.12);
+  --shadow-lg: 0 24px 70px rgba(90, 65, 20, 0.18);
+  --glow-gold: 0 0 40px rgba(201, 162, 75, 0.45);
+
+  /* Type */
+  --font-display: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-script: 'Great Vibes', 'Cormorant Garamond', cursive;
+  --font-body: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --maxw: 760px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: var(--font-body);
+  color: var(--ink-soft);
+  background-color: var(--cream);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+/* ── Liquid-glass card surface (reusable) ──────────────────────────────────── */
+.glass-card {
+  --px: 50%;
+  --py: 0%;
+  --glare: 0;
+  position: relative;
+  transform-origin: center;
+  will-change: transform;
+  background:
+    linear-gradient(150deg, rgba(246, 236, 221, 0.72), rgba(227, 212, 191, 0.4));
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(176, 137, 74, 0.28);
+  box-shadow:
+    0 14px 44px rgba(90, 65, 20, 0.16),
+    inset 0 1px 0 rgba(255, 248, 235, 0.75),
+    inset 0 -16px 32px rgba(227, 212, 191, 0.4);
+  overflow: hidden;
+}
+/* Diagonal sheen + a wet specular highlight that follows the pointer. */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at var(--px) var(--py), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 42%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 34%),
+    radial-gradient(120% 60% at 15% 0%, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 60%);
+  opacity: calc(0.55 + 0.45 * var(--glare));
+  transition: opacity 0.35s ease;
+  mix-blend-mode: screen;
+}
+/* Fade-only entrance for glass cards, so the physics engine owns `transform`. */
+.glass-card.reveal {
+  transform: none;
+  transition: opacity 0.9s ease;
+}
+/* Drifting "caustics" — soft light blobs that slowly swim like water. */
+.glass-card::after {
+  content: '';
+  position: absolute;
+  inset: -45%;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(38% 32% at 28% 24%, rgba(255, 255, 255, 0.55), transparent 62%),
+    radial-gradient(32% 30% at 72% 58%, rgba(255, 249, 239, 0.4), transparent 62%),
+    radial-gradient(44% 38% at 52% 82%, rgba(255, 243, 228, 0.34), transparent 66%),
+    radial-gradient(26% 24% at 85% 18%, rgba(255, 255, 255, 0.3), transparent 60%);
+  filter: blur(8px);
+  mix-blend-mode: screen;
+  animation: water-drift 17s ease-in-out infinite alternate;
+  will-change: transform;
+}
+/* Keep card content above the two glass light layers. */
+.glass-card > * {
+  position: relative;
+  z-index: 1;
+}
+@keyframes water-drift {
+  0% {
+    transform: translate3d(-4%, -3%, 0) rotate(-3deg) scale(1.08);
+  }
+  50% {
+    transform: translate3d(3%, 2%, 0) rotate(2.5deg) scale(1.16);
+  }
+  100% {
+    transform: translate3d(-2%, 4%, 0) rotate(-1.5deg) scale(1.1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glass-card::after {
+    animation: none;
+  }
+}
+/* Fallback for browsers without backdrop-filter: stay legible with a solid tint. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-card {
+    background: rgba(255, 250, 244, 0.94);
+  }
+}
+
+p {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+/* Shared container */
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+/* ── Gold divider with centre ornament ─────────────────────────────────────── */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 28px auto;
+  color: var(--gold);
+}
+.divider::before,
+.divider::after {
+  content: '';
+  height: 1px;
+  width: min(120px, 22vw);
+  background: linear-gradient(to var(--dir, right), transparent, var(--gold-line));
+}
+.divider::after {
+  background: linear-gradient(to left, transparent, var(--gold-line));
+}
+.divider svg {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  color: var(--gold);
+}
+
+/* ── Eyebrow / small label ─────────────────────────────────────────────────── */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--muted-gold);
+  font-weight: 600;
+}
+
+.script {
+  font-family: var(--font-script);
+  color: var(--gold-deep);
+}
+
+/* ── Buttons ───────────────────────────────────────────────────────────────── */
+.btn-gold {
+  --b1: var(--gold);
+  --b2: var(--gold-deep);
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+  color: #fff;
+  padding: 16px 34px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--b1), var(--b2));
+  box-shadow: 0 10px 28px rgba(168, 129, 47, 0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(168, 129, 47, 0.45);
+  filter: brightness(1.04);
+}
+.btn-gold:active {
+  transform: translateY(0);
+}
+.btn-gold:focus-visible {
+  outline: 3px solid var(--gold-soft);
+  outline-offset: 3px;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--gold-deep);
+  border: 1.5px solid var(--gold-line);
+  box-shadow: none;
+}
+.btn-outline:hover {
+  background: var(--gold-pale);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── Reveal-on-scroll / entrance animations ────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes shimmer {
+  0%   { background-position: -160% 0; }
+  100% { background-position: 260% 0; }
+}
+@keyframes float-up {
+  0%   { transform: translateY(0) rotate(0); opacity: 0; }
+  10%  { opacity: 0.9; }
+  90%  { opacity: 0.8; }
+  100% { transform: translateY(-120vh) rotate(260deg); opacity: 0; }
+}
+@keyframes soft-pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.04); }
+}
+
+/* Shimmering gold text accent */
+.shimmer {
+  background: linear-gradient(
+    100deg,
+    var(--gold-deep) 20%,
+    #f3e4b8 40%,
+    #fff6dd 50%,
+    #f3e4b8 60%,
+    var(--gold-deep) 80%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+
+/* ── Accessibility: respect reduced motion ─────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Hide utility */
+[hidden] {
+  display: none !important;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

@@ -1,0 +1,75 @@
+---
+// Top-right music control. Behaviour (play/pause, fades, generative fallback)
+// lives in the orchestration script so preference persists across sections.
+---
+
+<button
+  class="music-toggle"
+  data-music-toggle
+  type="button"
+  aria-pressed="false"
+  aria-label="Play background music"
+  title="Music"
+  hidden
+>
+  <!-- Muted icon (shown by default) -->
+  <svg class="ic ic-muted" viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+    <path d="M4 9v6h4l5 4V5L8 9H4Z" fill="currentColor" />
+    <path d="M17 9l4 6M21 9l-4 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+  </svg>
+  <!-- Playing icon (shown when active) -->
+  <svg class="ic ic-playing" viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+    <path d="M4 9v6h4l5 4V5L8 9H4Z" fill="currentColor" />
+    <path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+  </svg>
+</button>
+
+<style>
+  .music-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 60;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    color: var(--gold-deep);
+    background: rgba(255, 253, 248, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--gold-line);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+  .music-toggle:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+  .music-toggle:focus-visible {
+    outline: 3px solid var(--gold-soft);
+    outline-offset: 2px;
+  }
+  .ic {
+    position: absolute;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .ic-playing {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  .music-toggle[aria-pressed='true'] .ic-muted {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  .music-toggle[aria-pressed='true'] .ic-playing {
+    opacity: 1;
+    transform: none;
+  }
+  .music-toggle[aria-pressed='true'] {
+    background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+    color: #fff;
+    border-color: transparent;
+  }
+</style>
