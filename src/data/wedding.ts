@@ -119,7 +119,7 @@ export const wedding: WeddingConfig = {
   cardBlessing: '॥ With the blessings of the Almighty ॥',
 
   music: {
-    src: '',
+    src: '/music/audio_bg.mp3',
     volume: 0.35,
   },
 };
