@@ -9,6 +9,211 @@ const { groom, bride } = wedding.couple;
 <section class="welcome" id="welcome" aria-label="Wedding reception invitation">
   <div class="invite-page" data-enter role="button" tabindex="0" aria-label="Open the invitation">
     <div class="page-content">
+      <!-- Floral arch with hanging lamps — rich staggered entrance -->
+      <svg class="arch" viewBox="0 0 800 300" aria-hidden="true" preserveAspectRatio="xMidYMin meet">
+        <defs>
+          <linearGradient id="brass" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e2b872"/>
+            <stop offset="45%" stop-color="#b0894a"/>
+            <stop offset="100%" stop-color="#6a4e22"/>
+          </linearGradient>
+          <linearGradient id="brass-side" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#8a6a2f"/>
+            <stop offset="50%" stop-color="#dfb66d"/>
+            <stop offset="100%" stop-color="#8a6a2f"/>
+          </linearGradient>
+          <radialGradient id="flame" cx="50%" cy="55%" r="55%">
+            <stop offset="0%" stop-color="#fff5d8"/>
+            <stop offset="40%" stop-color="#f4c870"/>
+            <stop offset="100%" stop-color="#c88a2a" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffdfa0" stop-opacity="0.75"/>
+            <stop offset="60%" stop-color="#e8a95a" stop-opacity="0.18"/>
+            <stop offset="100%" stop-color="#e8a95a" stop-opacity="0"/>
+          </radialGradient>
+
+          <!-- A single marigold bloom -->
+          <symbol id="marigold" viewBox="-20 -20 40 40">
+            <g>
+              <circle r="10" fill="#b56a1f"/>
+              <g fill="#d99a4a">
+                <circle cx="0" cy="-10" r="5"/>
+                <circle cx="7" cy="-7" r="5"/>
+                <circle cx="10" cy="0" r="5"/>
+                <circle cx="7" cy="7" r="5"/>
+                <circle cx="0" cy="10" r="5"/>
+                <circle cx="-7" cy="7" r="5"/>
+                <circle cx="-10" cy="0" r="5"/>
+                <circle cx="-7" cy="-7" r="5"/>
+              </g>
+              <g fill="#e8b566">
+                <circle cx="0" cy="-5" r="3"/>
+                <circle cx="4" cy="-3" r="3"/>
+                <circle cx="5" cy="2" r="3"/>
+                <circle cx="0" cy="5" r="3"/>
+                <circle cx="-5" cy="2" r="3"/>
+                <circle cx="-4" cy="-3" r="3"/>
+              </g>
+              <circle r="2" fill="#efc98a"/>
+            </g>
+          </symbol>
+
+          <!-- Ivory rose -->
+          <!-- 5-petal jasmine-style ivory flower (replaces the earlier rose).
+               Clear star silhouette with a bright marigold-gold centre so it
+               reads instantly next to the orange marigolds. -->
+          <symbol id="rose" viewBox="-16 -16 32 32">
+            <g>
+              <!-- Outer petals: 5 teardrop petals arranged every 72° -->
+              <g fill="#f3ead6" stroke="#d9ccae" stroke-width="0.5">
+                <path d="M 0 -3 Q -6 -10, 0 -14 Q 6 -10, 0 -3 Z"/>
+                <path d="M 0 -3 Q -6 -10, 0 -14 Q 6 -10, 0 -3 Z" transform="rotate(72)"/>
+                <path d="M 0 -3 Q -6 -10, 0 -14 Q 6 -10, 0 -3 Z" transform="rotate(144)"/>
+                <path d="M 0 -3 Q -6 -10, 0 -14 Q 6 -10, 0 -3 Z" transform="rotate(216)"/>
+                <path d="M 0 -3 Q -6 -10, 0 -14 Q 6 -10, 0 -3 Z" transform="rotate(288)"/>
+              </g>
+              <!-- Inner-petal shading for depth -->
+              <g fill="#e3d6b4">
+                <path d="M 0 -3 Q -3 -8, 0 -10 Q 3 -8, 0 -3 Z"/>
+                <path d="M 0 -3 Q -3 -8, 0 -10 Q 3 -8, 0 -3 Z" transform="rotate(72)"/>
+                <path d="M 0 -3 Q -3 -8, 0 -10 Q 3 -8, 0 -3 Z" transform="rotate(144)"/>
+                <path d="M 0 -3 Q -3 -8, 0 -10 Q 3 -8, 0 -3 Z" transform="rotate(216)"/>
+                <path d="M 0 -3 Q -3 -8, 0 -10 Q 3 -8, 0 -3 Z" transform="rotate(288)"/>
+              </g>
+              <!-- Golden centre -->
+              <circle r="3" fill="#dfb66d"/>
+              <circle r="1.3" fill="#8a4e0c"/>
+            </g>
+          </symbol>
+
+          <!-- Leaf -->
+          <symbol id="leaf" viewBox="-14 -6 28 12">
+            <path d="M-14 0 Q -8 -8 0 -5 Q 8 -2 14 0 Q 8 2 0 5 Q -8 8 -14 0 Z" fill="#7a8a65"/>
+            <path d="M-12 0 L 12 0" stroke="#5f6e4f" stroke-width="0.6" fill="none"/>
+          </symbol>
+
+          <!-- Small bud -->
+          <symbol id="bud" viewBox="-8 -8 16 16">
+            <circle r="5" fill="#c47a2a"/>
+            <circle r="2.5" fill="#e9b568"/>
+          </symbol>
+        </defs>
+
+        <!-- Arch stem (drawn in) -->
+        <path class="arch-stem" d="M 40 290 Q 180 60 400 55 Q 620 60 760 290"
+              fill="none" stroke="#7a8a65" stroke-width="4" stroke-linecap="round"/>
+        <path class="arch-stem arch-stem-2" d="M 40 290 Q 180 60 400 55 Q 620 60 760 290"
+              fill="none" stroke="#8a6a2f" stroke-width="1.4" stroke-linecap="round" opacity="0.6"/>
+
+        <!-- Leaves — each pair perfectly mirrored around x=400 -->
+        <g class="leaves">
+          <use href="#leaf" x="100" y="200" width="34" height="14" transform="rotate(-65 117 207)"/>
+          <use href="#leaf" x="666" y="200" width="34" height="14" transform="rotate(65 683 207)"/>
+          <use href="#leaf" x="150" y="150" width="36" height="15" transform="rotate(-50 168 157)"/>
+          <use href="#leaf" x="614" y="150" width="36" height="15" transform="rotate(50 632 157)"/>
+          <use href="#leaf" x="210" y="110" width="38" height="16" transform="rotate(-30 229 118)"/>
+          <use href="#leaf" x="552" y="110" width="38" height="16" transform="rotate(30 571 118)"/>
+          <use href="#leaf" x="300" y="80"  width="40" height="17" transform="rotate(-14 320 88)"/>
+          <use href="#leaf" x="460" y="80"  width="40" height="17" transform="rotate(14 480 88)"/>
+          <use href="#leaf" x="130" y="230" width="30" height="12" transform="rotate(-80 145 236)"/>
+          <use href="#leaf" x="640" y="230" width="30" height="12" transform="rotate(80 655 236)"/>
+        </g>
+
+        <!-- Flowers — centers mirrored around x=400 (left+right centerX = 800) -->
+        <g class="flowers">
+          <use class="bloom b1"  href="#marigold" x="67"  y="222" width="36" height="36"/>
+          <use class="bloom b13" href="#marigold" x="697" y="222" width="36" height="36"/>
+          <use class="bloom b2"  href="#rose"     x="115" y="180" width="30" height="30"/>
+          <use class="bloom b12" href="#rose"     x="655" y="180" width="30" height="30"/>
+          <use class="bloom b3"  href="#marigold" x="163" y="128" width="34" height="34"/>
+          <use class="bloom b11" href="#marigold" x="603" y="128" width="34" height="34"/>
+          <use class="bloom b4"  href="#bud"      x="216" y="106" width="18" height="18"/>
+          <use class="bloom b10" href="#bud"      x="566" y="106" width="18" height="18"/>
+          <use class="bloom b5"  href="#rose"     x="256" y="76"  width="28" height="28"/>
+          <use class="bloom b9"  href="#rose"     x="516" y="76"  width="28" height="28"/>
+          <use class="bloom b6"  href="#marigold" x="311" y="50"  width="38" height="38"/>
+          <use class="bloom b8"  href="#marigold" x="451" y="50"  width="38" height="38"/>
+          <use class="bloom b7"  href="#rose"     x="384" y="35"  width="32" height="32"/>
+        </g>
+
+        <!-- Hanging lamps: five, perfectly mirrored around x=400.
+             Anchors (x): 175, 287, 400, 513, 625 — pairs sum to 800.
+             Each lamp has an anchor group (positioned via SVG transform attribute),
+             a pivot group that CSS rotates for sway, a cord drawn with stroke-dash,
+             and a body group that CSS translate/scale/fades in. -->
+        <g class="lamp lamp-1" transform="translate(175 140)">
+          <g class="lamp-pivot" style="--sway: 2.4deg; --swayDur: 4.2s;">
+            <path class="cord" d="M 0 0 L 0 70" stroke="#8a6a2f" stroke-width="1" fill="none" stroke-linecap="round"/>
+            <g transform="translate(0 70)">
+              <g class="lamp-body">
+                <circle class="halo" r="32" fill="url(#halo)"/>
+                <path d="M-10 -8 L 10 -8 L 8 -4 L -8 -4 Z" fill="url(#brass-side)"/>
+                <path d="M-12 -4 Q 0 24 12 -4 Z" fill="url(#brass)" stroke="#5a4218" stroke-width="0.6"/>
+                <ellipse cx="0" cy="-4" rx="12" ry="2.6" fill="#e2b872" stroke="#5a4218" stroke-width="0.5"/>
+                <circle cx="0" cy="4" r="4" fill="url(#flame)"/>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g class="lamp lamp-2" transform="translate(287 95)">
+          <g class="lamp-pivot" style="--sway: 1.8deg; --swayDur: 3.6s;">
+            <path class="cord" d="M 0 0 L 0 110" stroke="#8a6a2f" stroke-width="1" fill="none" stroke-linecap="round"/>
+            <g transform="translate(0 110)">
+              <g class="lamp-body">
+                <circle class="halo" r="30" fill="url(#halo)"/>
+                <path d="M-9 -7 L 9 -7 L 7 -4 L -7 -4 Z" fill="url(#brass-side)"/>
+                <path d="M-11 -4 Q 0 22 11 -4 Z" fill="url(#brass)" stroke="#5a4218" stroke-width="0.6"/>
+                <ellipse cx="0" cy="-4" rx="11" ry="2.4" fill="#e2b872" stroke="#5a4218" stroke-width="0.5"/>
+                <circle cx="0" cy="3" r="3.6" fill="url(#flame)"/>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g class="lamp lamp-3" transform="translate(400 65)">
+          <g class="lamp-pivot" style="--sway: 2.6deg; --swayDur: 4.6s;">
+            <path class="cord" d="M 0 0 L 0 145" stroke="#8a6a2f" stroke-width="1" fill="none" stroke-linecap="round"/>
+            <g transform="translate(0 145)">
+              <g class="lamp-body">
+                <circle class="halo" r="38" fill="url(#halo)"/>
+                <path d="M-12 -10 L 12 -10 L 10 -5 L -10 -5 Z" fill="url(#brass-side)"/>
+                <path d="M-14 -5 Q 0 28 14 -5 Z" fill="url(#brass)" stroke="#5a4218" stroke-width="0.6"/>
+                <ellipse cx="0" cy="-5" rx="14" ry="3" fill="#e2b872" stroke="#5a4218" stroke-width="0.5"/>
+                <circle cx="0" cy="5" r="4.6" fill="url(#flame)"/>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g class="lamp lamp-4" transform="translate(513 95)">
+          <g class="lamp-pivot" style="--sway: 1.8deg; --swayDur: 3.6s;">
+            <path class="cord" d="M 0 0 L 0 110" stroke="#8a6a2f" stroke-width="1" fill="none" stroke-linecap="round"/>
+            <g transform="translate(0 110)">
+              <g class="lamp-body">
+                <circle class="halo" r="30" fill="url(#halo)"/>
+                <path d="M-9 -7 L 9 -7 L 7 -4 L -7 -4 Z" fill="url(#brass-side)"/>
+                <path d="M-11 -4 Q 0 22 11 -4 Z" fill="url(#brass)" stroke="#5a4218" stroke-width="0.6"/>
+                <ellipse cx="0" cy="-4" rx="11" ry="2.4" fill="#e2b872" stroke="#5a4218" stroke-width="0.5"/>
+                <circle cx="0" cy="3" r="3.6" fill="url(#flame)"/>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g class="lamp lamp-5" transform="translate(625 140)">
+          <g class="lamp-pivot" style="--sway: 2.4deg; --swayDur: 4.2s;">
+            <path class="cord" d="M 0 0 L 0 70" stroke="#8a6a2f" stroke-width="1" fill="none" stroke-linecap="round"/>
+            <g transform="translate(0 70)">
+              <g class="lamp-body">
+                <circle class="halo" r="32" fill="url(#halo)"/>
+                <path d="M-10 -8 L 10 -8 L 8 -4 L -8 -4 Z" fill="url(#brass-side)"/>
+                <path d="M-12 -4 Q 0 24 12 -4 Z" fill="url(#brass)" stroke="#5a4218" stroke-width="0.6"/>
+                <ellipse cx="0" cy="-4" rx="12" ry="2.6" fill="#e2b872" stroke="#5a4218" stroke-width="0.5"/>
+                <circle cx="0" cy="4" r="4" fill="url(#flame)"/>
+              </g>
+            </g>
+          </g>
+        </g>
+      </svg>
+
       <p class="w-eyebrow">The Wedding Reception of</p>
 
       <div class="w-names">
@@ -58,8 +263,9 @@ const { groom, bride } = wedding.couple;
     justify-content: center;
     padding: 16px;
     background: var(--cream);
-    /* Turn around the left edge like a page. */
-    transform-origin: left center;
+    /* The page lifts from the TOP edge and flips UPWARD, revealing the
+       invitation behind it — like turning a page up on a flip-chart. */
+    transform-origin: center top;
     backface-visibility: hidden;
     transition:
       transform 1.15s cubic-bezier(0.66, 0.02, 0.28, 1),
@@ -67,16 +273,20 @@ const { groom, bride } = wedding.couple;
     will-change: transform;
   }
   .welcome.is-flipping {
-    transform: perspective(2200px) rotateY(-172deg);
-    box-shadow: 40px 0 90px rgba(80, 55, 20, 0.3);
+    /* Negative rotateX around the top edge sends the bottom of the page
+       up toward the viewer, then over the top and behind. 170deg (not a
+       full 180) hides the back-face flatness and keeps a sense of depth. */
+    transform: perspective(2200px) rotateX(-170deg);
+    box-shadow: 0 -40px 90px rgba(80, 55, 20, 0.3);
   }
-  /* Shading that sweeps across the page as it turns, for depth. */
+  /* Shading that sweeps across the page as it lifts, for depth. The
+     gradient runs vertically now so the darkening reads along the fold. */
   .welcome::after {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: linear-gradient(90deg, rgba(60, 40, 15, 0) 55%, rgba(60, 40, 15, 0.22) 100%);
+    background: linear-gradient(0deg, rgba(60, 40, 15, 0) 55%, rgba(60, 40, 15, 0.22) 100%);
     opacity: 0;
     transition: opacity 1.15s ease;
   }
@@ -86,31 +296,156 @@ const { groom, bride } = wedding.couple;
 
   .invite-page {
     position: relative;
-    width: min(92vw, calc(92svh * 0.6787));
-    aspect-ratio: 490 / 722;
-    max-height: 94svh;
-    background: #ede1d3; /* parchment colour taken from the frame artwork */
-    border-radius: 14px;
-    box-shadow: 0 24px 70px rgba(90, 65, 20, 0.28);
+    width: min(92vw, 560px);
     cursor: pointer;
-    overflow: hidden;
     animation: fade-up 1s ease both;
+    border-radius: 4px;
   }
   .invite-page:focus-visible {
-    outline: 3px solid var(--p-gold);
-    outline-offset: 4px;
+    outline: 2px solid var(--p-gold);
+    outline-offset: 10px;
   }
 
   .page-content {
-    position: absolute;
-    inset: 0;
-    padding: 12% 11%;
+    padding: 24px 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     gap: 0;
+  }
+
+  /* ── Floral arch with hanging lamps ───────────────────────────────────── */
+  .arch {
+    /* Fill the content column so the arch always matches the invitation's
+       horizontal width. The viewBox's `preserveAspectRatio="xMidYMin meet"`
+       keeps the artwork horizontally centred inside the SVG viewport, and
+       `height: auto` scales the SVG proportionally for any screen width. */
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto clamp(10px, 2.5vh, 22px);
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  /* Arch stem draws in from both ends toward the apex */
+  .arch-stem {
+    stroke-dasharray: 1600;
+    stroke-dashoffset: 1600;
+    animation: draw 1.6s cubic-bezier(0.22, 0.68, 0.3, 1) 0.1s forwards;
+  }
+  .arch-stem-2 {
+    animation-delay: 0.25s;
+  }
+
+  /* Leaves fade in softly after the stem starts (opacity-only to avoid
+     conflicting with each leaf's inline rotate transform attribute). */
+  .leaves use {
+    opacity: 0;
+    animation: fade 0.8s ease-out forwards;
+  }
+  .leaves use:nth-child(1)  { animation-delay: 0.55s; }
+  .leaves use:nth-child(2)  { animation-delay: 0.62s; }
+  .leaves use:nth-child(3)  { animation-delay: 0.70s; }
+  .leaves use:nth-child(4)  { animation-delay: 0.80s; }
+  .leaves use:nth-child(5)  { animation-delay: 0.80s; }
+  .leaves use:nth-child(6)  { animation-delay: 0.70s; }
+  .leaves use:nth-child(7)  { animation-delay: 0.62s; }
+  .leaves use:nth-child(8)  { animation-delay: 0.55s; }
+  .leaves use:nth-child(9)  { animation-delay: 0.90s; }
+  .leaves use:nth-child(10) { animation-delay: 0.90s; }
+
+  /* Flowers bloom in waves, from the outer edges inward toward the apex */
+  .bloom {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0.2) rotate(-12deg);
+    animation: bloom 0.9s cubic-bezier(0.2, 0.9, 0.3, 1.4) forwards;
+  }
+  .b1, .b13 { animation-delay: 0.70s; }
+  .b2, .b12 { animation-delay: 0.80s; }
+  .b3, .b11 { animation-delay: 0.90s; }
+  .b4, .b10 { animation-delay: 1.00s; }
+  .b5, .b9  { animation-delay: 1.10s; }
+  .b6, .b8  { animation-delay: 1.20s; }
+  .b7       { animation-delay: 1.35s; }
+
+  /* Lamp cord grows down from the arch (stroke-dash draws the line in).
+     The dash length covers the longest cord (lamp-3 = 145px). Shorter cords
+     start just as "hidden" and finish at offset 0 which still shows them. */
+  .cord {
+    stroke-dasharray: 160;
+    stroke-dashoffset: 160;
+    animation: draw-cord 0.6s cubic-bezier(0.3, 0.6, 0.3, 1) forwards;
+  }
+  .lamp-1 .cord { animation-delay: 1.20s; }
+  .lamp-2 .cord { animation-delay: 1.35s; }
+  .lamp-3 .cord { animation-delay: 1.45s; }
+  .lamp-4 .cord { animation-delay: 1.35s; }
+  .lamp-5 .cord { animation-delay: 1.20s; }
+
+  /* Pivot swings gently around the anchor (top of cord). No attribute
+     transform here, so CSS rotate is free to apply without conflict. The
+     gyroscope-driven override lives in global.css (CSS animations beat inline
+     styles in the cascade, so JS can only control the pivot once the keyframe
+     animation is suppressed). */
+  .lamp-pivot {
+    transform-origin: 0 0;
+    animation: lamp-sway var(--swayDur, 4s) ease-in-out infinite alternate;
+    animation-delay: 2.4s;
+  }
+
+  /* Lamp body drops in with a soft bounce; symbol content is centered at
+     origin so translate/scale work predictably. */
+  .lamp-body {
+    opacity: 0;
+    transform-origin: 0 0;
+    animation: lamp-drop 0.75s cubic-bezier(0.2, 0.9, 0.35, 1.25) forwards;
+  }
+  .lamp-1 .lamp-body { animation-delay: 1.30s; }
+  .lamp-2 .lamp-body { animation-delay: 1.45s; }
+  .lamp-3 .lamp-body { animation-delay: 1.55s; }
+  .lamp-4 .lamp-body { animation-delay: 1.45s; }
+  .lamp-5 .lamp-body { animation-delay: 1.30s; }
+
+  /* Halo breathes */
+  .halo {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: halo-pulse 2.6s ease-in-out infinite alternate;
+    animation-delay: 2.4s;
+  }
+
+  @keyframes draw-cord {
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes fade {
+    to { opacity: 1; }
+  }
+
+  @keyframes draw {
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes bloom {
+    0%   { opacity: 0; transform: scale(0.2) rotate(-12deg); }
+    60%  { opacity: 1; transform: scale(1.08) rotate(3deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0); }
+  }
+  @keyframes lamp-drop {
+    0%   { opacity: 0; transform: translate(0, -70px) scale(0.85); }
+    65%  { opacity: 1; transform: translate(0, 6px) scale(1.03); }
+    100% { opacity: 1; transform: translate(0, 0) scale(1); }
+  }
+  @keyframes lamp-sway {
+    0%   { transform: rotate(calc(-1 * var(--sway, 2deg))); }
+    100% { transform: rotate(var(--sway, 2deg)); }
+  }
+  @keyframes halo-pulse {
+    0%   { opacity: 0.75; transform: scale(1); }
+    100% { opacity: 1;    transform: scale(1.08); }
   }
 
   .w-eyebrow {
@@ -163,6 +498,7 @@ const { groom, bride } = wedding.couple;
     color: var(--p-ink);
     margin-bottom: clamp(10px, 2.2vh, 16px);
   }
+
   .w-date {
     font-family: var(--font-display);
     font-weight: 600;
@@ -178,8 +514,10 @@ const { groom, bride } = wedding.couple;
     color: var(--p-ink);
     margin-top: 4px;
   }
+
   .w-count {
-    margin-top: clamp(14px, 3.5vh, 26px);
+    margin-top: clamp(14px, 3vh, 24px);
+    width: 100%;
   }
 
   .w-enter {
@@ -215,11 +553,15 @@ const { groom, bride } = wedding.couple;
       transform: none;
       opacity: 0;
     }
-    .w-enter {
-      animation: none;
-    }
-    .invite-page {
-      animation: none;
-    }
+    .w-enter { animation: none; }
+    .invite-page { animation: none; }
+    /* Arch & lamps: skip the staged entrance, show the final state. */
+    .arch-stem { stroke-dashoffset: 0; animation: none; }
+    .cord { stroke-dashoffset: 0; animation: none; }
+    .leaves use { opacity: 1; animation: none; }
+    .bloom { opacity: 1; transform: none; animation: none; }
+    .lamp-body { opacity: 1; animation: none; }
+    .lamp-pivot { animation: none; }
+    .halo { animation: none; }
   }
 </style>

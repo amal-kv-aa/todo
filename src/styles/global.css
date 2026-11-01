@@ -3,11 +3,11 @@
    ─────────────────────────────────────────────────────────────────────────── */
 
 :root {
-  /* Surfaces — warm parchment base to match the welcome card */
-  --cream: #ede1d3; /* page background (parchment) */
-  --cream-deep: #e3d4bf; /* slightly deeper tone for accents */
-  --white: #f6ecdd; /* soft parchment for cards */
-  --panel: #f6ecdd;
+  /* Surfaces — soft silver base */
+  --cream: #d7d5d0; /* page background (silver) */
+  --cream-deep: #c9c7c1; /* slightly deeper silver tone */
+  --white: #e4e2dd; /* light silver for cards */
+  --panel: #e4e2dd;
 
   /* Warm gold / brown accent palette (parchment theme) */
   --gold: #b0894a; /* primary accent (gold) */
@@ -75,14 +75,14 @@ h3 {
   transform-origin: center;
   will-change: transform;
   background:
-    linear-gradient(150deg, rgba(246, 236, 221, 0.72), rgba(227, 212, 191, 0.4));
+    linear-gradient(150deg, rgba(236, 234, 229, 0.75), rgba(210, 208, 202, 0.42));
   backdrop-filter: blur(18px) saturate(140%);
   -webkit-backdrop-filter: blur(18px) saturate(140%);
-  border: 1px solid rgba(176, 137, 74, 0.28);
+  border: 1px solid rgba(176, 137, 74, 0.3);
   box-shadow:
-    0 14px 44px rgba(90, 65, 20, 0.16),
-    inset 0 1px 0 rgba(255, 248, 235, 0.75),
-    inset 0 -16px 32px rgba(227, 212, 191, 0.4);
+    0 14px 44px rgba(70, 68, 62, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -16px 32px rgba(210, 208, 202, 0.45);
   overflow: hidden;
 }
 /* Diagonal sheen + a wet specular highlight that follows the pointer. */
@@ -142,6 +142,19 @@ h3 {
   .glass-card::after {
     animation: none;
   }
+}
+
+/* ── Gyroscope-driven lamp swing gate ────────────────────────────────────
+   lampGyro.ts sets `data-gyro-active` on <body> once a sensor sample lands.
+   While it's set, the keyframe `lamp-sway` animation on `.lamp-pivot` is
+   suppressed so JS can control the pivot rotation directly via inline
+   transform (keyframe animations otherwise win over inline styles).
+   Scoped in global.css so it works regardless of per-component CSS scoping. */
+[data-gyro-active] .lamp-pivot {
+  animation: none !important;
+  /* No CSS transition here — the rAF loop writes transform every frame and a
+     transition would chase stale targets, producing visible lag. Smoothing
+     already happens in JS (low-pass on the input, pendulum integration). */
 }
 /* Fallback for browsers without backdrop-filter: stay legible with a solid tint. */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {

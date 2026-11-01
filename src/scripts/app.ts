@@ -5,6 +5,7 @@
 
 import { createMusicController } from './music';
 import { initCardPhysics } from './cardPhysics';
+import { initLampGyro } from './lampGyro';
 
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -83,30 +84,37 @@ function initMusic(runtime: Runtime) {
     toggle!.setAttribute('aria-label', playing ? 'Pause background music' : 'Play background music');
   }
 
-  toggle.addEventListener('click', async () => {
+  toggle.addEventListener('click', () => {
     if (controller.isPlaying()) {
       controller.pause();
       setPref('off');
       reflect(false);
     } else {
-      await controller.play();
-      setPref('on');
-      reflect(controller.isPlaying());
+      // Call synchronously inside the click handler — stays in gesture window.
+      controller.play().then(() => {
+        setPref('on');
+        reflect(controller.isPlaying());
+      });
     }
   });
 
   return {
-    async onEnter() {
+    // NOT async — must stay synchronous so audio.play() lands inside the
+    // user-gesture call stack from the tap-to-open handler. Returning the
+    // play promise lets the caller observe completion without breaking that.
+    onEnter(): Promise<void> {
       toggle.hidden = false;
-      // Autoplay is permitted here because entry follows the tap-to-open gesture
-      // (a user gesture). Respect a previously chosen "off" preference.
+      // Respect a previously chosen "off" preference.
       if (getPref() === 'off') {
         reflect(false);
-        return;
+        return Promise.resolve();
       }
-      await controller.play();
-      reflect(controller.isPlaying());
-      if (controller.isPlaying()) setPref('on');
+      // Fire play() synchronously — this is the critical line for mobile
+      // autoplay policies. Any await before here would break gesture attribution.
+      return controller.play().then(() => {
+        reflect(controller.isPlaying());
+        if (controller.isPlaying()) setPref('on');
+      });
     },
   };
 }
@@ -161,6 +169,7 @@ function boot() {
   const music = initMusic(runtime);
   initPageFlip(() => music.onEnter());
   initCardPhysics();
+  initLampGyro();
 }
 
 if (document.readyState === 'loading') {
