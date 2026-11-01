@@ -1,0 +1,287 @@
+---
+import { wedding } from '../data/wedding';
+import { weddingDate } from '../data/format';
+import Ornament from './Ornament.astro';
+
+const { groom, bride } = wedding.couple;
+
+// Everything the canvas renderer needs, serialised for the client download script.
+const cardData = {
+  eyebrow: 'Together with their families, we invite you to the wedding of',
+  groom: groom.fullName,
+  bride: bride.fullName,
+  groomParents: groom.parents,
+  brideParents: bride.parents,
+  weekday: weddingDate.weekday,
+  monthLong: weddingDate.monthLong,
+  day: weddingDate.day,
+  year: weddingDate.year,
+  time: weddingDate.time,
+  venueName: wedding.venue.name,
+  venueAddress: wedding.venue.address,
+  message: wedding.invitationMessage,
+  blessing: wedding.cardBlessing ?? '',
+  fileName: `${groom.firstName}-and-${bride.firstName}-wedding-invitation`,
+};
+---
+
+<section class="card-section" aria-labelledby="card-heading">
+  <div class="container">
+    <p class="eyebrow reveal" style="text-align:center">Keep & share</p>
+    <h2 id="card-heading" class="section-title reveal">Your Invitation</h2>
+    <div class="divider reveal"><Ornament type="flourish" /></div>
+
+    <!-- Visible, on-screen invitation card -->
+    <div class="invite-wrap reveal">
+      <article class="invite-card" data-invite-card>
+        <div class="frame">
+          <span class="corner c-tl"><Ornament type="corner" /></span>
+          <span class="corner c-tr"><Ornament type="corner" /></span>
+          <span class="corner c-bl"><Ornament type="corner" /></span>
+          <span class="corner c-br"><Ornament type="corner" /></span>
+
+          <div class="invite-inner">
+            {cardData.blessing && <p class="ic-blessing">{cardData.blessing}</p>}
+            <div class="ic-sprig"><Ornament type="monogram-sprig" /></div>
+            <p class="ic-eyebrow">{cardData.eyebrow}</p>
+
+            <h3 class="ic-name">{groom.fullName}</h3>
+            <p class="ic-parents">{groom.parents}</p>
+
+            <div class="ic-amp"><span class="script">&amp;</span></div>
+
+            <h3 class="ic-name">{bride.fullName}</h3>
+            <p class="ic-parents">{bride.parents}</p>
+
+            <div class="divider ic-div"><Ornament type="leaf" /></div>
+
+            <div class="ic-when">
+              <span class="ic-weekday">{weddingDate.weekday}</span>
+              <span class="ic-date">{weddingDate.monthLong} {weddingDate.day}, {weddingDate.year}</span>
+              <span class="ic-time">{weddingDate.time}</span>
+            </div>
+
+            <p class="ic-venue-name">{wedding.venue.name}</p>
+            <p class="ic-venue-addr">{wedding.venue.address}</p>
+
+            <p class="ic-message">{cardData.message}</p>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="card-actions reveal">
+      <button class="btn-gold" data-download-card type="button">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true">
+          <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span data-download-label>Download Wedding Invitation</span>
+      </button>
+      <p class="card-hint">High-resolution image · perfect for WhatsApp &amp; social sharing</p>
+    </div>
+  </div>
+
+  <script type="application/json" data-card-json set:html={JSON.stringify(cardData)} />
+</section>
+
+<style>
+  .card-section {
+    padding: 40px 0 72px;
+  }
+  .section-title {
+    text-align: center;
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+  .invite-wrap {
+    display: flex;
+    justify-content: center;
+    perspective: 1200px;
+  }
+  .invite-card {
+    width: 100%;
+    max-width: 480px;
+    aspect-ratio: 5 / 7;
+    background:
+      radial-gradient(120% 90% at 50% 0%, #fffdf6, var(--cream) 70%),
+      var(--cream);
+    border-radius: 10px;
+    box-shadow: var(--shadow-lg);
+    padding: 14px;
+    position: relative;
+    transition: transform 0.4s ease;
+  }
+  .invite-card:hover {
+    transform: translateY(-4px);
+  }
+  .frame {
+    position: relative;
+    height: 100%;
+    border: 1.5px solid var(--gold);
+    border-radius: 4px;
+    outline: 4px solid var(--cream);
+    box-shadow: inset 0 0 0 1px var(--gold-soft);
+  }
+  .corner {
+    position: absolute;
+    width: 46px;
+    height: 46px;
+    color: var(--gold);
+    opacity: 0.85;
+  }
+  .corner :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+  .c-tl { top: 6px; left: 6px; }
+  .c-tr { top: 6px; right: 6px; transform: scaleX(-1); }
+  .c-bl { bottom: 6px; left: 6px; transform: scaleY(-1); }
+  .c-br { bottom: 6px; right: 6px; transform: scale(-1); }
+
+  .invite-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: clamp(18px, 6%, 40px);
+    gap: 2px;
+  }
+  .ic-blessing {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--muted-gold);
+    font-size: clamp(0.85rem, 3.5vw, 1rem);
+    margin-bottom: 6px;
+  }
+  .ic-sprig {
+    color: var(--gold);
+    width: 54px;
+    margin-bottom: 8px;
+  }
+  .ic-sprig :global(svg) {
+    width: 100%;
+    height: auto;
+  }
+  .ic-eyebrow {
+    font-size: clamp(0.62rem, 2.6vw, 0.72rem);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    max-width: 30ch;
+    margin-bottom: 14px;
+  }
+  .ic-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.7rem, 8vw, 2.5rem);
+    line-height: 1.05;
+    color: var(--ink);
+  }
+  .ic-parents {
+    font-size: clamp(0.66rem, 2.8vw, 0.78rem);
+    color: var(--ink-soft);
+    margin-top: 3px;
+  }
+  .ic-amp {
+    margin: 4px 0;
+  }
+  .ic-amp .script {
+    font-size: clamp(1.8rem, 8vw, 2.6rem);
+    color: var(--gold-deep);
+  }
+  .ic-div {
+    margin: 14px auto;
+  }
+  .ic-div :global(svg) {
+    width: 18px;
+    height: 18px;
+  }
+  .ic-when {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 12px;
+  }
+  .ic-weekday {
+    font-size: 0.66rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--muted-gold);
+    font-weight: 600;
+  }
+  .ic-date {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 5vw, 1.5rem);
+    color: var(--gold-deep);
+    font-weight: 600;
+  }
+  .ic-time {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+  .ic-venue-name {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 4.4vw, 1.2rem);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .ic-venue-addr {
+    font-size: clamp(0.64rem, 2.8vw, 0.74rem);
+    color: var(--ink-soft);
+    max-width: 34ch;
+    margin: 2px auto 0;
+  }
+  .ic-message {
+    margin-top: 16px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(0.78rem, 3.4vw, 0.95rem);
+    color: var(--ink-soft);
+    max-width: 36ch;
+  }
+
+  .card-actions {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .card-hint {
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    color: var(--muted-gold);
+    text-align: center;
+  }
+</style>
+
+<script>
+  import { downloadInvitationCard } from '../scripts/downloadCard';
+
+  const btn = document.querySelector<HTMLButtonElement>('[data-download-card]');
+  const jsonEl = document.querySelector<HTMLScriptElement>('[data-card-json]');
+  const label = document.querySelector<HTMLElement>('[data-download-label]');
+
+  if (btn && jsonEl) {
+    const data = JSON.parse(jsonEl.textContent || '{}');
+    btn.addEventListener('click', async () => {
+      if (btn.dataset.busy) return;
+      btn.dataset.busy = '1';
+      const original = label?.textContent ?? '';
+      if (label) label.textContent = 'Preparing image…';
+      try {
+        await downloadInvitationCard(data);
+        if (label) label.textContent = 'Downloaded ✓';
+      } catch (err) {
+        console.error('Invitation download failed:', err);
+        if (label) label.textContent = 'Download failed — try again';
+      } finally {
+        window.setTimeout(() => {
+          if (label) label.textContent = original;
+          delete btn.dataset.busy;
+        }, 2200);
+      }
+    });
+  }
+</script>

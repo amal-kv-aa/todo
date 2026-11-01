@@ -1,0 +1,234 @@
+---
+import { wedding } from '../data/wedding';
+import { weddingDate } from '../data/format';
+import Ornament from './Ornament.astro';
+import Venue from './Venue.astro';
+import InvitationCard from './InvitationCard.astro';
+
+const { groom, bride } = wedding.couple;
+
+const details: { label: string; value: string }[] = [
+  { label: 'Date', value: `${weddingDate.monthLong} ${weddingDate.day}, ${weddingDate.year}` },
+  { label: 'Day', value: weddingDate.weekday },
+  { label: 'Time', value: weddingDate.time },
+  { label: 'Venue', value: wedding.venue.name },
+  { label: 'Address', value: wedding.venue.address },
+  ...(wedding.extraDetails ?? []),
+];
+---
+
+<section class="invitation" id="invitation" aria-label="Wedding invitation" hidden>
+  <!-- Welcome message -->
+  <div class="hero">
+    <div class="container">
+      <p class="eyebrow reveal">Welcome, dear guest</p>
+      <h2 class="hero-names reveal">
+        <span>{groom.firstName}</span>
+        <span class="amp script">&amp;</span>
+        <span>{bride.firstName}</span>
+      </h2>
+      <div class="divider reveal"><Ornament type="flourish" /></div>
+      <p class="welcome-message reveal">{wedding.welcomeMessage}</p>
+    </div>
+  </div>
+
+  <!-- Bride & groom details -->
+  <section class="couple" aria-labelledby="couple-heading">
+    <div class="container">
+      <h2 id="couple-heading" class="section-title reveal">The Couple</h2>
+      <div class="divider reveal"><Ornament type="flourish" /></div>
+
+      <div class="couple-grid">
+        <article class="person glass-card reveal">
+          <div class="person-sprig"><Ornament type="monogram-sprig" /></div>
+          <p class="person-role">The Groom</p>
+          <h3 class="person-name">{groom.fullName}</h3>
+          <p class="person-parents">{groom.parents}</p>
+          {groom.family && <p class="person-family">{groom.family}</p>}
+        </article>
+
+        <div class="couple-amp reveal" aria-hidden="true"><span class="script">&amp;</span></div>
+
+        <article class="person glass-card reveal">
+          <div class="person-sprig"><Ornament type="monogram-sprig" /></div>
+          <p class="person-role">The Bride</p>
+          <h3 class="person-name">{bride.fullName}</h3>
+          <p class="person-parents">{bride.parents}</p>
+          {bride.family && <p class="person-family">{bride.family}</p>}
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wedding details card -->
+  <section class="details" aria-labelledby="details-heading">
+    <div class="container">
+      <h2 id="details-heading" class="section-title reveal">Wedding Details</h2>
+      <div class="divider reveal"><Ornament type="flourish" /></div>
+
+      <dl class="details-card glass-card reveal">
+        {details.map((d) => (
+          <div class="detail-row">
+            <dt>{d.label}</dt>
+            <dd>{d.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <Venue />
+  <InvitationCard />
+
+  <footer class="invite-footer">
+    <div class="divider"><Ornament type="leaf" /></div>
+    <p class="script footer-names shimmer">{groom.firstName} &amp; {bride.firstName}</p>
+    <p class="footer-note">We can't wait to celebrate with you.</p>
+  </footer>
+</section>
+
+<style>
+  .invitation {
+    animation: fade-up 1s ease both;
+  }
+  .hero {
+    padding: clamp(70px, 14vh, 130px) 0 40px;
+    text-align: center;
+  }
+  .hero-names {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(10px, 4vw, 24px);
+    font-size: clamp(2.4rem, 11vw, 4.2rem);
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  .hero-names .amp {
+    font-size: clamp(2rem, 9vw, 3.4rem);
+  }
+  .welcome-message {
+    max-width: 600px;
+    margin: 0 auto;
+    color: var(--ink-soft);
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 4.2vw, 1.45rem);
+    font-style: italic;
+    line-height: 1.7;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+
+  .couple {
+    padding: 48px 0;
+  }
+  .couple-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: clamp(16px, 4vw, 40px);
+  }
+  .person {
+    text-align: center;
+    border-radius: 20px;
+    padding: 30px 22px;
+  }
+  .person-sprig {
+    color: var(--gold);
+    width: 50px;
+    margin: 0 auto 10px;
+  }
+  .person-sprig :global(svg) {
+    width: 100%;
+    height: auto;
+  }
+  .person-role {
+    font-size: 0.68rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--muted-gold);
+    font-weight: 600;
+  }
+  .person-name {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+    margin-top: 8px;
+  }
+  .person-parents {
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    margin-top: 8px;
+  }
+  .person-family {
+    color: var(--muted-gold);
+    font-style: italic;
+    font-family: var(--font-display);
+    margin-top: 4px;
+  }
+  .couple-amp .script {
+    font-size: clamp(2.4rem, 9vw, 3.4rem);
+    color: var(--gold-deep);
+  }
+
+  .details {
+    padding: 48px 0;
+  }
+  .details-card {
+    margin: 0 auto;
+    max-width: 560px;
+    border-radius: 22px;
+    padding: 10px 28px;
+  }
+  .detail-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--gold-pale);
+    align-items: baseline;
+  }
+  .detail-row:last-child {
+    border-bottom: none;
+  }
+  .detail-row dt {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted-gold);
+    font-weight: 600;
+    margin: 0;
+  }
+  .detail-row dd {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+  }
+
+  .invite-footer {
+    text-align: center;
+    padding: 20px 0 60px;
+  }
+  .footer-names {
+    font-size: 2.4rem;
+  }
+  .footer-note {
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+
+  @media (max-width: 620px) {
+    .couple-grid {
+      grid-template-columns: 1fr;
+    }
+    .couple-amp {
+      padding: 4px 0;
+    }
+    .detail-row {
+      grid-template-columns: 100px 1fr;
+      gap: 10px;
+    }
+  }
+</style>

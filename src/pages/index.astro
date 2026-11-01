@@ -1,11 +1,28 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import WelcomeScreen from '../components/WelcomeScreen.astro';
+import Invitation from '../components/Invitation.astro';
+import MusicToggle from '../components/MusicToggle.astro';
+import { wedding } from '../data/wedding';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const runtime = {
+  musicSrc: wedding.music.src,
+  musicVolume: wedding.music.volume,
+};
 ---
 
 <Layout>
-	<Welcome />
+  <MusicToggle />
+
+  <main>
+    <WelcomeScreen />
+    <Invitation />
+  </main>
+
+  <!-- Runtime config consumed by the orchestration script -->
+  <script type="application/json" data-wedding-runtime set:html={JSON.stringify(runtime)} />
 </Layout>
+
+<script>
+  import '../scripts/app';
+</script>
