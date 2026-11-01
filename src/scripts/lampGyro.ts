@@ -17,6 +17,10 @@ interface LampSim {
   vel: number;      // angular velocity, degrees per second
   omega: number;    // natural angular frequency, rad/s (sqrt(k))
   damping: number;  // 2·ζ·ω — slightly under-damped for a soft overshoot
+  // Sign flip applied when writing the transform. Needed for lamps inside a
+  // horizontally-mirrored container (the right bouquet uses `scaleX(-1)`),
+  // so both sides visually sway the same world direction under one gamma.
+  flipSign: number;
 }
 
 // Natural frequencies tuned to the visible cord lengths. Longer cord → lower
@@ -37,7 +41,11 @@ const IDLE_DECAY = 0.045;  // how fast gamma drifts back to 0 when device is sti
 const IDLE_TIMEOUT_MS = 350; // after this long with no new reading, start decaying
 
 export function initLampGyro(): void {
-  const pivots = Array.from(document.querySelectorAll<SVGGElement>('.lamp-pivot'));
+  // The welcome arch uses `.lamp-pivot`; the invitation's top-corner bouquets
+  // use `.bq-pivot`. Both are driven by the same pendulum simulation.
+  const pivots = Array.from(
+    document.querySelectorAll<SVGGElement>('.lamp-pivot, .bq-pivot'),
+  );
   if (pivots.length === 0) return;
 
   // Respect reduced motion — do nothing, let the CSS fallback (also disabled
@@ -45,12 +53,21 @@ export function initLampGyro(): void {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const sims: LampSim[] = pivots.map((pivot) => {
-    const lamp = pivot.closest('.lamp') as SVGGElement | null;
+    // Welcome-arch lamps carry a `.lamp-N` sibling class on their anchor
+    // (`.lamp.lamp-1`), which keys into OMEGA_BY_INDEX. Bouquet lamps don't
+    // — their short cord (~70 SVG units) maps to the same omega as a short
+    // arch lamp, so fall through to 2.6.
+    const lamp = pivot.closest('.lamp, .bq-lamp') as SVGGElement | null;
     const classes = lamp?.getAttribute('class') ?? '';
-    const idx = (classes.match(/lamp-(\d)/) ?? ['', '3'])[1];
-    const omega = OMEGA_BY_INDEX[idx] ?? 2.3;
+    const idxMatch = classes.match(/lamp-(\d)/);
+    const omega = idxMatch
+      ? OMEGA_BY_INDEX[idxMatch[1]] ?? 2.3
+      : /\bbq-lamp\b/.test(classes) ? 2.6 : 2.3;
     const zeta = 0.09; // ~9% damping — enough overshoot to feel alive, settles quickly
-    return { pivot, angle: 0, vel: 0, omega, damping: 2 * zeta * omega };
+    // Right bouquet is CSS-mirrored (`scaleX(-1)`); flip the applied angle
+    // so both sides sway with the same world-direction phase.
+    const flipSign = pivot.closest('.bouquet-right') ? -1 : 1;
+    return { pivot, angle: 0, vel: 0, omega, damping: 2 * zeta * omega, flipSign };
   });
 
   // ── Device input state ────────────────────────────────────────────────────
@@ -80,29 +97,74 @@ export function initLampGyro(): void {
     window.addEventListener('deviceorientation', onOrientation, { passive: true });
   }
 
-  // iOS 13+ requires an explicit permission request made from a user gesture.
-  // We hook it to the very first touch/pointer so the lamps are already live
-  // before the user taps the "open invitation" button.
-  const needsPermission =
-    typeof (DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<string> })
-      .requestPermission === 'function';
+  // iOS 13+ requires an explicit permission request made from a direct user
+  // gesture. The automatic request-on-first-touch pattern is fragile there —
+  // the native permission dialog often collides with the "Tap to open" gesture
+  // and gets dismissed, or the user misses it. Instead we show an explicit
+  // button so the permission grant is a deliberate, isolated action.
+  const DOE = DeviceOrientationEvent as unknown as {
+    requestPermission?: () => Promise<string>;
+  };
+  const needsPermission = typeof DOE.requestPermission === 'function';
 
-  if (needsPermission) {
-    const requestOnce = () => {
-      document.removeEventListener('touchstart', requestOnce);
-      document.removeEventListener('pointerdown', requestOnce);
-      (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<string> })
-        .requestPermission()
-        .then((response) => {
-          if (response === 'granted') startListener();
-        })
-        .catch(() => { /* permission denied — CSS keyframe sway continues */ });
-    };
-    document.addEventListener('touchstart', requestOnce, { once: true, passive: true });
-    document.addEventListener('pointerdown', requestOnce, { once: true, passive: true });
-  } else {
+  if (!needsPermission) {
+    // Android / desktop with sensors: start listening immediately.
     startListener();
+    return;
   }
+
+  // iOS branch: DeviceOrientationEvent only exposes requestPermission on
+  // secure contexts (HTTPS / localhost). If the page is served over plain
+  // HTTP (e.g. visiting the dev server via LAN IP from the phone), the API
+  // is gone and we should say so loudly in the console.
+  if (!window.isSecureContext) {
+    console.warn(
+      '[lampGyro] DeviceOrientationEvent requires a secure context (HTTPS or localhost). ' +
+        'Load this page over HTTPS to enable gyroscope-driven lamp motion on iOS.',
+    );
+    return;
+  }
+
+  // Visible one-tap "Enable motion" chip in the top-right (next to the music
+  // toggle), only on iOS, only until permission is resolved.
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'motion-enable';
+  btn.setAttribute('aria-label', 'Enable motion effects');
+  btn.innerHTML =
+    '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">' +
+    '<path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1" ' +
+    'stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>' +
+    '<span>Enable motion</span>';
+  document.body.appendChild(btn);
+
+  let asked = false;
+  btn.addEventListener('click', () => {
+    if (asked) return;
+    asked = true;
+    btn.disabled = true;
+    // IMPORTANT: this call MUST be the direct result of a user gesture.
+    // We invoke requestPermission inline (no await / no setTimeout) so iOS
+    // sees the user-activation flag.
+    DOE.requestPermission!()
+      .then((response) => {
+        console.log('[lampGyro] permission response:', response);
+        if (response === 'granted') {
+          startListener();
+          btn.remove();
+        } else {
+          btn.textContent = 'Motion blocked';
+          // Keep it visible so the user knows what happened; they can enable
+          // it in iOS Settings → Safari → Motion & Orientation Access.
+        }
+      })
+      .catch((err: unknown) => {
+        console.warn('[lampGyro] requestPermission failed:', err);
+        btn.disabled = false;
+        asked = false;
+        btn.textContent = 'Tap to retry';
+      });
+  });
 
   // ── Integration loop ──────────────────────────────────────────────────────
   // Semi-implicit Euler: cheap, stable for lightly-damped springs, 60 Hz.
@@ -143,8 +205,9 @@ export function initLampGyro(): void {
       if (s.angle > CLAMP_ANGLE) { s.angle = CLAMP_ANGLE; s.vel *= -0.3; }
       else if (s.angle < -CLAMP_ANGLE) { s.angle = -CLAMP_ANGLE; s.vel *= -0.3; }
 
-      // One style write per lamp per frame.
-      s.pivot.style.transform = `rotate(${s.angle.toFixed(3)}deg)`;
+      // One style write per lamp per frame. `flipSign` keeps mirrored-right
+      // bouquet lamps swinging the same way visually as their left pair.
+      s.pivot.style.transform = `rotate(${(s.angle * s.flipSign).toFixed(3)}deg)`;
     }
   }
 

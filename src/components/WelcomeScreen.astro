@@ -262,7 +262,12 @@ const { groom, bride } = wedding.couple;
     align-items: center;
     justify-content: center;
     padding: 16px;
-    background: var(--cream);
+    /* Inherit the body's royal-damask pattern so the welcome and inner page
+       share the exact same backdrop; the solid --cream still sits beneath
+       the pattern image for a continuous base during the page-flip. */
+    background:
+      radial-gradient(ellipse at center top, rgba(246, 236, 221, 0.6), transparent 55%),
+      var(--cream);
     /* The page lifts from the TOP edge and flips UPWARD, revealing the
        invitation behind it — like turning a page up on a flip-chart. */
     transform-origin: center top;

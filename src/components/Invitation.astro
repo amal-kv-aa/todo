@@ -4,6 +4,7 @@ import { weddingDate } from '../data/format';
 import Ornament from './Ornament.astro';
 import Venue from './Venue.astro';
 import InvitationCard from './InvitationCard.astro';
+import AddToCalendar from './AddToCalendar.astro';
 
 const { groom, bride } = wedding.couple;
 
@@ -260,6 +261,7 @@ const details: { label: string; value: string }[] = [
     </div>
   </section>
 
+  <AddToCalendar />
   <Venue />
   <InvitationCard />
 
@@ -476,18 +478,19 @@ const details: { label: string; value: string }[] = [
     color: #b56a1f;
   }
   .welcome-message {
-    max-width: 600px;
+    max-width: 640px;
     margin: 0 auto;
     color: var(--ink-soft);
     font-family: var(--font-display);
-    font-size: clamp(1.1rem, 4.2vw, 1.45rem);
+    font-size: clamp(1.25rem, 5vw, 1.7rem);
     font-style: italic;
-    line-height: 1.7;
+    line-height: 1.65;
   }
 
   .section-title {
     text-align: center;
-    font-size: clamp(2rem, 8vw, 3rem);
+    font-size: clamp(2.3rem, 9vw, 3.4rem);
+    letter-spacing: 0.01em;
   }
 
   .couple {
@@ -514,29 +517,32 @@ const details: { label: string; value: string }[] = [
     height: auto;
   }
   .person-role {
-    font-size: 0.68rem;
+    font-size: clamp(0.82rem, 2.8vw, 0.95rem);
     letter-spacing: 0.26em;
     text-transform: uppercase;
     color: var(--muted-gold);
     font-weight: 600;
   }
   .person-name {
-    font-size: clamp(1.5rem, 6vw, 2rem);
-    margin-top: 8px;
+    font-size: clamp(1.75rem, 7vw, 2.4rem);
+    margin-top: 10px;
+    line-height: 1.15;
   }
   .person-parents {
     color: var(--ink-soft);
-    font-size: 0.9rem;
-    margin-top: 8px;
+    font-size: clamp(1rem, 3.4vw, 1.15rem);
+    margin-top: 10px;
+    line-height: 1.5;
   }
   .person-family {
     color: var(--muted-gold);
     font-style: italic;
     font-family: var(--font-display);
-    margin-top: 4px;
+    font-size: clamp(0.95rem, 3.4vw, 1.1rem);
+    margin-top: 6px;
   }
   .couple-amp .script {
-    font-size: clamp(2.4rem, 9vw, 3.4rem);
+    font-size: clamp(2.8rem, 10vw, 3.8rem);
     color: var(--gold-deep);
   }
 
@@ -551,9 +557,9 @@ const details: { label: string; value: string }[] = [
   }
   .detail-row {
     display: grid;
-    grid-template-columns: 120px 1fr;
-    gap: 16px;
-    padding: 16px 0;
+    grid-template-columns: 140px 1fr;
+    gap: 18px;
+    padding: 18px 0;
     border-bottom: 1px solid var(--gold-pale);
     align-items: baseline;
   }
@@ -561,7 +567,7 @@ const details: { label: string; value: string }[] = [
     border-bottom: none;
   }
   .detail-row dt {
-    font-size: 0.7rem;
+    font-size: clamp(0.82rem, 2.8vw, 0.95rem);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--muted-gold);
@@ -572,19 +578,21 @@ const details: { label: string; value: string }[] = [
     margin: 0;
     color: var(--ink);
     font-family: var(--font-display);
-    font-size: 1.15rem;
+    font-size: clamp(1.2rem, 4.2vw, 1.4rem);
+    line-height: 1.4;
   }
 
   .invite-footer {
     text-align: center;
-    padding: 20px 0 60px;
+    padding: 20px 0 clamp(24px, 6vh, 48px);
   }
   .footer-names {
-    font-size: 2.4rem;
+    font-size: clamp(2.4rem, 9vw, 3rem);
   }
   .footer-note {
     color: var(--ink-soft);
-    margin-top: 4px;
+    font-size: clamp(1rem, 3.4vw, 1.15rem);
+    margin-top: 8px;
   }
 
   @media (max-width: 620px) {
