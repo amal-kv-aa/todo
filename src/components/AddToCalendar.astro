@@ -1,0 +1,175 @@
+---
+// ─────────────────────────────────────────────────────────────────────────────
+// Save the Date — Add-to-Calendar section.
+//
+// Pulls everything from src/data/wedding.ts (dateISO, endISO, venue, couple
+// names, invitationMessage). Falls back to start+3h if endISO isn't set.
+// Renders the Google Calendar link + an .ics download button; wiring lives
+// in src/scripts/calendar.ts and is hydrated via a per-section <script>.
+// ─────────────────────────────────────────────────────────────────────────────
+import { wedding } from '../data/wedding';
+import Ornament from './Ornament.astro';
+
+const { groom, bride } = wedding.couple;
+
+const startISO = wedding.dateISO;
+const endISO =
+  wedding.endISO
+  // Default: 3 hours after start, preserving the configured timezone offset.
+  || new Date(new Date(startISO).getTime() + 3 * 60 * 60 * 1000).toISOString();
+
+const title = `${groom.firstName} & ${bride.firstName} — Wedding Reception`;
+const location = `${wedding.venue.name}, ${wedding.venue.address}`;
+const description = wedding.invitationMessage;
+
+// Stable UID: a slug of the couple + the start date. Same URL/content on
+// every page load, so re-importing updates the same event rather than
+// creating duplicates.
+const uid = (
+  `${groom.firstName}-${bride.firstName}-${startISO.slice(0, 10)}`
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, '')
+) + '@wedding-card';
+
+const event = { title, startISO, endISO, location, description, uid };
+---
+
+<section class="save-date" aria-labelledby="save-date-heading">
+  <div class="container">
+    <h2 id="save-date-heading" class="section-title reveal">Save the Date</h2>
+    <div class="divider reveal"><Ornament type="flourish" /></div>
+
+    <p class="save-date-note reveal">
+      Add our celebration to your calendar so you&rsquo;re ready for the big day.
+      You can adjust the reminder in your calendar app to suit you.
+    </p>
+
+    <div class="save-date-actions reveal">
+      <a
+        class="btn-gold"
+        data-add-google
+        href="#"
+        target="_blank"
+        rel="noopener"
+        aria-label="Add to Google Calendar"
+      >
+        <!-- Google G -->
+        <svg class="svc-icon" viewBox="0 0 48 48" aria-hidden="true" width="20" height="20">
+          <path fill="#fff" d="M43.6 20.5H42V20.4H24v7.2h11.3C33.6 32 29.3 35.2 24 35.2c-6.2 0-11.2-5-11.2-11.2S17.8 12.8 24 12.8c2.9 0 5.6 1.1 7.6 2.9l5.1-5.1C33.5 7.6 29 5.6 24 5.6 13.8 5.6 5.6 13.8 5.6 24S13.8 42.4 24 42.4c10.1 0 18.4-7.3 18.4-18.4 0-1.2-.1-2.3-.8-3.5z"/>
+        </svg>
+        <span>Google Calendar</span>
+      </a>
+
+      <button
+        type="button"
+        class="btn-gold btn-outline"
+        data-add-ics
+        aria-label="Download .ics file for Apple Calendar, Outlook, and other calendar apps"
+      >
+        <!-- Calendar glyph -->
+        <svg class="svc-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" width="20" height="20">
+          <path d="M7 2v3M17 2v3M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"
+                stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Apple &amp; Other (.ics)</span>
+      </button>
+    </div>
+
+    <p class="save-date-fineprint reveal">
+      The downloaded file includes a reminder for 24 hours before the event.
+      Calendar apps may handle imported reminders differently.
+    </p>
+  </div>
+
+  <!-- Event payload consumed by src/scripts/calendar.ts (reads the JSON by
+       the data attribute, builds the Google URL and the .ics on demand). -->
+  <script type="application/json" data-calendar-event set:html={JSON.stringify(event)}></script>
+</section>
+
+<script>
+  import { initAddToCalendar } from '../scripts/calendar';
+  initAddToCalendar();
+</script>
+
+<style>
+  .save-date {
+    padding: 40px 0 24px;
+    text-align: center;
+  }
+  .save-date-note {
+    max-width: 560px;
+    margin: 10px auto 24px;
+    color: var(--ink-soft);
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 3.8vw, 1.3rem);
+    font-style: italic;
+    line-height: 1.55;
+  }
+  .save-date-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px 18px;
+    margin-top: 8px;
+  }
+  /* Scoped smaller sizing — only the Save-the-Date buttons shrink here, so
+     other primary CTAs on the page (Get Directions, Download Invitation)
+     keep their current larger size. */
+  .save-date-actions .btn-gold {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    padding: 12px 22px;
+    font-size: clamp(0.78rem, 2.4vw, 0.88rem);
+    letter-spacing: 0.08em;
+  }
+  .svc-icon {
+    display: block;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Secondary (outlined) variant on the .ics button — reuses the base
+     .btn-gold layout but swaps the fill for a border + transparent surface
+     so the two actions read as a primary / secondary pair, matching the
+     existing design language. */
+  .btn-gold.btn-outline {
+    --b1: transparent;
+    --b2: transparent;
+    color: var(--gold-deep);
+    border: 1.5px solid var(--gold-deep);
+    background: rgba(255, 255, 255, 0.35);
+    box-shadow:
+      0 6px 18px rgba(90, 65, 20, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  }
+  .btn-gold.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.55);
+    color: var(--gold-deep);
+    filter: none;
+  }
+
+  .save-date-fineprint {
+    max-width: 540px;
+    margin: 18px auto 0;
+    color: var(--muted-gold);
+    font-size: clamp(0.78rem, 2.6vw, 0.88rem);
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  /* Stack on narrow phones so each button has its own full-width tap target. */
+  @media (max-width: 420px) {
+    .save-date-actions {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+      padding: 0 24px;
+    }
+    .save-date-actions .btn-gold {
+      justify-content: center;
+    }
+  }
+</style>

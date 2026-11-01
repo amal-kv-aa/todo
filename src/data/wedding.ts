@@ -38,6 +38,12 @@ export interface WeddingConfig {
    */
   dateISO: string;
 
+  /**
+   * Optional end time in the same ISO format. Used only by the Add-to-Calendar
+   * feature. If omitted, defaults to 3 hours after `dateISO`.
+   */
+  endISO?: string;
+
   /** Human-readable time, shown on the cards (e.g. "10:30 AM"). */
   timeLabel: string;
 
@@ -96,6 +102,7 @@ export const wedding: WeddingConfig = {
   tagline: 'Together with their families',
 
   dateISO: '2026-12-09T18:00:00+05:30',
+  endISO: '2026-12-09T22:00:00+05:30',
   timeLabel: '6:00 PM onwards',
 
   venue: {

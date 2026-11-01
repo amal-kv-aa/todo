@@ -79,21 +79,24 @@ const mapsUrl = mapsDirectionsUrl();
     background: var(--gold-pale);
   }
   .venue-name {
-    font-size: 1.7rem;
+    font-size: clamp(1.85rem, 6vw, 2.2rem);
+    line-height: 1.2;
   }
   .venue-address {
     color: var(--ink-soft);
-    margin-top: 8px;
-    max-width: 440px;
+    font-size: clamp(1.05rem, 3.6vw, 1.2rem);
+    margin-top: 10px;
+    max-width: 480px;
     margin-inline: auto;
+    line-height: 1.5;
   }
   .venue-note {
     color: var(--muted-gold);
     font-style: italic;
     font-family: var(--font-display);
-    font-size: 1.1rem;
-    margin: 16px auto 24px;
-    max-width: 460px;
+    font-size: clamp(1.15rem, 4vw, 1.35rem);
+    margin: 20px auto 24px;
+    max-width: 500px;
   }
   .venue-note + .btn-gold {
     margin-top: 0;
