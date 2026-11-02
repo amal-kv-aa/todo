@@ -48,6 +48,9 @@ html {
      as a dark strip above / below the content. */
   background-color: var(--cream);
   min-height: 100%;
+  /* Opt out of OS-level dark mode. Without this, browsers apply forced-dark
+     heuristics to light sites and the cream palette can flip to black. */
+  color-scheme: light;
 }
 
 body {

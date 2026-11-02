@@ -21,6 +21,10 @@ const { title = wedding.siteTitle, description = wedding.welcomeMessage } = Astr
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#ede1d3" />
+    <!-- Lock to the light cream palette: tells browsers (incl. Chrome Android
+         & iOS Safari) not to auto-invert or apply forced-dark heuristics. -->
+    <meta name="color-scheme" content="light" />
+    <meta name="supported-color-schemes" content="light" />
 
     <!-- Open Graph for pretty link previews when shared -->
     <meta property="og:type" content="website" />
