@@ -159,7 +159,19 @@ function initPageFlip(onEnterInvitation: () => void) {
     entered = false;
     window.scrollTo(0, 0);
     welcome!.hidden = false;
-    requestAnimationFrame(() => welcome!.classList.remove('is-flipping'));
+
+    // Replay the arch / lamp / bouquet entrance animations. Toggling
+    // `is-replay` sets animation: none, then removing it on the next frame
+    // lets the browser restart the CSS keyframes from zero.
+    welcome!.classList.add('is-replay');
+    // Force a reflow so the browser flushes the animation-none state.
+    void (welcome as HTMLElement).offsetWidth;
+
+    requestAnimationFrame(() => {
+      welcome!.classList.remove('is-flipping');
+      welcome!.classList.remove('is-replay');
+    });
+
     const hide = () => {
       invitation!.hidden = true;
     };

@@ -279,6 +279,18 @@ const { groom, bride } = wedding.couple;
       box-shadow 1.15s ease;
     will-change: transform;
   }
+  /* When returning from the inner page we add `.is-replay` for one frame
+     to force the entrance animations to restart from the beginning. */
+  .welcome.is-replay .arch-stem,
+  .welcome.is-replay .leaves use,
+  .welcome.is-replay .bloom,
+  .welcome.is-replay .cord,
+  .welcome.is-replay .lamp-body,
+  .welcome.is-replay .lamp-pivot,
+  .welcome.is-replay .halo,
+  .welcome.is-replay .invite-page {
+    animation: none !important;
+  }
   .welcome.is-flipping {
     /* Negative rotateX around the top edge sends the bottom of the page
        up toward the viewer, then over the top and behind. 170deg (not a
