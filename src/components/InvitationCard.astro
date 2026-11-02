@@ -144,101 +144,114 @@ const cardData = {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: clamp(18px, 6%, 40px);
-    gap: 2px;
+    padding: clamp(12px, 4.5%, 28px);
+    gap: 0;
+    overflow: hidden;
   }
   .ic-blessing {
     font-family: var(--font-display);
     font-style: italic;
     color: var(--muted-gold);
-    font-size: clamp(0.85rem, 3.5vw, 1rem);
-    margin-bottom: 6px;
+    font-size: clamp(0.7rem, 2.8vw, 0.9rem);
+    margin-bottom: 4px;
+    max-width: 100%;
   }
   .ic-sprig {
     color: var(--gold);
-    width: 54px;
-    margin-bottom: 8px;
+    width: clamp(38px, 11%, 48px);
+    margin-bottom: 4px;
   }
   .ic-sprig :global(svg) {
     width: 100%;
     height: auto;
   }
   .ic-eyebrow {
-    font-size: clamp(0.62rem, 2.6vw, 0.72rem);
-    letter-spacing: 0.14em;
+    font-size: clamp(0.52rem, 2.1vw, 0.66rem);
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--ink-soft);
-    max-width: 30ch;
-    margin-bottom: 14px;
+    max-width: 28ch;
+    margin-bottom: 8px;
+    line-height: 1.4;
   }
   .ic-name {
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: clamp(1.7rem, 8vw, 2.5rem);
+    font-size: clamp(1.25rem, 6vw, 1.9rem);
     line-height: 1.05;
     color: var(--ink);
+    max-width: 100%;
+    word-break: break-word;
   }
   .ic-parents {
-    font-size: clamp(0.66rem, 2.8vw, 0.78rem);
+    font-size: clamp(0.58rem, 2.4vw, 0.7rem);
     color: var(--ink-soft);
-    margin-top: 3px;
+    margin-top: 2px;
+    line-height: 1.3;
+    max-width: 100%;
   }
   .ic-amp {
-    margin: 4px 0;
+    margin: 2px 0;
   }
   .ic-amp .script {
-    font-size: clamp(1.8rem, 8vw, 2.6rem);
+    font-size: clamp(1.4rem, 6.5vw, 2.1rem);
     color: var(--gold-deep);
+    line-height: 1;
   }
   .ic-div {
-    margin: 14px auto;
+    margin: 8px auto;
   }
   .ic-div :global(svg) {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
   }
   .ic-when {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    margin-bottom: 12px;
+    gap: 1px;
+    margin-bottom: 8px;
   }
   .ic-weekday {
-    font-size: 0.66rem;
-    letter-spacing: 0.24em;
+    font-size: clamp(0.55rem, 2.2vw, 0.66rem);
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--muted-gold);
     font-weight: 600;
   }
   .ic-date {
     font-family: var(--font-display);
-    font-size: clamp(1.1rem, 5vw, 1.5rem);
+    font-size: clamp(0.95rem, 4.2vw, 1.3rem);
     color: var(--gold-deep);
     font-weight: 600;
+    line-height: 1.2;
   }
   .ic-time {
-    font-size: 0.82rem;
+    font-size: clamp(0.68rem, 2.6vw, 0.8rem);
     color: var(--ink-soft);
   }
   .ic-venue-name {
     font-family: var(--font-display);
-    font-size: clamp(1rem, 4.4vw, 1.2rem);
+    font-size: clamp(0.88rem, 3.8vw, 1.1rem);
     color: var(--ink);
     font-weight: 600;
+    line-height: 1.2;
+    max-width: 100%;
   }
   .ic-venue-addr {
-    font-size: clamp(0.64rem, 2.8vw, 0.74rem);
+    font-size: clamp(0.56rem, 2.4vw, 0.7rem);
     color: var(--ink-soft);
-    max-width: 34ch;
+    max-width: 32ch;
     margin: 2px auto 0;
+    line-height: 1.3;
   }
   .ic-message {
-    margin-top: 16px;
+    margin-top: 8px;
     font-family: var(--font-display);
     font-style: italic;
-    font-size: clamp(0.78rem, 3.4vw, 0.95rem);
+    font-size: clamp(0.66rem, 2.8vw, 0.85rem);
     color: var(--ink-soft);
-    max-width: 36ch;
+    max-width: 34ch;
+    line-height: 1.4;
   }
 
   .card-actions {

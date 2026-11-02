@@ -93,7 +93,7 @@ export const wedding: WeddingConfig = {
     },
     bride: {
       firstName: 'Pooja',
-      fullName: 'Adv. Pooja Jose',
+      fullName: 'Pooja Jose',
       parents: 'Daughter of Mr. P. U. Jose & Mrs. Beena Jose',
       family: 'Parekkudiyil House, Sultan Bathery',
     },
@@ -123,7 +123,7 @@ export const wedding: WeddingConfig = {
   invitationMessage:
     'We request the pleasure of your presence at our wedding reception, as we celebrate this joyous union together with our families and friends.',
 
-  cardBlessing: '॥ With the blessings of the Almighty ॥',
+  cardBlessing: '',
 
   music: {
     src: '/music/audio_bg.mp3',

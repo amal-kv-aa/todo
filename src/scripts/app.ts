@@ -124,6 +124,7 @@ function initPageFlip(onEnterInvitation: () => void) {
   const welcome = document.getElementById('welcome');
   const trigger = document.querySelector<HTMLElement>('[data-enter]');
   const invitation = document.getElementById('invitation');
+  const backBtn = document.querySelector<HTMLButtonElement>('[data-back-btn]');
   if (!welcome || !trigger || !invitation) return;
 
   let entered = false;
@@ -153,6 +154,19 @@ function initPageFlip(onEnterInvitation: () => void) {
     window.setTimeout(remove, prefersReduced ? 700 : 1400);
   }
 
+  function back() {
+    if (!entered) return;
+    entered = false;
+    window.scrollTo(0, 0);
+    welcome!.hidden = false;
+    requestAnimationFrame(() => welcome!.classList.remove('is-flipping'));
+    const hide = () => {
+      invitation!.hidden = true;
+    };
+    welcome!.addEventListener('transitionend', hide, { once: true });
+    window.setTimeout(hide, prefersReduced ? 700 : 1400);
+  }
+
   trigger.addEventListener('click', enter);
   trigger.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -160,6 +174,7 @@ function initPageFlip(onEnterInvitation: () => void) {
       enter();
     }
   });
+  backBtn?.addEventListener('click', back);
 }
 
 // ── Boot ────────────────────────────────────────────────────────────────────
