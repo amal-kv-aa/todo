@@ -263,7 +263,9 @@ const { groom, bride } = wedding.couple;
     align-items: stretch;
     justify-content: center;
     padding: 10px;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
     /* Inherit the body's royal-damask pattern so the welcome and inner page
        share the exact same backdrop; the solid --cream still sits beneath
        the pattern image for a continuous base during the page-flip. */
@@ -316,11 +318,12 @@ const { groom, bride } = wedding.couple;
   .invite-page {
     position: relative;
     width: min(92vw, 560px);
-    height: 100%;
+    min-height: 100%;
     cursor: pointer;
     animation: fade-up 1s ease both;
     border-radius: 4px;
     display: flex;
+    flex: 0 0 auto;
   }
   .invite-page:focus-visible {
     outline: 2px solid var(--p-gold);
@@ -336,8 +339,7 @@ const { groom, bride } = wedding.couple;
     text-align: center;
     gap: 0;
     width: 100%;
-    height: 100%;
-    max-height: 100svh;
+    min-height: 100%;
   }
 
   /* ── Floral arch with hanging lamps ───────────────────────────────────── */
@@ -476,7 +478,7 @@ const { groom, bride } = wedding.couple;
 
   .w-eyebrow {
     font-family: var(--font-body);
-    font-size: clamp(1.05rem, 4.4vw, 1.3rem);
+    font-size: clamp(0.9rem, 3.8vw, 1.1rem);
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--p-ink);
@@ -489,13 +491,13 @@ const { groom, bride } = wedding.couple;
     gap: clamp(0px, 0.4vh, 4px);
   }
   .w-name {
-    font-size: clamp(3.6rem, 17vw, 5.6rem);
+    font-size: clamp(3rem, 14.5vw, 4.8rem);
     line-height: 1.15;
     padding: 0.06em 0.12em;
     display: inline-block;
   }
   .w-amp {
-    font-size: clamp(2.1rem, 9vw, 3rem);
+    font-size: clamp(1.8rem, 7.8vw, 2.6rem);
     line-height: 1.15;
     padding: 0.04em 0.1em;
     display: inline-block;
@@ -520,7 +522,7 @@ const { groom, bride } = wedding.couple;
   .w-tagline {
     font-family: var(--font-display);
     font-style: italic;
-    font-size: clamp(1.45rem, 5.8vw, 1.9rem);
+    font-size: clamp(1.25rem, 5vw, 1.6rem);
     color: var(--p-ink);
     margin-bottom: clamp(4px, 1.2vh, 10px);
   }
@@ -528,13 +530,13 @@ const { groom, bride } = wedding.couple;
   .w-date {
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: clamp(1.5rem, 6.2vw, 2rem);
+    font-size: clamp(1.3rem, 5.4vw, 1.75rem);
     color: var(--p-gold-deep);
     letter-spacing: 0.02em;
   }
   .w-when {
     font-family: var(--font-body);
-    font-size: clamp(1.05rem, 4.4vw, 1.25rem);
+    font-size: clamp(0.92rem, 3.8vw, 1.1rem);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--p-ink);
@@ -571,7 +573,7 @@ const { groom, bride } = wedding.couple;
   }
   .w-enter-label {
     font-family: var(--font-body);
-    font-size: clamp(1.2rem, 4.8vw, 1.45rem);
+    font-size: clamp(1.05rem, 4.2vw, 1.25rem);
     letter-spacing: 0.26em;
     text-transform: uppercase;
     font-weight: 700;
