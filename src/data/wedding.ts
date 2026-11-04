@@ -82,13 +82,13 @@ export interface WeddingConfig {
 }
 
 export const wedding: WeddingConfig = {
-  siteTitle: 'Pooja & Govind — Wedding Reception Invitation',
+  siteTitle: 'Govind & Pooja — Wedding Reception Invitation',
 
   couple: {
     groom: {
       firstName: 'Govind',
       fullName: 'Govind Bhat',
-      parents: 'Son of Mr. Sreenivas Bhat & Mrs. Veena Bhat',
+      parents: 'Son of Smt. Veena & Sri. M. R. Sreenivas Bhat',
       family: 'Memana House, Kochi',
     },
     bride: {
@@ -101,13 +101,14 @@ export const wedding: WeddingConfig = {
 
   tagline: 'Together with their families',
 
-  dateISO: '2026-12-09T18:00:00+05:30',
-  endISO: '2026-12-09T22:00:00+05:30',
-  timeLabel: '6:00 PM onwards',
+  // Saturday, December 12, 2026 · 7:00 PM to 9:30 PM IST
+  dateISO: '2026-12-12T19:00:00+05:30',
+  endISO: '2026-12-12T21:30:00+05:30',
+  timeLabel: '7:00 PM to 9:30 PM',
 
   venue: {
-    name: 'Hotel Grand Iris',
-    address: 'NH-766, Sultan Bathery, Wayanad, Kerala',
+    name: 'The Mercy Luxury Business Hotel',
+    address: 'MG Road, Ernakulam',
     photo: '',
     note: 'We would be delighted to have you join us for the celebration.',
   },
@@ -121,9 +122,9 @@ export const wedding: WeddingConfig = {
     'With hearts full of joy and gratitude, we warmly welcome you to celebrate the beginning of our beautiful journey together. Your presence and blessings will make our special day even more meaningful.',
 
   invitationMessage:
-    'We request the pleasure of your presence at our wedding reception, as we celebrate this joyous union together with our families and friends.',
+    'Your presence will make our celebration more special.',
 
-  cardBlessing: '',
+  cardBlessing: '|| Shree Kula Devatha Prasanna ||',
 
   music: {
     src: '/music/audio_bg.mp3',
