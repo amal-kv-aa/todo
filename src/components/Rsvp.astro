@@ -218,6 +218,11 @@ const { groom, bride } = wedding.couple;
     flex-direction: column;
     gap: 16px;
     min-width: 0;
+    /* Any tap inside the form (buttons, inputs, radios, bare padding) registers
+       as a click, never a double-tap-zoom gesture. Pinch-zoom still works, so
+       accessibility isn't affected. */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
   .rsvp-field {
     display: flex;
@@ -247,6 +252,8 @@ const { groom, bride } = wedding.couple;
     cursor: pointer;
     display: block;
     min-width: 0;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
   .attendance-opt > input {
     position: absolute;
@@ -321,6 +328,13 @@ const { groom, bride } = wedding.couple;
     cursor: pointer;
     color: var(--gold-deep);
     transition: background 0.2s ease;
+    /* Kill the grey/blue tap-highlight square iOS and Android draw on <button>
+       press, and tell the browser to treat repeated taps as separate clicks
+       rather than a double-tap-to-zoom gesture. */
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
   }
   .counter-btn:hover { background: var(--gold-pale); }
   .counter-btn:focus-visible {
@@ -391,6 +405,8 @@ const { groom, bride } = wedding.couple;
     font-size: 0.9rem;
     letter-spacing: 0.08em;
     width: 100%;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
   .rsvp-submit[data-busy] {
     cursor: progress;
