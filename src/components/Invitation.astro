@@ -5,6 +5,7 @@ import Ornament from './Ornament.astro';
 import Venue from './Venue.astro';
 import InvitationCard from './InvitationCard.astro';
 import AddToCalendar from './AddToCalendar.astro';
+import Rsvp from './Rsvp.astro';
 
 const { groom, bride } = wedding.couple;
 
@@ -271,6 +272,7 @@ const details: { label: string; value: string }[] = [
   <AddToCalendar />
   <Venue />
   <InvitationCard />
+  <Rsvp />
 
   <footer class="invite-footer">
     <div class="divider"><Ornament type="leaf" /></div>
