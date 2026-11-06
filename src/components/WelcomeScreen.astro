@@ -306,12 +306,13 @@ const { groom, bride } = wedding.couple;
   .ganesha path { fill: var(--gold); }
   .blessing {
     font-family: var(--font-serif);
-    font-weight: 600;
-    font-size: clamp(0.82rem, 2.9vw, 1rem);
-    letter-spacing: 0.2em;
+    font-weight: 800;
+    font-size: clamp(0.68rem, 2.4vw, 0.95rem);
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--gold);
     line-height: 1.4;
+    white-space: nowrap;
   }
 
   /* Family invitation line, between names and pills. Generous top/bottom
@@ -342,7 +343,7 @@ const { groom, bride } = wedding.couple;
     font-weight: 400;
     /* Hero of the cover — generous on larger phones while still fitting
        in a single mobile viewport without scrolling. */
-    font-size: clamp(38px, 11.5vw, 74px);
+    font-size: clamp(44px, 13.5vw, 86px);
     line-height: 1.05;
     letter-spacing: 0;
     color: var(--ink);
