@@ -183,16 +183,14 @@ const { groom, bride } = wedding.couple;
     position: relative;
     width: 100%;
     min-height: 100dvh;
-    /* Minimal padding so content sits closer to the inner frame border;
-       the top gets an extra-tight value now that the music toggle no longer
-       sits above the invocation. */
-    padding: clamp(4px, 1.4vw, 10px) clamp(14px, 4vw, 28px) clamp(12px, 3.2vw, 24px);
+    /* Padding is tuned so content sits INSIDE the double-frame border lines
+       (the frame-inner inset is 28px on >=420px, 20px on smaller screens);
+       otherwise the top row of the invocation visually crosses the frame. */
+    padding: clamp(28px, 6vw, 44px) clamp(32px, 7vw, 48px);
     display: flex;
     flex-direction: column;
-    /* Spread content across the full vertical space so the cover feels
-       taller/fuller rather than clustered in the middle. */
-    justify-content: space-between;
-    gap: clamp(14px, 3vh, 26px);
+    justify-content: center;
+    gap: clamp(10px, 2.4vh, 20px);
     cursor: pointer;
     user-select: none;
     animation: fade-up 0.9s ease both;
@@ -239,18 +237,17 @@ const { groom, bride } = wedding.couple;
     z-index: 3;
     width: 100%;
     max-width: 480px;
-    /* Hug the top of the cover instead of centering vertically — the music
-       toggle used to live at the top-right, and with it gone the content
-       can sit tighter against the top frame. */
-    margin: 0 auto auto;
+    /* Centred inside the padded cover so the composition reads as balanced
+       between the top and bottom frame lines. */
+    margin: auto;
     padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    /* Generous vertical gaps so the glass card, pills, countdown and
-       open button each read as their own section rather than a stack. */
-    gap: clamp(22px, 4.5vh, 36px);
+    /* Tighter rhythm between the glass card, pills, countdown and open
+       button so the whole composition fits well within the frame. */
+    gap: clamp(14px, 3vh, 24px);
   }
 
   /* iOS-style frosted-glass reading card: a thin pane of "liquid glass" that
@@ -264,8 +261,8 @@ const { groom, bride } = wedding.couple;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: clamp(14px, 3vh, 24px);
-    padding: clamp(18px, 4vw, 28px) clamp(14px, 3.5vw, 22px);
+    gap: clamp(10px, 2.2vh, 18px);
+    padding: clamp(14px, 3.2vw, 22px) clamp(12px, 3vw, 18px);
     border-radius: 20px;
     background: rgba(252, 246, 234, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.35);
@@ -327,9 +324,9 @@ const { groom, bride } = wedding.couple;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--ink-mute);
-    line-height: 1.7;
+    line-height: 1.5;
     max-width: 42ch;
-    margin: clamp(14px, 3vh, 26px) auto;
+    margin: clamp(6px, 1.4vh, 14px) auto;
     text-align: center;
   }
 
