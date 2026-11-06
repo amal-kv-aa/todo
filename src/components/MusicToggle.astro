@@ -58,4 +58,9 @@
     .m-label { display: none; }
     .music-toggle { padding: 6px 10px; }
   }
+  /* The welcome cover has its own ambience (autoplayed music + the diya CTA).
+     Keep the toggle out of sight until the invitation is revealed. */
+  body:has(#welcome:not([hidden])) .music-toggle {
+    display: none;
+  }
 </style>

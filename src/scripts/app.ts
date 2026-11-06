@@ -189,28 +189,42 @@ function initPageFlip(onEnterInvitation: () => void) {
     if (!entered) return;
     entered = false;
     window.scrollTo(0, 0);
-    welcome!.hidden = false;
 
     // Reset the diya so it can be re-lit on the next open.
     openBtn?.classList.remove('is-lighting');
 
-    // Replay the arch / lamp / bouquet entrance animations. Toggling
-    // `is-replay` sets animation: none, then removing it on the next frame
-    // lets the browser restart the CSS keyframes from zero.
-    welcome!.classList.add('is-replay');
-    // Force a reflow so the browser flushes the animation-none state.
-    void (welcome as HTMLElement).offsetWidth;
+    // Hide the invitation immediately. The welcome has no opaque background
+    // of its own (the frame image lives in the shared .site-bg layer), so
+    // if we leave the invitation visible under the welcome during the slide
+    // transition its content peeks through and only "disappears" after the
+    // welcome arrives — the glitch where the inner-page content snaps away
+    // late. The site-bg (same frame image) stays behind during the slide,
+    // so there's nothing visually jarring about dropping the invitation now.
+    invitation!.hidden = true;
 
+    // Reveal the welcome section. It still carries `is-flipping` from the
+    // earlier enter(), so it starts off-screen (translateY(-100%), opacity 0).
+    welcome!.hidden = false;
+
+    // Reset the fade-up entrance animation on the cover so its content
+    // doesn't get stuck at opacity 0 on return — some browsers freeze an
+    // animation whose host was `display: none` and don't restart it.
+    const cover = welcome!.querySelector<HTMLElement>('.cover');
+    if (cover) {
+      cover.style.animation = 'none';
+      void cover.offsetWidth;
+      cover.style.animation = '';
+    }
+
+    // Double-rAF: first frame commits the newly-visible off-screen state,
+    // second frame removes `is-flipping` which cleanly triggers the slide-
+    // down transition. Without the second rAF, Chromium/Safari sometimes
+    // snap straight to the end state and skip the transition.
     requestAnimationFrame(() => {
-      welcome!.classList.remove('is-flipping');
-      welcome!.classList.remove('is-replay');
+      requestAnimationFrame(() => {
+        welcome!.classList.remove('is-flipping');
+      });
     });
-
-    const hide = () => {
-      invitation!.hidden = true;
-    };
-    welcome!.addEventListener('transitionend', hide, { once: true });
-    window.setTimeout(hide, prefersReduced ? 700 : 1400);
   }
 
   trigger.addEventListener('click', enter);

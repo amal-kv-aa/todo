@@ -1,11 +1,13 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // High-resolution invitation-card renderer.
 //
-// Draws the full invitation onto an off-screen <canvas> at print-grade
-// resolution and triggers a PNG download. Rendering directly to canvas (rather
-// than screenshotting the DOM) means zero dependencies, crisp output, and the
-// result is independent of the surrounding website UI — exactly the shareable
-// card described in the brief.
+// Draws the invitation onto an off-screen <canvas> at print-grade resolution
+// and triggers a PNG download. The look mirrors the live preview rendered by
+// InvitationCard.astro: a warm cream panel inside a thin charcoal frame, with
+// Great Vibes for the couple's names, Playfair Display for the venue,
+// Cormorant Garamond (italic) for the blessing/date/closing message, and Inter
+// for the small captions. Keeping the two designs in lockstep means the
+// download never surprises the guest — what they saw is what they get.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface CardData {
@@ -26,34 +28,40 @@ export interface CardData {
   fileName: string;
 }
 
+// Mirrors the CSS custom properties the preview reads from (see
+// src/styles/global.css). The on-screen "gold" accent is actually a rich
+// charcoal in this theme, and the card background is a very warm off-white.
 const COLORS = {
-  cream: '#ede1d3',
-  creamTop: '#f6ecdd',
-  gold: '#b0894a',
-  goldSoft: '#c89b50',
-  goldDeep: '#8a6a2f',
-  mutedGold: '#8a6a2f',
-  ink: '#7c5c30',
-  inkSoft: '#6b5433',
+  panel: '#FEFCF7',       // ic-preview-frame background
+  outerCream: '#FFFFFF',  // --cream (outer card)
+  charcoal: '#3B3B3B',    // --gold (headings, names, when)
+  ink: '#141414',         // --ink (venue name)
+  inkMute: '#434343',     // --ink-mute (parents, addr, time, msg)
+  border: 'rgba(60, 60, 60, 0.4)',  // frame border
+  hair: 'rgba(60, 60, 60, 0.5)',    // divider hairlines
 };
 
-// 5:7 portrait, high resolution for sharp sharing.
-const W = 1250;
-const H = 1750;
+// 3:4 portrait matches the preview's aspect-ratio exactly; higher resolution
+// here means the saved PNG is sharp on any share target.
+const W = 1500;
+const H = 2000;
 
-const FONT_DISPLAY = '"Cormorant Garamond", serif';
-const FONT_SCRIPT = '"Great Vibes", cursive';
-const FONT_BODY = '"Montserrat", sans-serif';
+const FONT_DISPLAY = '"Playfair Display", "Cormorant Garamond", serif';
+const FONT_SERIF = '"Cormorant Garamond", "Times New Roman", serif';
+const FONT_SCRIPT = '"Great Vibes", "Pinyon Script", cursive';
+const FONT_BODY = '"Inter", -apple-system, "Segoe UI", sans-serif';
 
 async function ensureFonts(): Promise<void> {
   if (!('fonts' in document)) return;
   const needed = [
-    `600 80px ${FONT_DISPLAY}`,
-    `italic 500 44px ${FONT_DISPLAY}`,
-    `700 60px ${FONT_DISPLAY}`,
-    `400 120px ${FONT_SCRIPT}`,
-    `600 26px ${FONT_BODY}`,
-    `400 26px ${FONT_BODY}`,
+    `italic 500 44px ${FONT_SERIF}`,
+    `600 28px ${FONT_BODY}`,
+    `400 150px ${FONT_SCRIPT}`,
+    `400 100px ${FONT_SCRIPT}`,
+    `400 30px ${FONT_BODY}`,
+    `700 64px ${FONT_SERIF}`,
+    `700 56px ${FONT_DISPLAY}`,
+    `italic 500 36px ${FONT_SERIF}`,
   ];
   try {
     await Promise.all(needed.map((f) => (document as any).fonts.load(f)));
@@ -102,47 +110,6 @@ function drawWrapped(
   return y;
 }
 
-/** A small elegant corner sprig drawn at the given corner via transforms. */
-function drawCorner(ctx: CanvasRenderingContext2D, x: number, y: number, sx: number, sy: number) {
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.scale(sx, sy);
-  ctx.strokeStyle = COLORS.gold;
-  ctx.lineWidth = 2;
-  ctx.lineCap = 'round';
-
-  // Two sweeping lines following the corner.
-  ctx.beginPath();
-  ctx.moveTo(0, 110);
-  ctx.bezierCurveTo(0, 48, 48, 0, 110, 0);
-  ctx.stroke();
-
-  ctx.globalAlpha = 0.65;
-  ctx.lineWidth = 1.3;
-  ctx.beginPath();
-  ctx.moveTo(14, 110);
-  ctx.bezierCurveTo(14, 58, 58, 14, 110, 14);
-  ctx.stroke();
-  ctx.globalAlpha = 1;
-
-  // Little leaf pair + dot at the elbow.
-  ctx.lineWidth = 1.3;
-  ctx.beginPath();
-  ctx.moveTo(40, 40);
-  ctx.quadraticCurveTo(26, 20, 34, 2);
-  ctx.quadraticCurveTo(52, 14, 40, 40);
-  ctx.moveTo(40, 40);
-  ctx.quadraticCurveTo(20, 26, 2, 34);
-  ctx.quadraticCurveTo(14, 52, 40, 40);
-  ctx.stroke();
-
-  ctx.fillStyle = COLORS.gold;
-  ctx.beginPath();
-  ctx.arc(40, 40, 3.2, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.restore();
-}
-
 function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
   ctx.beginPath();
   ctx.moveTo(x + r, y);
@@ -154,110 +121,78 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
 }
 
 function render(ctx: CanvasRenderingContext2D, d: CardData) {
-  // Background
-  const bg = ctx.createRadialGradient(W / 2, 0, 80, W / 2, H * 0.4, H);
-  bg.addColorStop(0, COLORS.creamTop);
-  bg.addColorStop(1, COLORS.cream);
-  ctx.fillStyle = bg;
+  // Outer frame (mirrors the .ic-preview wrapper).
+  ctx.fillStyle = COLORS.outerCream;
   ctx.fillRect(0, 0, W, H);
 
-  // Frame
-  const m = 70;
-  ctx.strokeStyle = COLORS.gold;
-  ctx.lineWidth = 3;
-  roundRect(ctx, m, m, W - m * 2, H - m * 2, 12);
-  ctx.stroke();
-
-  ctx.strokeStyle = COLORS.goldSoft;
-  ctx.lineWidth = 1.5;
-  roundRect(ctx, m + 14, m + 14, W - (m + 14) * 2, H - (m + 14) * 2, 8);
-  ctx.stroke();
-
-  // Corner sprigs
-  const ci = m + 30;
-  drawCorner(ctx, ci, ci, 1, 1);
-  drawCorner(ctx, W - ci, ci, -1, 1);
-  drawCorner(ctx, ci, H - ci, 1, -1);
-  drawCorner(ctx, W - ci, H - ci, -1, -1);
-
-  const maxW = W - 300;
-  let y = 250;
-
-  if (d.blessing) {
-    y = drawWrapped(ctx, d.blessing, y, `italic 500 40px ${FONT_DISPLAY}`, COLORS.mutedGold, 48, maxW);
-    y += 24;
-  } else {
-    y += 20;
-  }
-
-  // Small sprig ornament
-  ctx.save();
-  ctx.strokeStyle = COLORS.gold;
-  ctx.lineWidth = 2;
-  ctx.lineCap = 'round';
-  const sx = W / 2;
-  ctx.beginPath();
-  ctx.moveTo(sx, y - 6);
-  ctx.lineTo(sx, y + 34);
-  for (let i = 0; i < 3; i++) {
-    const yy = y + 2 + i * 12;
-    ctx.moveTo(sx, yy);
-    ctx.quadraticCurveTo(sx - 18, yy - 2, sx - 26, yy - 12);
-    ctx.moveTo(sx, yy);
-    ctx.quadraticCurveTo(sx + 18, yy - 2, sx + 26, yy - 12);
-  }
-  ctx.stroke();
-  ctx.fillStyle = COLORS.gold;
-  ctx.beginPath();
-  ctx.arc(sx, y - 8, 4, 0, Math.PI * 2);
+  // Inner cream panel — the preview's .ic-preview-frame. 6px padding in the
+  // preview corresponds to a comfortable gap once scaled up to PNG size.
+  const pad = 40;
+  roundRect(ctx, pad, pad, W - pad * 2, H - pad * 2, 48);
+  ctx.fillStyle = COLORS.panel;
   ctx.fill();
-  ctx.restore();
-  y += 74;
 
-  y = drawWrapped(ctx, d.eyebrow.toUpperCase(), y, `600 26px ${FONT_BODY}`, COLORS.inkSoft, 36, maxW - 60, 3);
-  y += 40;
-
-  y = drawWrapped(ctx, d.groom, y, `600 76px ${FONT_DISPLAY}`, COLORS.ink, 82, maxW);
-  y += 6;
-  y = drawWrapped(ctx, d.groomParents, y, `400 26px ${FONT_BODY}`, COLORS.inkSoft, 34, maxW);
-  y += 18;
-
-  drawWrapped(ctx, '&', y + 40, `400 110px ${FONT_SCRIPT}`, COLORS.goldDeep, 110, maxW);
-  y += 96;
-
-  y = drawWrapped(ctx, d.bride, y, `600 76px ${FONT_DISPLAY}`, COLORS.ink, 82, maxW);
-  y += 6;
-  y = drawWrapped(ctx, d.brideParents, y, `400 26px ${FONT_BODY}`, COLORS.inkSoft, 34, maxW);
-  y += 40;
-
-  // Divider
-  ctx.strokeStyle = COLORS.goldSoft;
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(W / 2 - 150, y);
-  ctx.lineTo(W / 2 - 24, y);
-  ctx.moveTo(W / 2 + 24, y);
-  ctx.lineTo(W / 2 + 150, y);
+  // Thin charcoal border around the whole card, matching
+  // `border: 2px solid rgba(60,60,60,0.4)` from the preview.
+  ctx.strokeStyle = COLORS.border;
+  ctx.lineWidth = 6;
+  roundRect(ctx, 16, 16, W - 32, H - 32, 64);
   ctx.stroke();
-  ctx.fillStyle = COLORS.gold;
-  ctx.beginPath();
-  ctx.arc(W / 2, y, 4, 0, Math.PI * 2);
-  ctx.fill();
-  y += 54;
 
-  y = drawWrapped(ctx, d.weekday.toUpperCase(), y, `600 26px ${FONT_BODY}`, COLORS.mutedGold, 34, maxW, 5);
-  y += 12;
-  y = drawWrapped(ctx, `${d.monthLong} ${d.day}, ${d.year}`, y, `700 56px ${FONT_DISPLAY}`, COLORS.goldDeep, 60, maxW);
-  y += 6;
-  y = drawWrapped(ctx, d.time, y, `400 30px ${FONT_BODY}`, COLORS.inkSoft, 38, maxW);
-  y += 44;
+  const maxW = W - 220;
 
-  y = drawWrapped(ctx, d.venueName, y, `600 40px ${FONT_DISPLAY}`, COLORS.ink, 46, maxW);
-  y += 4;
-  y = drawWrapped(ctx, d.venueAddress, y, `400 26px ${FONT_BODY}`, COLORS.inkSoft, 34, maxW - 40);
-  y += 40;
+  // Vertically centre the composition. We know each block's height ahead
+  // of time, so sum them up and start from the middle. This matches the
+  // preview's `justify-content: center` layout.
+  const blocks: Array<() => number> = [];
+  let totalH = 0;
 
-  drawWrapped(ctx, d.message, y, `italic 500 34px ${FONT_DISPLAY}`, COLORS.inkSoft, 44, maxW - 20);
+  const addBlock = (h: number, draw: (y: number) => void) => {
+    const start = totalH;
+    blocks.push(() => start + h);
+    (blocks[blocks.length - 1] as any).draw = draw;
+    (blocks[blocks.length - 1] as any).h = h;
+    totalH += h;
+    return start;
+  };
+
+  if (d.blessing) addBlock(70, (y) => drawWrapped(ctx, d.blessing, y + 48, `italic 500 44px ${FONT_SERIF}`, COLORS.charcoal, 52, maxW));
+  addBlock(100, (y) => drawWrapped(ctx, d.eyebrow.toUpperCase(), y + 32, `600 28px ${FONT_BODY}`, COLORS.inkMute, 40, maxW - 40, 3));
+  // Great Vibes at 150px has long descenders — the block is sized so the
+  // tail of letters like "g"/"y" clears the parents line below rather than
+  // kissing it.
+  addBlock(230, (y) => drawWrapped(ctx, d.groom, y + 150, `400 150px ${FONT_SCRIPT}`, COLORS.charcoal, 150, maxW));
+  addBlock(90, (y) => drawWrapped(ctx, d.groomParents, y + 40, `400 30px ${FONT_BODY}`, COLORS.inkMute, 40, maxW));
+  addBlock(140, (y) => drawWrapped(ctx, '&', y + 100, `400 110px ${FONT_SCRIPT}`, COLORS.charcoal, 110, maxW));
+  addBlock(230, (y) => drawWrapped(ctx, d.bride, y + 150, `400 150px ${FONT_SCRIPT}`, COLORS.charcoal, 150, maxW));
+  addBlock(90, (y) => drawWrapped(ctx, d.brideParents, y + 40, `400 30px ${FONT_BODY}`, COLORS.inkMute, 40, maxW));
+  // Divider: hr ✦ hr
+  addBlock(80, (y) => {
+    const cy = y + 40;
+    ctx.strokeStyle = COLORS.hair;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(W / 2 - 180, cy); ctx.lineTo(W / 2 - 34, cy);
+    ctx.moveTo(W / 2 + 34, cy);  ctx.lineTo(W / 2 + 180, cy);
+    ctx.stroke();
+    ctx.fillStyle = COLORS.charcoal;
+    ctx.font = `400 32px ${FONT_SERIF}`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('✦', W / 2, cy);
+  });
+  addBlock(90, (y) => drawWrapped(ctx, `${d.weekday}, ${d.monthLong} ${d.day}, ${d.year}`, y + 60, `700 56px ${FONT_SERIF}`, COLORS.charcoal, 66, maxW));
+  addBlock(50, (y) => drawWrapped(ctx, d.time, y + 34, `400 32px ${FONT_BODY}`, COLORS.inkMute, 40, maxW));
+  addBlock(90, (y) => drawWrapped(ctx, d.venueName, y + 60, `700 50px ${FONT_DISPLAY}`, COLORS.ink, 58, maxW));
+  addBlock(70, (y) => drawWrapped(ctx, d.venueAddress, y + 32, `400 30px ${FONT_BODY}`, COLORS.inkMute, 38, maxW - 40));
+  addBlock(100, (y) => drawWrapped(ctx, d.message, y + 44, `italic 500 36px ${FONT_SERIF}`, COLORS.inkMute, 46, maxW - 40));
+
+  const startY = (H - totalH) / 2;
+  let cursor = startY;
+  for (const b of blocks) {
+    (b as any).draw(cursor);
+    cursor += (b as any).h;
+  }
 }
 
 function triggerDownload(canvas: HTMLCanvasElement, fileName: string): Promise<void> {

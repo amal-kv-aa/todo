@@ -59,9 +59,9 @@ const { minimal = false } = Astro.props;
     align-items: center;
   }
   .cd-box {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,23 +74,23 @@ const { minimal = false } = Astro.props;
                 0 4px 14px rgba(90, 66, 49, 0.08);
   }
   @media (min-width: 420px) {
-    .cd-box { width: 62px; height: 62px; }
+    .cd-box { width: 70px; height: 70px; }
   }
 
   .cd-val {
     font-family: var(--font-serif);
     font-weight: 700;
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     line-height: 1;
     color: var(--ink);
     letter-spacing: -0.02em;
     font-variant-numeric: tabular-nums;
   }
   @media (min-width: 420px) {
-    .cd-val { font-size: 1.8rem; }
+    .cd-val { font-size: 2rem; }
   }
   .cd-lab {
-    font-size: 10px;
+    font-size: 11px;
     color: var(--ink-label);
     letter-spacing: 0.14em;
     text-transform: uppercase;
