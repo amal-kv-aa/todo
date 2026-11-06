@@ -40,7 +40,37 @@ const { title = wedding.siteTitle, description = wedding.welcomeMessage } = Astr
     />
   </head>
   <body>
+    <!-- Dedicated fixed background layer. Keeps the frame-bg pinned behind
+         everything — avoids iOS Safari's unreliable `background-attachment:
+         fixed` so the inner invitation scrolls its content while the image
+         stays put, just like the welcome cover. -->
+    <div class="site-bg" aria-hidden="true"></div>
+
+    <!-- App loader: holds the UI until frame-bg.png is decoded, so guests
+         never see a flash of unstyled content while the painted backdrop
+         is still downloading. Dismissed by the inline script below. -->
+    <div class="app-loader" id="app-loader" aria-hidden="true">
+      <div class="app-loader-ring"></div>
+      <p class="app-loader-text">Preparing your invitation…</p>
+    </div>
+
     <slot />
+
+    <script is:inline>
+      (() => {
+        const loader = document.getElementById('app-loader');
+        if (!loader) return;
+        const hide = () => loader.classList.add('is-hidden');
+        const img = new Image();
+        img.decoding = 'async';
+        img.src = '/bg/frame-bg.png';
+        if (img.complete) { hide(); return; }
+        img.addEventListener('load', hide, { once: true });
+        img.addEventListener('error', hide, { once: true });
+        // Safety: never hold the UI more than 4s even if the image stalls.
+        setTimeout(hide, 4000);
+      })();
+    </script>
   </body>
 </html>
 

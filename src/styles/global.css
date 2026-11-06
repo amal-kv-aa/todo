@@ -62,21 +62,74 @@ body {
   min-height: 100svh;
   font-family: var(--font-body);
   color: var(--ink);
-  background-color: var(--cream);
-  /* Decorative temple-arch frame with floral vines and lotuses; sized with
-     `cover` so the image fills the whole viewport and content sits inside
-     the frame. Fixed so the frame stays put while content scrolls through. */
-  background-image: url('/bg/frame-bg.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  /* Transparent so the fixed .site-bg layer (z-index -1) stays visible —
+     the <html> cream fill remains as the ultimate fallback. */
+  background-color: transparent;
   padding: env(safe-area-inset-top) env(safe-area-inset-right)
            env(safe-area-inset-bottom) env(safe-area-inset-left);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   line-height: 1.55;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Dedicated fixed background layer — rendered by Layout.astro. Pinned to
+   the viewport so the frame-bg image stays put while the invitation scrolls
+   its content, side-stepping iOS Safari's unreliable
+   `background-attachment: fixed` on the body. */
+.site-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--cream);
+  background-image: url('/bg/frame-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+/* ── App loader ────────────────────────────────────────────────────────
+   Covers the whole viewport in cream until frame-bg.png is decoded, so
+   guests see a quiet brand-matching loading state rather than naked
+   text while the painted backdrop downloads. */
+.app-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background: var(--cream);
+  transition: opacity 0.5s ease, visibility 0s linear 0.5s;
+}
+.app-loader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.app-loader-ring {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid rgba(60, 60, 60, 0.15);
+  border-top-color: var(--gold);
+  animation: app-loader-spin 0.9s linear infinite;
+}
+.app-loader-text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--ink-mute);
+  letter-spacing: 0.04em;
+}
+@keyframes app-loader-spin {
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-loader-ring { animation-duration: 2.4s; }
 }
 
 ::selection {

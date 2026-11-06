@@ -59,9 +59,9 @@ const { minimal = false } = Astro.props;
     align-items: center;
   }
   .cd-box {
-    width: 64px;
-    height: 64px;
-    border-radius: 16px;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,37 +74,37 @@ const { minimal = false } = Astro.props;
                 0 4px 14px rgba(90, 66, 49, 0.08);
   }
   @media (min-width: 420px) {
-    .cd-box { width: 72px; height: 72px; }
+    .cd-box { width: 62px; height: 62px; }
   }
 
   .cd-val {
     font-family: var(--font-serif);
     font-weight: 700;
-    font-size: 1.85rem;
+    font-size: 1.5rem;
     line-height: 1;
     color: var(--ink);
     letter-spacing: -0.02em;
     font-variant-numeric: tabular-nums;
   }
   @media (min-width: 420px) {
-    .cd-val { font-size: 2.1rem; }
+    .cd-val { font-size: 1.8rem; }
   }
   .cd-lab {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--ink-label);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     font-weight: 600;
-    margin-top: 7px;
+    margin-top: 5px;
   }
   @media (min-width: 420px) {
-    .cd-lab { font-size: 12px; }
+    .cd-lab { font-size: 11px; }
   }
   .cd-sep {
     color: rgba(60, 60, 60, 0.6);
     font-family: var(--font-serif);
-    font-size: 1.1rem;
-    margin-bottom: 20px;
+    font-size: 1rem;
+    margin-bottom: 16px;
     user-select: none;
   }
 
