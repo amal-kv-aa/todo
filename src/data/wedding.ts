@@ -100,7 +100,7 @@ export const wedding: WeddingConfig = {
     },
     bride: {
       firstName: 'Pooja',
-      fullName: 'Chi. Sau. Pooja',
+      fullName: 'Chi. Sou. Pooja',
       parents: 'D/o Smt. Beena Jose & Sri. P.U. Jose',
       family: 'Parekkudiyil House, Moolankave P.O, Sulthan Bathery, Wayanad, Kerala',
     },
