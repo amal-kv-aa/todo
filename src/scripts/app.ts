@@ -4,8 +4,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { createMusicController } from './music';
-import { initCardPhysics } from './cardPhysics';
-import { initLampGyro } from './lampGyro';
 
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -98,12 +96,38 @@ function initMusic(runtime: Runtime) {
     }
   });
 
+  // Attempt autoplay on page load. Mobile/Safari will usually reject this
+  // without a user gesture — if so, arm a one-shot listener that starts the
+  // music on the first tap/key/scroll anywhere on the page.
+  function armFirstInteractionFallback() {
+    const start = () => {
+      if (getPref() === 'off') return;
+      controller.play().then(() => {
+        reflect(controller.isPlaying());
+        if (controller.isPlaying()) setPref('on');
+      });
+    };
+    const opts = { once: true, passive: true } as AddEventListenerOptions;
+    window.addEventListener('pointerdown', start, opts);
+    window.addEventListener('keydown', start, opts);
+    window.addEventListener('touchstart', start, opts);
+  }
+
+  if (getPref() !== 'off') {
+    controller.play().then(() => {
+      reflect(controller.isPlaying());
+      if (controller.isPlaying()) setPref('on');
+      else armFirstInteractionFallback();
+    });
+  }
+
   return {
     // NOT async — must stay synchronous so audio.play() lands inside the
     // user-gesture call stack from the tap-to-open handler. Returning the
     // play promise lets the caller observe completion without breaking that.
     onEnter(): Promise<void> {
-      toggle.hidden = false;
+      // Already playing (from autoplay or earlier interaction) — nothing to do.
+      if (controller.isPlaying()) return Promise.resolve();
       // Respect a previously chosen "off" preference.
       if (getPref() === 'off') {
         reflect(false);
@@ -125,7 +149,11 @@ function initPageFlip(onEnterInvitation: () => void) {
   const trigger = document.querySelector<HTMLElement>('[data-enter]');
   const invitation = document.getElementById('invitation');
   const backBtn = document.querySelector<HTMLButtonElement>('[data-back-btn]');
+  const openBtn = document.querySelector<HTMLElement>('[data-open-btn]');
   if (!welcome || !trigger || !invitation) return;
+
+  // Play the diya lighting animation, then flip. Shorter when reduced-motion.
+  const LIGHT_DELAY = prefersReduced ? 120 : 850;
 
   let entered = false;
 
@@ -133,25 +161,28 @@ function initPageFlip(onEnterInvitation: () => void) {
     if (entered) return;
     entered = true;
 
-    // Reveal the invitation behind the welcome page first, so the flip uncovers
-    // real content rather than a blank screen.
-    invitation!.hidden = false;
-    window.scrollTo(0, 0);
-    revealWithin(invitation!);
-    requestAnimationFrame(() => revealWithin(invitation!));
-
-    // Start music on this user gesture.
+    // Fire music on this user gesture (must stay synchronous).
     onEnterInvitation();
 
-    // Turn the welcome page away like flipping a page.
-    requestAnimationFrame(() => welcome!.classList.add('is-flipping'));
+    // Light the diya first — class triggers the halo / flame / sparks keyframes.
+    openBtn?.classList.add('is-lighting');
 
-    const remove = () => {
-      welcome!.hidden = true;
-    };
-    welcome!.addEventListener('transitionend', remove, { once: true });
-    // Safety fallback in case transitionend doesn't fire.
-    window.setTimeout(remove, prefersReduced ? 700 : 1400);
+    // After the ignition plays, uncover the invitation and flip the page.
+    window.setTimeout(() => {
+      invitation!.hidden = false;
+      window.scrollTo(0, 0);
+      revealWithin(invitation!);
+      requestAnimationFrame(() => revealWithin(invitation!));
+
+      requestAnimationFrame(() => welcome!.classList.add('is-flipping'));
+
+      const remove = () => {
+        welcome!.hidden = true;
+      };
+      welcome!.addEventListener('transitionend', remove, { once: true });
+      // Safety fallback in case transitionend doesn't fire.
+      window.setTimeout(remove, prefersReduced ? 700 : 1400);
+    }, LIGHT_DELAY);
   }
 
   function back() {
@@ -159,6 +190,9 @@ function initPageFlip(onEnterInvitation: () => void) {
     entered = false;
     window.scrollTo(0, 0);
     welcome!.hidden = false;
+
+    // Reset the diya so it can be re-lit on the next open.
+    openBtn?.classList.remove('is-lighting');
 
     // Replay the arch / lamp / bouquet entrance animations. Toggling
     // `is-replay` sets animation: none, then removing it on the next frame
@@ -195,8 +229,6 @@ function boot() {
   initReveals();
   const music = initMusic(runtime);
   initPageFlip(() => music.onEnter());
-  initCardPhysics();
-  initLampGyro();
 }
 
 if (document.readyState === 'loading') {

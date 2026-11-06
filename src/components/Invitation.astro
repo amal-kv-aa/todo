@@ -1,662 +1,435 @@
 ---
 import { wedding } from '../data/wedding';
-import { weddingDate } from '../data/format';
-import Ornament from './Ornament.astro';
-import Venue from './Venue.astro';
-import InvitationCard from './InvitationCard.astro';
+import { weddingDate, mapsDirectionsUrl } from '../data/format';
 import AddToCalendar from './AddToCalendar.astro';
+import InvitationCard from './InvitationCard.astro';
 import Rsvp from './Rsvp.astro';
 
 const { groom, bride } = wedding.couple;
-
-const details: { label: string; value: string }[] = [
-  { label: 'Date', value: `${weddingDate.monthLong} ${weddingDate.day}, ${weddingDate.year}` },
-  { label: 'Day', value: weddingDate.weekday },
-  { label: 'Time', value: weddingDate.time },
-  { label: 'Venue', value: wedding.venue.name },
-  { label: 'Address', value: wedding.venue.address },
-  ...(wedding.extraDetails ?? []),
-];
+const mapsUrl = mapsDirectionsUrl();
 ---
 
-<section class="invitation" id="invitation" aria-label="Wedding invitation" hidden>
-  <button class="back-btn" data-back-btn type="button" aria-label="Go back to welcome page">
-    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
-      <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <span>Back</span>
-  </button>
-
-  <!-- Flower bouquets with hanging lamps at the top corners.
-       The right side is the same artwork mirrored via scaleX(-1) in CSS. -->
-  <svg class="bouquet bouquet-left" viewBox="0 0 170 230" aria-hidden="true" preserveAspectRatio="xMinYMin meet">
-    <defs>
-      <linearGradient id="bq-brass" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#e2b872"/>
-        <stop offset="45%" stop-color="#b0894a"/>
-        <stop offset="100%" stop-color="#6a4e22"/>
-      </linearGradient>
-      <linearGradient id="bq-brass-side" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stop-color="#8a6a2f"/>
-        <stop offset="50%" stop-color="#dfb66d"/>
-        <stop offset="100%" stop-color="#8a6a2f"/>
-      </linearGradient>
-      <radialGradient id="bq-flame" cx="50%" cy="55%" r="55%">
-        <stop offset="0%" stop-color="#fff5d8"/>
-        <stop offset="40%" stop-color="#f4c870"/>
-        <stop offset="100%" stop-color="#c88a2a" stop-opacity="0"/>
-      </radialGradient>
-      <radialGradient id="bq-halo" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#ffdfa0" stop-opacity="0.75"/>
-        <stop offset="60%" stop-color="#e8a95a" stop-opacity="0.18"/>
-        <stop offset="100%" stop-color="#e8a95a" stop-opacity="0"/>
-      </radialGradient>
-
-      <symbol id="bq-marigold" viewBox="-20 -20 40 40">
-        <g>
-          <circle r="10" fill="#b56a1f"/>
-          <g fill="#d99a4a">
-            <circle cx="0" cy="-10" r="5"/><circle cx="7" cy="-7" r="5"/>
-            <circle cx="10" cy="0" r="5"/><circle cx="7" cy="7" r="5"/>
-            <circle cx="0" cy="10" r="5"/><circle cx="-7" cy="7" r="5"/>
-            <circle cx="-10" cy="0" r="5"/><circle cx="-7" cy="-7" r="5"/>
-          </g>
-          <g fill="#e8b566">
-            <circle cx="0" cy="-5" r="3"/><circle cx="4" cy="-3" r="3"/>
-            <circle cx="5" cy="2" r="3"/><circle cx="0" cy="5" r="3"/>
-            <circle cx="-5" cy="2" r="3"/><circle cx="-4" cy="-3" r="3"/>
-          </g>
-          <circle r="2" fill="#efc98a"/>
-        </g>
-      </symbol>
-      <!-- 5-petal jasmine-style ivory flower (replaces the earlier rose).
-           This single symbol is picked up by both bouquets and the hero
-           names background via their <use href="#bq-rose"> references. -->
-      <symbol id="bq-rose" viewBox="-16 -16 32 32">
-        <g>
-          <g fill="#f3ead6" stroke="#d9ccae" stroke-width="0.5">
-            <path d="M 0 -3 Q -6 -10, 0 -14 Q 6 -10, 0 -3 Z"/>
-            <path d="M 0 -3 Q -6 -10, 0 -14 Q 6 -10, 0 -3 Z" transform="rotate(72)"/>
-            <path d="M 0 -3 Q -6 -10, 0 -14 Q 6 -10, 0 -3 Z" transform="rotate(144)"/>
-            <path d="M 0 -3 Q -6 -10, 0 -14 Q 6 -10, 0 -3 Z" transform="rotate(216)"/>
-            <path d="M 0 -3 Q -6 -10, 0 -14 Q 6 -10, 0 -3 Z" transform="rotate(288)"/>
-          </g>
-          <g fill="#e3d6b4">
-            <path d="M 0 -3 Q -3 -8, 0 -10 Q 3 -8, 0 -3 Z"/>
-            <path d="M 0 -3 Q -3 -8, 0 -10 Q 3 -8, 0 -3 Z" transform="rotate(72)"/>
-            <path d="M 0 -3 Q -3 -8, 0 -10 Q 3 -8, 0 -3 Z" transform="rotate(144)"/>
-            <path d="M 0 -3 Q -3 -8, 0 -10 Q 3 -8, 0 -3 Z" transform="rotate(216)"/>
-            <path d="M 0 -3 Q -3 -8, 0 -10 Q 3 -8, 0 -3 Z" transform="rotate(288)"/>
-          </g>
-          <circle r="3" fill="#dfb66d"/>
-          <circle r="1.3" fill="#8a4e0c"/>
-        </g>
-      </symbol>
-      <symbol id="bq-bud" viewBox="-8 -8 16 16">
-        <circle r="5" fill="#c47a2a"/><circle r="2.5" fill="#e9b568"/>
-      </symbol>
-      <symbol id="bq-leaf" viewBox="-14 -6 28 12">
-        <path d="M-14 0 Q -8 -8 0 -5 Q 8 -2 14 0 Q 8 2 0 5 Q -8 8 -14 0 Z" fill="#7a8a65"/>
-        <path d="M-12 0 L 12 0" stroke="#5f6e4f" stroke-width="0.6" fill="none"/>
-      </symbol>
-    </defs>
-
-    <!-- Leaves (fade in first, soft and quiet) -->
-    <g class="bq-leaves">
-      <use href="#bq-leaf" x="12"  y="80"  width="38" height="16" transform="rotate(-55 31 88)"/>
-      <use href="#bq-leaf" x="60"  y="95"  width="40" height="17" transform="rotate(-20 80 103)"/>
-      <use href="#bq-leaf" x="88"  y="54"  width="34" height="14" transform="rotate(35 105 61)"/>
-      <use href="#bq-leaf" x="42"  y="110" width="34" height="14" transform="rotate(-80 59 117)"/>
-    </g>
-
-    <!-- Flowers blooming in staggered -->
-    <g class="bq-flowers">
-      <use class="bq-bloom bq-b1" href="#bq-marigold" x="4"  y="4"  width="46" height="46"/>
-      <use class="bq-bloom bq-b2" href="#bq-rose"     x="46" y="30" width="32" height="32"/>
-      <use class="bq-bloom bq-b3" href="#bq-marigold" x="14" y="46" width="40" height="40"/>
-      <use class="bq-bloom bq-b4" href="#bq-bud"      x="76" y="14" width="18" height="18"/>
-      <use class="bq-bloom bq-b5" href="#bq-rose"     x="74" y="56" width="30" height="30"/>
-      <use class="bq-bloom bq-b6" href="#bq-marigold" x="86" y="28" width="36" height="36"/>
-    </g>
-
-    <!-- Hanging lamp dropping from under the cluster -->
-    <g class="bq-lamp" transform="translate(72 92)">
-      <g class="bq-pivot">
-        <path class="bq-cord" d="M 0 0 L 0 70" stroke="#8a6a2f" stroke-width="1" fill="none" stroke-linecap="round"/>
-        <g transform="translate(0 70)">
-          <g class="bq-body">
-            <circle class="bq-halo" r="28" fill="url(#bq-halo)"/>
-            <path d="M-9 -7 L 9 -7 L 7 -4 L -7 -4 Z" fill="url(#bq-brass-side)"/>
-            <path d="M-11 -4 Q 0 22 11 -4 Z" fill="url(#bq-brass)" stroke="#5a4218" stroke-width="0.6"/>
-            <ellipse cx="0" cy="-4" rx="11" ry="2.4" fill="#e2b872" stroke="#5a4218" stroke-width="0.5"/>
-            <circle cx="0" cy="4" r="3.6" fill="url(#bq-flame)"/>
-          </g>
-        </g>
-      </g>
-    </g>
-  </svg>
-
-  <!-- Right bouquet is the same artwork, mirrored horizontally via CSS -->
-  <svg class="bouquet bouquet-right" viewBox="0 0 170 230" aria-hidden="true" preserveAspectRatio="xMinYMin meet">
-    <g class="bq-leaves">
-      <use href="#bq-leaf" x="12"  y="80"  width="38" height="16" transform="rotate(-55 31 88)"/>
-      <use href="#bq-leaf" x="60"  y="95"  width="40" height="17" transform="rotate(-20 80 103)"/>
-      <use href="#bq-leaf" x="88"  y="54"  width="34" height="14" transform="rotate(35 105 61)"/>
-      <use href="#bq-leaf" x="42"  y="110" width="34" height="14" transform="rotate(-80 59 117)"/>
-    </g>
-    <g class="bq-flowers">
-      <use class="bq-bloom bq-b1" href="#bq-marigold" x="4"  y="4"  width="46" height="46"/>
-      <use class="bq-bloom bq-b2" href="#bq-rose"     x="46" y="30" width="32" height="32"/>
-      <use class="bq-bloom bq-b3" href="#bq-marigold" x="14" y="46" width="40" height="40"/>
-      <use class="bq-bloom bq-b4" href="#bq-bud"      x="76" y="14" width="18" height="18"/>
-      <use class="bq-bloom bq-b5" href="#bq-rose"     x="74" y="56" width="30" height="30"/>
-      <use class="bq-bloom bq-b6" href="#bq-marigold" x="86" y="28" width="36" height="36"/>
-    </g>
-    <g class="bq-lamp" transform="translate(72 92)">
-      <g class="bq-pivot">
-        <path class="bq-cord" d="M 0 0 L 0 70" stroke="#8a6a2f" stroke-width="1" fill="none" stroke-linecap="round"/>
-        <g transform="translate(0 70)">
-          <g class="bq-body">
-            <circle class="bq-halo" r="28" fill="url(#bq-halo)"/>
-            <path d="M-9 -7 L 9 -7 L 7 -4 L -7 -4 Z" fill="url(#bq-brass-side)"/>
-            <path d="M-11 -4 Q 0 22 11 -4 Z" fill="url(#bq-brass)" stroke="#5a4218" stroke-width="0.6"/>
-            <ellipse cx="0" cy="-4" rx="11" ry="2.4" fill="#e2b872" stroke="#5a4218" stroke-width="0.5"/>
-            <circle cx="0" cy="4" r="3.6" fill="url(#bq-flame)"/>
-          </g>
-        </g>
-      </g>
-    </g>
-  </svg>
-
-  <!-- Welcome message -->
-  <div class="hero">
-    <div class="container">
-      <p class="eyebrow reveal">Welcome, dear guest</p>
-
-      <div class="names-stage reveal">
-        <!-- Floral background framing the names. These `<use>` elements
-             reference the symbols already defined in the top-left bouquet
-             SVG (#bq-marigold, #bq-rose, #bq-bud, #bq-leaf) — browsers
-             resolve IDs document-wide, so no definitions are duplicated. -->
-        <svg class="names-bg" viewBox="0 0 640 240" aria-hidden="true"
-             preserveAspectRatio="xMidYMid slice">
-          <!-- Soft leafy backdrop — faintest layer -->
-          <g class="nb-leaves">
-            <use href="#bq-leaf" x="20"  y="36"  width="68" height="28"
-                 transform="rotate(-25 54 50)"/>
-            <use href="#bq-leaf" x="552" y="36"  width="68" height="28"
-                 transform="rotate(25 586 50)"/>
-            <use href="#bq-leaf" x="110" y="180" width="60" height="25"
-                 transform="rotate(28 140 192)"/>
-            <use href="#bq-leaf" x="470" y="180" width="60" height="25"
-                 transform="rotate(-28 500 192)"/>
-            <use href="#bq-leaf" x="220" y="12"  width="48" height="20"
-                 transform="rotate(-12 244 22)"/>
-            <use href="#bq-leaf" x="372" y="12"  width="48" height="20"
-                 transform="rotate(12 396 22)"/>
-            <use href="#bq-leaf" x="300" y="212" width="40" height="16"
-                 transform="rotate(-6 320 220)"/>
-          </g>
-
-          <!-- Flowers framing the sides — pulled outward so the names
-               themselves remain over the clearest area. -->
-          <g class="nb-flowers">
-            <use class="nb-bloom" href="#bq-marigold" x="22"  y="80"  width="68" height="68"/>
-            <use class="nb-bloom" href="#bq-marigold" x="550" y="80"  width="68" height="68"/>
-            <use class="nb-bloom" href="#bq-rose"     x="94"  y="150" width="46" height="46"/>
-            <use class="nb-bloom" href="#bq-rose"     x="500" y="150" width="46" height="46"/>
-            <use class="nb-bloom" href="#bq-bud"      x="150" y="68"  width="22" height="22"/>
-            <use class="nb-bloom" href="#bq-bud"      x="468" y="68"  width="22" height="22"/>
-            <use class="nb-bloom" href="#bq-bud"      x="298" y="196" width="20" height="20"/>
-            <use class="nb-bloom" href="#bq-bud"      x="322" y="196" width="20" height="20"/>
-          </g>
-        </svg>
-
-        <h2 class="hero-names">
-          <span>{groom.firstName}</span>
-          <span class="amp script">&amp;</span>
-          <span>{bride.firstName}</span>
-        </h2>
-      </div>
-
-      <div class="divider reveal"><Ornament type="flourish" /></div>
-      <p class="welcome-message reveal">{wedding.welcomeMessage}</p>
-    </div>
+<section class="invitation custom-scrollbar" id="invitation" aria-label="Wedding invitation" hidden>
+  <div class="inv-backbar">
+    <button class="back-btn glass-pill" data-back-btn type="button" aria-label="Go back to cover page">
+      ← Cover Page
+    </button>
   </div>
 
-  <!-- Bride & groom details -->
-  <section class="couple" aria-labelledby="couple-heading">
-    <div class="container">
-      <h2 id="couple-heading" class="section-title reveal">The Couple</h2>
-      <div class="divider reveal"><Ornament type="flourish" /></div>
-
-      <div class="couple-grid">
-        <article class="person glass-card reveal">
-          <div class="person-sprig"><Ornament type="monogram-sprig" /></div>
-          <p class="person-role">The Groom</p>
-          <h3 class="person-name">{groom.fullName}</h3>
-          <p class="person-parents">{groom.parents}</p>
-          {groom.family && <p class="person-family">{groom.family}</p>}
-        </article>
-
-        <div class="couple-amp reveal" aria-hidden="true"><span class="script">&amp;</span></div>
-
-        <article class="person glass-card reveal">
-          <div class="person-sprig"><Ornament type="monogram-sprig" /></div>
-          <p class="person-role">The Bride</p>
-          <h3 class="person-name">{bride.fullName}</h3>
-          <p class="person-parents">{bride.parents}</p>
-          {bride.family && <p class="person-family">{bride.family}</p>}
-        </article>
+  <div class="inv-container">
+    <!-- Names header with ✦ divider -->
+    <header class="inv-head glass-pane reveal">
+      <div class="inv-sep">
+        <span class="hr"></span>
+        <span class="star">✦</span>
+        <span class="hr"></span>
       </div>
-    </div>
-  </section>
+      <div class="inv-names">
+        <h1 class="inv-name">{groom.firstName}</h1>
+        <div class="inv-amp-row" aria-hidden="true">
+          <span class="hr-sm"></span>
+          <span class="inv-amp">&amp;</span>
+          <span class="hr-sm"></span>
+        </div>
+        <h1 class="inv-name">{bride.firstName}</h1>
+      </div>
+    </header>
 
-  <!-- Wedding details card -->
-  <section class="details" aria-labelledby="details-heading">
-    <div class="container">
-      <h2 id="details-heading" class="section-title reveal">Wedding Details</h2>
-      <div class="divider reveal"><Ornament type="flourish" /></div>
+    <!-- Groom & Bride card -->
+    <article class="couple-card liquid-glass-gold card-inner-frame reveal">
+      <div class="person">
+        <p class="person-role">Groom</p>
+        <h3 class="person-name">{groom.fullName}</h3>
+        <p class="person-parents">{groom.parents}</p>
+        {groom.family && <p class="person-family">{groom.family}</p>}
+      </div>
 
-      <dl class="details-card glass-card reveal">
-        {details.map((d) => (
-          <div class="detail-row">
-            <dt>{d.label}</dt>
-            <dd>{d.value}</dd>
+      <div class="couple-divider" aria-hidden="true">
+        <span class="hr-sm"></span>
+        <svg viewBox="0 0 24 24" class="heart" fill="currentColor" aria-hidden="true">
+          <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
+        </svg>
+        <span class="hr-sm"></span>
+      </div>
+
+      <div class="person">
+        <p class="person-role">Bride</p>
+        <h3 class="person-name">{bride.fullName}</h3>
+        <p class="person-parents">{bride.parents}</p>
+        {bride.family && <p class="person-family">{bride.family}</p>}
+      </div>
+    </article>
+
+    <!-- Mark Your Calendar -->
+    <AddToCalendar />
+
+    <!-- Wedding Celebrations -->
+    <section class="celebrations reveal" aria-labelledby="celebrations-heading">
+      <div class="cel-title glass-pane">
+        <h3 id="celebrations-heading">Wedding Celebrations</h3>
+        <p>Schedule and venue details for our ceremonies</p>
+      </div>
+
+      <article class="cel-card liquid-glass-gold">
+        <div class="cel-top">
+          <div class="cel-top-info">
+            <span class="cel-badge">Wedding Ceremony</span>
+            <h4 class="cel-venue">{wedding.venue.name}</h4>
+            <p class="cel-addr">{wedding.venue.address}</p>
           </div>
-        ))}
-      </dl>
-    </div>
-  </section>
+          <div class="cel-pin" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+        </div>
 
-  <AddToCalendar />
-  <Venue />
-  <InvitationCard />
-  <Rsvp />
+        <div class="cel-time">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+          </svg>
+          <span>{weddingDate.time} · {weddingDate.weekday} {weddingDate.day} {weddingDate.monthShort} {weddingDate.year}</span>
+        </div>
 
-  <footer class="invite-footer">
-    <div class="divider"><Ornament type="leaf" /></div>
-    <p class="script footer-names shimmer">{groom.firstName} &amp; {bride.firstName}</p>
-    <p class="footer-note">We can't wait to celebrate with you.</p>
-  </footer>
+        <a class="btn-outline-gold cel-maps" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+          </svg>
+          <span>Get Directions (Google Maps)</span>
+        </a>
+      </article>
+
+      {wedding.extraDetails && wedding.extraDetails.length > 0 && (
+        <article class="cel-card liquid-glass-gold cel-extras">
+          <dl class="extras-list">
+            {wedding.extraDetails.map((d) => (
+              <div class="extra-row">
+                <dt>{d.label}</dt>
+                <dd>{d.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </article>
+      )}
+    </section>
+
+    <!-- Invitation Card -->
+    <InvitationCard />
+
+    <!-- RSVP (functionality preserved) -->
+    <Rsvp />
+
+    <!-- Footer -->
+    <footer class="inv-foot glass-pane reveal">
+      {wedding.footerQuote && (
+        <p class="foot-quote">&ldquo;{wedding.footerQuote}&rdquo;</p>
+      )}
+      <div class="foot-sep">
+        <span class="hr"></span>
+        <span class="star">✦</span>
+        <span class="hr"></span>
+      </div>
+      <p class="foot-title">Sharing the Happiness: Friends &amp; Relatives</p>
+      {wedding.footerRegards && <p class="foot-note">{wedding.footerRegards}</p>}
+    </footer>
+  </div>
 </section>
 
 <style>
   .invitation {
     position: relative;
-    animation: fade-up 1s ease both;
-    overflow-x: clip; /* keep the right bouquet from causing horizontal scroll */
-
-    /* ── Scoped palette: sampled from the bouquet SVG ─────────────────────
-       Everything in the invitation inherits from these CSS variables, so a
-       single block retones headings, body copy, labels, dividers and the
-       ampersands to match the marigolds (#b56a1f base, #d99a4a petals) and
-       the brass lamps (#b0894a mid, #8a6a2f deep). */
-    --ink:         #a8541a; /* names + major headings — deep marigold */
-    --ink-soft:    #6b4a26; /* body text — brass-dark, warm brown */
-    --gold:        #b56a1f; /* primary marigold accent */
-    --gold-deep:   #8a3e0c; /* deep terracotta — strongest accent (amp, script) */
-    --gold-soft:   #d99a4a; /* bright marigold petal — hover/soft accents */
-    --muted-gold:  #a8541a; /* labels, eyebrows */
-    --gold-pale:   #e8d7b4; /* hairline dividers on silver bg */
-    --gold-line:   #c6a86a; /* medium brass divider */
+    min-height: 100dvh;
+    padding: 56px 0 24px;
+    animation: fade-up 0.9s ease both;
   }
 
-  /* Back button — floats top-left, above the bouquet artwork. */
+  .inv-backbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    justify-content: flex-start;
+    padding: 12px 20px;
+    pointer-events: none;
+  }
   .back-btn {
-    position: fixed;
-    top: calc(16px + env(safe-area-inset-top));
-    left: calc(16px + env(safe-area-inset-left));
-    z-index: 60;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 16px 10px 12px;
-    border-radius: 999px;
+    pointer-events: auto;
+    appearance: none;
     cursor: pointer;
-    color: var(--gold-deep);
-    background: rgba(255, 253, 248, 0.9);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid var(--gold-line);
-    box-shadow: var(--shadow-sm);
+    padding: 6px 14px;
+    border-radius: 999px;
     font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 0.78rem;
-    letter-spacing: 0.1em;
+    font-size: 11px;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    color: var(--ink-caption);
+    transition: color 0.2s ease, background 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
   }
-  .back-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
-    background: rgba(255, 255, 255, 0.95);
-  }
+  .back-btn:hover { color: var(--ink); background: rgba(255, 255, 255, 0.95); }
   .back-btn:focus-visible {
-    outline: 3px solid var(--gold-soft);
+    outline: 2px solid var(--gold);
     outline-offset: 2px;
   }
-  .back-btn svg {
-    display: block;
-  }
-  @media (max-width: 380px) {
-    .back-btn span { display: none; }
-    .back-btn { padding: 10px 12px; }
-  }
 
-  /* ── Top-corner flower bouquets with hanging lamps ────────────────────── */
-  .bouquet {
-    position: absolute;
-    top: 0;
-    width: clamp(110px, 32vw, 180px);
-    height: auto;
-    pointer-events: none;
-    overflow: visible;
-    z-index: 2;
-  }
-  .bouquet-left  { left: 0; }
-  .bouquet-right {
-    right: 0;
-    /* Mirror the artwork horizontally so one SVG serves both sides. */
-    transform: scaleX(-1);
-    transform-origin: center;
-  }
-
-  /* Make room so the hanging lamps don't crash into the welcome text.
-     Lamp bottom lands roughly at (bouquet-width × 1.14) px from the top of
-     the invitation; this padding keeps a comfortable gap on every size. */
-  .hero {
-    padding: clamp(190px, 25vh, 240px) 0 40px;
-    text-align: center;
-  }
-
-  /* ── Bouquet entrance animations ──────────────────────────────────────────
-     The invitation section is `hidden` until the page-flip reveals it, so
-     the animations only start playing once it becomes visible — no explicit
-     JS trigger is needed. Timings are keyed off t=0 at that moment. */
-  .bq-leaves use {
-    opacity: 0;
-    animation: fade 0.6s ease-out forwards;
-  }
-  .bq-leaves use:nth-child(1) { animation-delay: 0.15s; }
-  .bq-leaves use:nth-child(2) { animation-delay: 0.22s; }
-  .bq-leaves use:nth-child(3) { animation-delay: 0.29s; }
-  .bq-leaves use:nth-child(4) { animation-delay: 0.36s; }
-
-  .bq-bloom {
-    opacity: 0;
-    transform-box: fill-box;
-    transform-origin: center;
-    transform: scale(0.2) rotate(-10deg);
-    animation: bq-bloom 0.75s cubic-bezier(0.2, 0.9, 0.3, 1.4) forwards;
-  }
-  .bq-b1 { animation-delay: 0.25s; }
-  .bq-b2 { animation-delay: 0.35s; }
-  .bq-b3 { animation-delay: 0.45s; }
-  .bq-b4 { animation-delay: 0.55s; }
-  .bq-b5 { animation-delay: 0.65s; }
-  .bq-b6 { animation-delay: 0.75s; }
-
-  .bq-cord {
-    stroke-dasharray: 80;
-    stroke-dashoffset: 80;
-    animation: bq-draw 0.55s cubic-bezier(0.3, 0.6, 0.3, 1) 0.85s forwards;
-  }
-  .bq-body {
-    opacity: 0;
-    transform-origin: 0 0;
-    animation: bq-lamp-drop 0.7s cubic-bezier(0.2, 0.9, 0.35, 1.25) 0.95s forwards;
-  }
-  /* Gentle idle sway on the lamp pivot (not gyro-driven here — these corner
-     lamps live inside a scrollable section, so CSS keyframes keep them
-     cheap and reliable). */
-  .bq-pivot {
-    transform-origin: 0 0;
-    animation: bq-sway 4.4s ease-in-out 1.8s infinite alternate;
-  }
-  .bouquet-right .bq-pivot {
-    animation-duration: 4.0s;
-    animation-delay: 1.95s;
-  }
-  .bq-halo {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: bq-halo-pulse 2.6s ease-in-out 1.9s infinite alternate;
-  }
-
-  @keyframes fade { to { opacity: 1; } }
-  @keyframes bq-bloom {
-    0%   { opacity: 0; transform: scale(0.2) rotate(-10deg); }
-    60%  { opacity: 1; transform: scale(1.08) rotate(2deg); }
-    100% { opacity: 1; transform: scale(1) rotate(0); }
-  }
-  @keyframes bq-draw { to { stroke-dashoffset: 0; } }
-  @keyframes bq-lamp-drop {
-    0%   { opacity: 0; transform: translate(0, -50px) scale(0.85); }
-    65%  { opacity: 1; transform: translate(0, 5px)   scale(1.03); }
-    100% { opacity: 1; transform: translate(0, 0)    scale(1); }
-  }
-  @keyframes bq-sway {
-    0%   { transform: rotate(-2.4deg); }
-    100% { transform: rotate(2.4deg); }
-  }
-  @keyframes bq-halo-pulse {
-    0%   { opacity: 0.75; transform: scale(1); }
-    100% { opacity: 1;    transform: scale(1.08); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .bq-leaves use { opacity: 1; animation: none; }
-    .bq-bloom { opacity: 1; transform: none; animation: none; }
-    .bq-cord { stroke-dashoffset: 0; animation: none; }
-    .bq-body { opacity: 1; animation: none; }
-    .bq-pivot { animation: none; }
-    .bq-halo { animation: none; }
-  }
-  /* The names sit on a floral backdrop; the backdrop is positioned behind
-     the h2 at low opacity so it reads as a decorative frame, not clutter. */
-  .names-stage {
-    position: relative;
-    display: block;
+  .inv-container {
     width: 100%;
-    max-width: 720px;
-    margin: 10px auto 0;
-    padding: clamp(28px, 5vh, 48px) clamp(10px, 3vw, 24px);
-  }
-  .names-bg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    /* Subtle so the names stay the hero. The slice preserveAspectRatio
-       keeps the composition balanced even on narrow phones. */
-    opacity: 0.55;
-  }
-  /* Fade the leaves and flowers in softly after the stage reveals. */
-  .nb-leaves use {
-    opacity: 0;
-    animation: fade 0.9s ease-out forwards;
-    animation-delay: 0.3s;
-  }
-  .nb-leaves use:nth-child(2) { animation-delay: 0.35s; }
-  .nb-leaves use:nth-child(3) { animation-delay: 0.40s; }
-  .nb-leaves use:nth-child(4) { animation-delay: 0.45s; }
-  .nb-leaves use:nth-child(5) { animation-delay: 0.50s; }
-  .nb-leaves use:nth-child(6) { animation-delay: 0.55s; }
-  .nb-leaves use:nth-child(7) { animation-delay: 0.60s; }
-  .nb-bloom {
-    opacity: 0;
-    transform-box: fill-box;
-    transform-origin: center;
-    transform: scale(0.5);
-    animation: nb-bloom-in 0.8s cubic-bezier(0.2, 0.9, 0.3, 1.3) forwards;
-  }
-  .nb-flowers use:nth-child(1) { animation-delay: 0.45s; }
-  .nb-flowers use:nth-child(2) { animation-delay: 0.45s; }
-  .nb-flowers use:nth-child(3) { animation-delay: 0.55s; }
-  .nb-flowers use:nth-child(4) { animation-delay: 0.55s; }
-  .nb-flowers use:nth-child(5) { animation-delay: 0.65s; }
-  .nb-flowers use:nth-child(6) { animation-delay: 0.65s; }
-  .nb-flowers use:nth-child(7) { animation-delay: 0.72s; }
-  .nb-flowers use:nth-child(8) { animation-delay: 0.78s; }
-  @keyframes nb-bloom-in {
-    0%   { opacity: 0; transform: scale(0.4); }
-    100% { opacity: 1; transform: scale(1); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .nb-leaves use, .nb-bloom { opacity: 1; transform: none; animation: none; }
-  }
-
-  .hero-names {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: clamp(10px, 4vw, 24px);
-    font-size: clamp(2.4rem, 11vw, 4.2rem);
-    flex-wrap: wrap;
-    margin: 0;
-    /* Deepened for contrast on the floral backdrop — a strong deep terracotta
-       sampled from the marigold core (#b56a1f) darkened for text legibility. */
-    color: #6e2a06;
-    text-shadow: 0 1px 0 rgba(255, 249, 236, 0.6);
-  }
-  .hero-names .amp {
-    font-size: clamp(2rem, 9vw, 3.4rem);
-    /* Script accent reads as the brightest marigold — contrasts the names. */
-    color: #b56a1f;
-  }
-  .welcome-message {
-    max-width: 680px;
+    max-width: 580px;
     margin: 0 auto;
-    color: var(--ink-soft);
-    font-family: var(--font-display);
-    font-size: clamp(1.6rem, 6.2vw, 2.1rem);
-    font-style: italic;
-    line-height: 1.55;
+    padding: 24px 20px 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
   }
 
-  .section-title {
+  /* Header */
+  .inv-head {
     text-align: center;
-    font-size: clamp(2.3rem, 9vw, 3.4rem);
-    letter-spacing: 0.01em;
+    margin-bottom: 4px;
+    padding: clamp(18px, 4vw, 26px) clamp(16px, 4vw, 22px);
   }
-
-  .couple {
-    padding: 48px 0;
-  }
-  .couple-grid {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
+  .inv-sep {
+    display: inline-flex;
     align-items: center;
-    gap: clamp(16px, 4vw, 40px);
+    gap: 10px;
+    margin-bottom: 12px;
   }
-  .person {
-    text-align: center;
-    border-radius: 20px;
-    padding: 30px 22px;
+  .inv-sep .hr {
+    height: 1px;
+    width: 48px;
+    background: rgba(60, 60, 60, 0.5);
   }
-  .person-sprig {
+  .inv-sep .star { color: var(--gold); font-size: 14px; }
+  .inv-names {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .inv-name {
+    font-family: var(--font-script);
+    font-weight: 400;
+    font-size: clamp(56px, 15vw, 82px);
+    line-height: 1.05;
+    letter-spacing: 0;
     color: var(--gold);
-    width: 50px;
-    margin: 0 auto 10px;
+    padding: 0.04em 0.08em;
   }
-  .person-sprig :global(svg) {
-    width: 100%;
-    height: auto;
+  .inv-amp-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hr-sm { height: 1px; width: 32px; background: var(--gold-wash); display: inline-block; }
+  .inv-amp {
+    font-family: var(--font-script);
+    font-style: normal;
+    font-size: 2rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  /* Couple card */
+  .couple-card {
+    border-radius: 18px;
+    padding: 22px;
+    text-align: center;
   }
   .person-role {
-    font-size: clamp(0.82rem, 2.8vw, 0.95rem);
-    letter-spacing: 0.26em;
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--muted-gold);
-    font-weight: 600;
+    margin-bottom: 4px;
   }
   .person-name {
-    font-size: clamp(1.75rem, 7vw, 2.4rem);
-    margin-top: 10px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 6.5vw, 2rem);
+    color: var(--ink);
     line-height: 1.15;
   }
   .person-parents {
+    font-size: 0.95rem;
     color: var(--ink-soft);
-    font-size: clamp(1rem, 3.4vw, 1.15rem);
-    margin-top: 10px;
+    font-weight: 600;
+    margin-top: 6px;
     line-height: 1.5;
   }
   .person-family {
-    color: var(--muted-gold);
+    font-size: 0.9rem;
+    color: var(--ink-mute);
     font-style: italic;
-    font-family: var(--font-display);
-    font-size: clamp(0.95rem, 3.4vw, 1.1rem);
-    margin-top: 6px;
+    margin-top: 4px;
+    line-height: 1.5;
   }
-  .couple-amp .script {
-    font-size: clamp(2.8rem, 10vw, 3.8rem);
-    color: var(--gold-deep);
+  .couple-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .couple-divider .hr-sm { width: 56px; background: rgba(60, 60, 60, 0.3); }
+  .heart {
+    width: 12px;
+    height: 12px;
+    color: var(--gold);
   }
 
-  .details {
-    padding: 48px 0;
+  /* Celebrations */
+  .celebrations {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
   }
-  .details-card {
-    margin: 0 auto;
-    max-width: 560px;
-    border-radius: 22px;
-    padding: 10px 28px;
+  .cel-title {
+    text-align: center;
+    margin-bottom: 2px;
+    padding: 18px 20px;
   }
-  .detail-row {
+  .cel-title h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.45rem, 5.5vw, 1.7rem);
+    color: var(--ink);
+  }
+  .cel-title p {
+    font-size: 0.85rem;
+    color: var(--ink-label);
+    margin-top: 2px;
+  }
+
+  .cel-card {
+    border-radius: 18px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .cel-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .cel-top-info { flex: 1; min-width: 0; }
+  .cel-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--gold);
+    color: #FCFAF6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .cel-venue {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--ink);
+  }
+  .cel-addr {
+    font-size: 0.88rem;
+    color: var(--ink-mute);
+    margin-top: 2px;
+    line-height: 1.5;
+  }
+  .cel-pin {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--cream);
+    border: 1px solid rgba(60, 60, 60, 0.3);
     display: grid;
-    grid-template-columns: 140px 1fr;
-    gap: 18px;
-    padding: 18px 0;
-    border-bottom: 1px solid var(--gold-pale);
+    place-items: center;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  .cel-pin svg { width: 20px; height: 20px; }
+  .cel-time {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(60, 60, 60, 0.2);
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .cel-time svg { width: 14px; height: 14px; color: var(--gold); flex-shrink: 0; }
+  .cel-maps {
+    width: 100%;
+  }
+  .cel-maps svg { width: 14px; height: 14px; color: var(--gold); }
+
+  .cel-extras { padding: 18px 20px; }
+  .extras-list {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .extra-row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 10px;
     align-items: baseline;
   }
-  .detail-row:last-child {
-    border-bottom: none;
-  }
-  .detail-row dt {
-    font-size: clamp(0.82rem, 2.8vw, 0.95rem);
-    letter-spacing: 0.18em;
+  .extra-row dt {
+    font-size: 12px;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--muted-gold);
-    font-weight: 600;
-    margin: 0;
+    color: var(--gold);
+    font-weight: 700;
   }
-  .detail-row dd {
+  .extra-row dd {
     margin: 0;
+    font-size: 1rem;
     color: var(--ink);
-    font-family: var(--font-display);
-    font-size: clamp(1.2rem, 4.2vw, 1.4rem);
-    line-height: 1.4;
+  }
+  @media (max-width: 420px) {
+    .extra-row { grid-template-columns: 90px 1fr; gap: 8px; }
   }
 
-  .invite-footer {
+  /* Footer */
+  .inv-foot {
     text-align: center;
-    padding: 20px 0 clamp(24px, 6vh, 48px);
-  }
-  .footer-names {
-    font-size: clamp(2.4rem, 9vw, 3rem);
-  }
-  .footer-note {
-    color: var(--ink-soft);
-    font-size: clamp(1rem, 3.4vw, 1.15rem);
+    padding: 24px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     margin-top: 8px;
   }
-
-  @media (max-width: 620px) {
-    .couple-grid {
-      grid-template-columns: 1fr;
-    }
-    .couple-amp {
-      padding: 4px 0;
-      text-align: center;
-    }
-    .detail-row {
-      grid-template-columns: 100px 1fr;
-      gap: 10px;
-    }
+  .foot-quote {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.02rem;
+    color: var(--ink-label);
+    line-height: 1.55;
+  }
+  .foot-sep {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .foot-sep .hr { height: 1px; width: 32px; background: rgba(60, 60, 60, 0.35); }
+  .foot-sep .star { color: var(--gold); font-size: 13px; }
+  .foot-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.04rem;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+  .foot-note {
+    font-size: 0.82rem;
+    color: var(--ink-caption);
   }
 </style>

@@ -23,13 +23,13 @@ import { wedding } from '../data/wedding';
 const { groom, bride } = wedding.couple;
 ---
 
-<section class="rsvp" id="rsvp" aria-label="RSVP">
-  <div class="container">
-    <p class="rsvp-intro reveal">
-      Please let {groom.firstName} &amp; {bride.firstName} know if you&rsquo;ll be joining us.
-    </p>
+<section class="rsvp reveal" id="rsvp" aria-labelledby="rsvp-heading">
+  <div class="rsvp-title">
+    <h3 id="rsvp-heading">RSVP</h3>
+    <p>Please let {groom.firstName} &amp; {bride.firstName} know if you&rsquo;ll be joining us</p>
+  </div>
 
-    <div class="rsvp-card reveal" data-rsvp-card>
+  <div class="rsvp-card liquid-glass-gold" data-rsvp-card>
       <!--
         Netlify Forms contract:
           - `name="rsvp"` is the form id in Netlify's dashboard
@@ -136,7 +136,7 @@ const { groom, bride } = wedding.couple;
         </div>
 
         <div class="rsvp-actions">
-          <button class="btn-gold rsvp-submit" type="submit" data-rsvp-submit>
+          <button class="btn-dark rsvp-submit" type="submit" data-rsvp-submit>
             <span class="submit-spinner" aria-hidden="true"></span>
             <span data-rsvp-submit-label>Submit RSVP</span>
           </button>
@@ -163,41 +163,34 @@ const { groom, bride } = wedding.couple;
           Need to update your reply?
         </button>
       </div>
-    </div>
   </div>
 </section>
 
 <style>
-  /* ──────────────────────────────────────────────────────────────────────────
-     Mobile-first RSVP styles.
-     Everything below is sized for a narrow phone screen; a single
-     `min-width: 560px` block up-sizes a few things on tablet / desktop.
-     ────────────────────────────────────────────────────────────────────────── */
+  /* RSVP — restyled for the cream & gold theme; functionality preserved. */
   .rsvp {
-    padding: 24px 0 36px;
+    margin-bottom: 8px;
   }
-  .rsvp-intro {
-    max-width: 460px;
-    margin: 0 auto 16px;
-    padding: 0 4px;
+  .rsvp-title {
     text-align: center;
-    color: var(--ink-soft);
+    margin-bottom: 12px;
+  }
+  .rsvp-title h3 {
     font-family: var(--font-display);
-    font-size: 1rem;
-    font-style: italic;
-    line-height: 1.5;
+    font-weight: 700;
+    font-size: clamp(1.25rem, 5vw, 1.5rem);
+    color: var(--ink);
+  }
+  .rsvp-title p {
+    font-size: 0.75rem;
+    color: var(--ink-label);
+    margin-top: 2px;
   }
 
   .rsvp-card {
     margin: 0 auto;
-    max-width: 480px;
     border-radius: 18px;
-    padding: 18px 16px;
-    /* Flat surface — no 3D physics. Uses the same cream palette and gold
-       hairline as the other cards so it still belongs visually. */
-    background: linear-gradient(150deg, rgba(236, 234, 229, 0.9), rgba(228, 226, 221, 0.75));
-    border: 1px solid rgba(176, 137, 74, 0.3);
-    box-shadow: var(--shadow-sm);
+    padding: 20px;
   }
 
   /* Honeypot: visually hidden, no scroll impact */
@@ -235,10 +228,11 @@ const { groom, bride } = wedding.couple;
   }
   .rsvp-label {
     font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 0.78rem;
+    font-weight: 700;
+    font-size: 0.75rem;
     letter-spacing: 0.08em;
-    color: var(--ink-soft);
+    color: var(--ink-label);
+    text-transform: uppercase;
   }
 
   /* ── Attendance options: compact pill-row on mobile ───────────────────── */
@@ -268,42 +262,44 @@ const { groom, bride } = wedding.couple;
     gap: 10px;
     padding: 10px 12px;
     border-radius: 12px;
-    border: 1.5px solid var(--gold-line);
-    background: rgba(255, 253, 248, 0.6);
+    border: 1px solid rgba(60, 60, 60, 0.3);
+    background: rgba(255, 255, 255, 0.5);
     color: var(--ink-soft);
     transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   }
   .opt-icon {
     display: inline-flex;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     align-items: center;
     justify-content: center;
-    color: var(--gold-deep);
-    background: var(--gold-pale);
+    color: var(--gold);
+    background: var(--cream);
+    border: 1px solid rgba(60, 60, 60, 0.3);
     flex-shrink: 0;
   }
   .opt-icon svg { display: block; }
   .opt-title {
     font-family: var(--font-display);
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: var(--ink);
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1.2;
   }
   .attendance-opt > input:focus-visible + .opt-card {
-    outline: 2px solid var(--gold-soft);
+    outline: 2px solid var(--gold);
     outline-offset: 2px;
   }
   .attendance-opt > input:checked + .opt-card {
-    border-color: var(--gold-deep);
-    background: #fffdf6;
-    box-shadow: inset 0 0 0 1px var(--gold-deep);
+    border-color: var(--btn-dark);
+    background: #fff;
+    box-shadow: inset 0 0 0 1px var(--btn-dark);
   }
   .attendance-opt > input:checked + .opt-card .opt-icon {
-    background: var(--gold-deep);
-    color: #fff;
+    background: var(--btn-dark);
+    border-color: var(--btn-dark);
+    color: var(--gold-pale);
   }
 
   /* ── Attendees counter ───────────────────────────────────────────────── */
@@ -311,9 +307,9 @@ const { groom, bride } = wedding.couple;
   .counter {
     display: inline-flex;
     align-items: center;
-    border: 1.5px solid var(--gold-line);
+    border: 1px solid rgba(60, 60, 60, 0.4);
     border-radius: 999px;
-    background: rgba(255, 253, 248, 0.8);
+    background: rgba(255, 255, 255, 0.6);
     width: fit-content;
   }
   .counter-btn {
@@ -326,19 +322,16 @@ const { groom, bride } = wedding.couple;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: var(--gold-deep);
+    color: var(--gold);
     transition: background 0.2s ease;
-    /* Kill the grey/blue tap-highlight square iOS and Android draw on <button>
-       press, and tell the browser to treat repeated taps as separate clicks
-       rather than a double-tap-to-zoom gesture. */
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     user-select: none;
     -webkit-user-select: none;
   }
-  .counter-btn:hover { background: var(--gold-pale); }
+  .counter-btn:hover { background: var(--cream); }
   .counter-btn:focus-visible {
-    outline: 2px solid var(--gold-soft);
+    outline: 2px solid var(--gold);
     outline-offset: -2px;
   }
   .counter-btn:disabled {
@@ -350,10 +343,10 @@ const { groom, bride } = wedding.couple;
     text-align: center;
     border: 0;
     background: transparent;
-    font-family: var(--font-display);
+    font-family: var(--font-serif);
     font-size: 1.1rem;
     color: var(--ink);
-    font-weight: 600;
+    font-weight: 700;
     padding: 0;
     -moz-appearance: textfield;
     appearance: textfield;
@@ -368,25 +361,25 @@ const { groom, bride } = wedding.couple;
   /* ── Text input ─────────────────────────────────────────────────────── */
   .rsvp-input {
     appearance: none;
-    border: 1.5px solid var(--gold-line);
-    background: rgba(255, 253, 248, 0.75);
-    border-radius: 10px;
+    border: 1px solid rgba(60, 60, 60, 0.4);
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
     padding: 11px 14px;
     font-family: var(--font-body);
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: var(--ink);
     transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
     min-width: 0;
     width: 100%;
   }
   .rsvp-input::placeholder {
-    color: #b89e74;
+    color: var(--ink-caption);
   }
   .rsvp-input:focus-visible {
     outline: none;
-    border-color: var(--gold-deep);
-    background: #fffdf6;
-    box-shadow: 0 0 0 3px rgba(201, 155, 80, 0.25);
+    border-color: var(--btn-dark);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(60, 60, 60, 0.25);
   }
 
   /* ── Submit button & states ──────────────────────────────────────────── */
@@ -451,23 +444,24 @@ const { groom, bride } = wedding.couple;
     border-radius: 50%;
     align-items: center;
     justify-content: center;
-    background: var(--gold-deep);
-    color: #fff;
+    background: var(--btn-dark);
+    color: var(--gold-pale);
     margin: 0 auto 12px;
-    box-shadow: 0 6px 18px rgba(168, 129, 47, 0.35);
+    box-shadow: 0 6px 18px rgba(90, 66, 49, 0.2);
   }
   .success-title {
     font-family: var(--font-display);
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     color: var(--ink);
     margin: 0 0 6px;
     line-height: 1.2;
+    font-weight: 700;
   }
   .success-sub {
     color: var(--ink-soft);
-    font-family: var(--font-display);
+    font-family: var(--font-serif);
     font-style: italic;
-    font-size: 1rem;
+    font-size: 0.95rem;
     line-height: 1.5;
     max-width: 320px;
     margin: 0 auto;
@@ -481,18 +475,18 @@ const { groom, bride } = wedding.couple;
     cursor: pointer;
     font-family: var(--font-body);
     font-size: 0.78rem;
-    letter-spacing: 0.08em;
-    color: var(--muted-gold);
+    letter-spacing: 0.04em;
+    color: var(--ink-label);
     text-decoration: underline;
     text-underline-offset: 3px;
-    text-decoration-color: var(--gold-line);
+    text-decoration-color: rgba(60, 60, 60, 0.5);
   }
   .success-reset:hover {
-    color: var(--gold-deep);
-    text-decoration-color: var(--gold-deep);
+    color: var(--ink);
+    text-decoration-color: var(--gold);
   }
   .success-reset:focus-visible {
-    outline: 2px solid var(--gold-soft);
+    outline: 2px solid var(--gold);
     outline-offset: 2px;
     border-radius: 4px;
   }
@@ -504,23 +498,11 @@ const { groom, bride } = wedding.couple;
     .rsvp-success { animation: none; }
   }
 
-  /* ── Tablet & up: a little more breathing room ───────────────────────── */
   @media (min-width: 560px) {
-    .rsvp { padding: 36px 0 48px; }
-    .rsvp-intro {
-      font-size: 1.1rem;
-      margin-bottom: 20px;
-    }
-    .rsvp-card { padding: 26px 24px; }
-    .rsvp-form { gap: 18px; }
-    .attendance-options {
-      flex-direction: row;
-    }
+    .rsvp-card { padding: 24px; }
+    .attendance-options { flex-direction: row; }
     .attendance-opt { flex: 1; min-width: 0; }
     .opt-card { padding: 12px 14px; }
-    .opt-title { font-size: 1.05rem; }
-    .success-title { font-size: 1.6rem; }
-    .success-sub { font-size: 1.1rem; }
   }
 </style>
 

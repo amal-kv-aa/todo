@@ -1,75 +1,61 @@
 ---
-// Top-right music control. Behaviour (play/pause, fades, generative fallback)
-// lives in the orchestration script so preference persists across sections.
 ---
 
 <button
-  class="music-toggle"
+  class="music-toggle glass-pill"
   data-music-toggle
   type="button"
   aria-pressed="false"
   aria-label="Play background music"
   title="Music"
-  hidden
 >
-  <!-- Muted icon (shown by default) -->
-  <svg class="ic ic-muted" viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
-    <path d="M4 9v6h4l5 4V5L8 9H4Z" fill="currentColor" />
-    <path d="M17 9l4 6M21 9l-4 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+  <span class="m-label">Music</span>
+  <svg class="m-ico m-ico-muted" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M11 4.702a.7.7 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.7.7 0 0 0 11 19.298z"/>
+    <path d="m16.5 14.5 5-5"/><path d="m16.5 9.5 5 5"/>
   </svg>
-  <!-- Playing icon (shown when active) -->
-  <svg class="ic ic-playing" viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
-    <path d="M4 9v6h4l5 4V5L8 9H4Z" fill="currentColor" />
-    <path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+  <svg class="m-ico m-ico-playing" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
   </svg>
 </button>
 
 <style>
   .music-toggle {
     position: fixed;
-    top: 16px;
-    right: 16px;
+    top: calc(14px + env(safe-area-inset-top));
+    right: calc(14px + env(safe-area-inset-right));
     z-index: 60;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
     cursor: pointer;
-    color: var(--gold-deep);
-    background: rgba(255, 253, 248, 0.85);
-    backdrop-filter: blur(8px);
-    border: 1px solid var(--gold-line);
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: background 0.3s ease, transform 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
   }
-  .music-toggle:hover {
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
-  }
+  .music-toggle:hover { background: #fff; }
+  .music-toggle:active { transform: scale(0.95); }
   .music-toggle:focus-visible {
-    outline: 3px solid var(--gold-soft);
+    outline: 2px solid var(--gold);
     outline-offset: 2px;
   }
-  .ic {
-    position: absolute;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+  .m-label {
+    color: var(--ink-mute);
+    font-size: 10px;
   }
-  .ic-playing {
-    opacity: 0;
-    transform: scale(0.7);
-  }
-  .music-toggle[aria-pressed='true'] .ic-muted {
-    opacity: 0;
-    transform: scale(0.7);
-  }
-  .music-toggle[aria-pressed='true'] .ic-playing {
-    opacity: 1;
-    transform: none;
-  }
-  .music-toggle[aria-pressed='true'] {
-    background: linear-gradient(135deg, var(--gold), var(--gold-deep));
-    color: #fff;
-    border-color: transparent;
+  .m-ico { color: var(--ink-caption); }
+  .m-ico-playing { display: none; }
+  .music-toggle[aria-pressed='true'] .m-ico-muted { display: none; }
+  .music-toggle[aria-pressed='true'] .m-ico-playing { display: inline; color: var(--gold); }
+  @media (max-width: 380px) {
+    .m-label { display: none; }
+    .music-toggle { padding: 6px 10px; }
   }
 </style>

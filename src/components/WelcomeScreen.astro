@@ -6,629 +6,682 @@ import Countdown from './Countdown.astro';
 const { groom, bride } = wedding.couple;
 ---
 
-<section class="welcome" id="welcome" aria-label="Wedding reception invitation">
-  <div class="invite-page" data-enter role="button" tabindex="0" aria-label="Open the invitation">
-    <div class="page-content">
-      <!-- Floral arch with hanging lamps — rich staggered entrance -->
-      <svg class="arch" viewBox="0 0 800 300" aria-hidden="true" preserveAspectRatio="xMidYMin meet">
-        <defs>
-          <linearGradient id="brass" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#e2b872"/>
-            <stop offset="45%" stop-color="#b0894a"/>
-            <stop offset="100%" stop-color="#6a4e22"/>
-          </linearGradient>
-          <linearGradient id="brass-side" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#8a6a2f"/>
-            <stop offset="50%" stop-color="#dfb66d"/>
-            <stop offset="100%" stop-color="#8a6a2f"/>
-          </linearGradient>
-          <radialGradient id="flame" cx="50%" cy="55%" r="55%">
-            <stop offset="0%" stop-color="#fff5d8"/>
-            <stop offset="40%" stop-color="#f4c870"/>
-            <stop offset="100%" stop-color="#c88a2a" stop-opacity="0"/>
-          </radialGradient>
-          <radialGradient id="halo" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#ffdfa0" stop-opacity="0.75"/>
-            <stop offset="60%" stop-color="#e8a95a" stop-opacity="0.18"/>
-            <stop offset="100%" stop-color="#e8a95a" stop-opacity="0"/>
-          </radialGradient>
+<section class="welcome" id="welcome" aria-label="Wedding invitation cover">
+  <div class="cover" data-enter role="button" tabindex="0" aria-label="Open the invitation">
+    <!-- Double frame border -->
+    <div class="frame-outer" aria-hidden="true"></div>
+    <div class="frame-inner" aria-hidden="true"></div>
 
-          <!-- A single marigold bloom -->
-          <symbol id="marigold" viewBox="-20 -20 40 40">
-            <g>
-              <circle r="10" fill="#b56a1f"/>
-              <g fill="#d99a4a">
-                <circle cx="0" cy="-10" r="5"/>
-                <circle cx="7" cy="-7" r="5"/>
-                <circle cx="10" cy="0" r="5"/>
-                <circle cx="7" cy="7" r="5"/>
-                <circle cx="0" cy="10" r="5"/>
-                <circle cx="-7" cy="7" r="5"/>
-                <circle cx="-10" cy="0" r="5"/>
-                <circle cx="-7" cy="-7" r="5"/>
-              </g>
-              <g fill="#e8b566">
-                <circle cx="0" cy="-5" r="3"/>
-                <circle cx="4" cy="-3" r="3"/>
-                <circle cx="5" cy="2" r="3"/>
-                <circle cx="0" cy="5" r="3"/>
-                <circle cx="-5" cy="2" r="3"/>
-                <circle cx="-4" cy="-3" r="3"/>
-              </g>
-              <circle r="2" fill="#efc98a"/>
-            </g>
-          </symbol>
 
-          <!-- Ivory rose -->
-          <!-- 5-petal jasmine-style ivory flower (replaces the earlier rose).
-               Clear star silhouette with a bright marigold-gold centre so it
-               reads instantly next to the orange marigolds. -->
-          <symbol id="rose" viewBox="-16 -16 32 32">
-            <g>
-              <!-- Outer petals: 5 teardrop petals arranged every 72° -->
-              <g fill="#f3ead6" stroke="#d9ccae" stroke-width="0.5">
-                <path d="M 0 -3 Q -6 -10, 0 -14 Q 6 -10, 0 -3 Z"/>
-                <path d="M 0 -3 Q -6 -10, 0 -14 Q 6 -10, 0 -3 Z" transform="rotate(72)"/>
-                <path d="M 0 -3 Q -6 -10, 0 -14 Q 6 -10, 0 -3 Z" transform="rotate(144)"/>
-                <path d="M 0 -3 Q -6 -10, 0 -14 Q 6 -10, 0 -3 Z" transform="rotate(216)"/>
-                <path d="M 0 -3 Q -6 -10, 0 -14 Q 6 -10, 0 -3 Z" transform="rotate(288)"/>
-              </g>
-              <!-- Inner-petal shading for depth -->
-              <g fill="#e3d6b4">
-                <path d="M 0 -3 Q -3 -8, 0 -10 Q 3 -8, 0 -3 Z"/>
-                <path d="M 0 -3 Q -3 -8, 0 -10 Q 3 -8, 0 -3 Z" transform="rotate(72)"/>
-                <path d="M 0 -3 Q -3 -8, 0 -10 Q 3 -8, 0 -3 Z" transform="rotate(144)"/>
-                <path d="M 0 -3 Q -3 -8, 0 -10 Q 3 -8, 0 -3 Z" transform="rotate(216)"/>
-                <path d="M 0 -3 Q -3 -8, 0 -10 Q 3 -8, 0 -3 Z" transform="rotate(288)"/>
-              </g>
-              <!-- Golden centre -->
-              <circle r="3" fill="#dfb66d"/>
-              <circle r="1.3" fill="#8a4e0c"/>
-            </g>
-          </symbol>
+    <!-- Four curved corner accents -->
+    <svg class="corner-accent corner-tl" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M4 36 V12 C4 7.57 7.57 4 12 4 H36"></path>
+      <circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.6"></circle>
+    </svg>
+    <svg class="corner-accent corner-tr" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M4 36 V12 C4 7.57 7.57 4 12 4 H36"></path>
+      <circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.6"></circle>
+    </svg>
+    <svg class="corner-accent corner-bl" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M4 36 V12 C4 7.57 7.57 4 12 4 H36"></path>
+      <circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.6"></circle>
+    </svg>
+    <svg class="corner-accent corner-br" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M4 36 V12 C4 7.57 7.57 4 12 4 H36"></path>
+      <circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.6"></circle>
+    </svg>
 
-          <!-- Leaf -->
-          <symbol id="leaf" viewBox="-14 -6 28 12">
-            <path d="M-14 0 Q -8 -8 0 -5 Q 8 -2 14 0 Q 8 2 0 5 Q -8 8 -14 0 Z" fill="#7a8a65"/>
-            <path d="M-12 0 L 12 0" stroke="#5f6e4f" stroke-width="0.6" fill="none"/>
-          </symbol>
-
-          <!-- Small bud -->
-          <symbol id="bud" viewBox="-8 -8 16 16">
-            <circle r="5" fill="#c47a2a"/>
-            <circle r="2.5" fill="#e9b568"/>
-          </symbol>
-        </defs>
-
-        <!-- Arch stem (drawn in) -->
-        <path class="arch-stem" d="M 40 290 Q 180 60 400 55 Q 620 60 760 290"
-              fill="none" stroke="#7a8a65" stroke-width="4" stroke-linecap="round"/>
-        <path class="arch-stem arch-stem-2" d="M 40 290 Q 180 60 400 55 Q 620 60 760 290"
-              fill="none" stroke="#8a6a2f" stroke-width="1.4" stroke-linecap="round" opacity="0.6"/>
-
-        <!-- Leaves — each pair perfectly mirrored around x=400 -->
-        <g class="leaves">
-          <use href="#leaf" x="100" y="200" width="34" height="14" transform="rotate(-65 117 207)"/>
-          <use href="#leaf" x="666" y="200" width="34" height="14" transform="rotate(65 683 207)"/>
-          <use href="#leaf" x="150" y="150" width="36" height="15" transform="rotate(-50 168 157)"/>
-          <use href="#leaf" x="614" y="150" width="36" height="15" transform="rotate(50 632 157)"/>
-          <use href="#leaf" x="210" y="110" width="38" height="16" transform="rotate(-30 229 118)"/>
-          <use href="#leaf" x="552" y="110" width="38" height="16" transform="rotate(30 571 118)"/>
-          <use href="#leaf" x="300" y="80"  width="40" height="17" transform="rotate(-14 320 88)"/>
-          <use href="#leaf" x="460" y="80"  width="40" height="17" transform="rotate(14 480 88)"/>
-          <use href="#leaf" x="130" y="230" width="30" height="12" transform="rotate(-80 145 236)"/>
-          <use href="#leaf" x="640" y="230" width="30" height="12" transform="rotate(80 655 236)"/>
-        </g>
-
-        <!-- Flowers — centers mirrored around x=400 (left+right centerX = 800) -->
-        <g class="flowers">
-          <use class="bloom b1"  href="#marigold" x="67"  y="222" width="36" height="36"/>
-          <use class="bloom b13" href="#marigold" x="697" y="222" width="36" height="36"/>
-          <use class="bloom b2"  href="#rose"     x="115" y="180" width="30" height="30"/>
-          <use class="bloom b12" href="#rose"     x="655" y="180" width="30" height="30"/>
-          <use class="bloom b3"  href="#marigold" x="163" y="128" width="34" height="34"/>
-          <use class="bloom b11" href="#marigold" x="603" y="128" width="34" height="34"/>
-          <use class="bloom b4"  href="#bud"      x="216" y="106" width="18" height="18"/>
-          <use class="bloom b10" href="#bud"      x="566" y="106" width="18" height="18"/>
-          <use class="bloom b5"  href="#rose"     x="256" y="76"  width="28" height="28"/>
-          <use class="bloom b9"  href="#rose"     x="516" y="76"  width="28" height="28"/>
-          <use class="bloom b6"  href="#marigold" x="311" y="50"  width="38" height="38"/>
-          <use class="bloom b8"  href="#marigold" x="451" y="50"  width="38" height="38"/>
-          <use class="bloom b7"  href="#rose"     x="384" y="35"  width="32" height="32"/>
-        </g>
-
-        <!-- Hanging lamps: five, perfectly mirrored around x=400.
-             Anchors (x): 175, 287, 400, 513, 625 — pairs sum to 800.
-             Each lamp has an anchor group (positioned via SVG transform attribute),
-             a pivot group that CSS rotates for sway, a cord drawn with stroke-dash,
-             and a body group that CSS translate/scale/fades in. -->
-        <g class="lamp lamp-1" transform="translate(175 140)">
-          <g class="lamp-pivot" style="--sway: 2.4deg; --swayDur: 4.2s;">
-            <path class="cord" d="M 0 0 L 0 70" stroke="#8a6a2f" stroke-width="1" fill="none" stroke-linecap="round"/>
-            <g transform="translate(0 70)">
-              <g class="lamp-body">
-                <circle class="halo" r="32" fill="url(#halo)"/>
-                <path d="M-10 -8 L 10 -8 L 8 -4 L -8 -4 Z" fill="url(#brass-side)"/>
-                <path d="M-12 -4 Q 0 24 12 -4 Z" fill="url(#brass)" stroke="#5a4218" stroke-width="0.6"/>
-                <ellipse cx="0" cy="-4" rx="12" ry="2.6" fill="#e2b872" stroke="#5a4218" stroke-width="0.5"/>
-                <circle cx="0" cy="4" r="4" fill="url(#flame)"/>
-              </g>
-            </g>
-          </g>
-        </g>
-        <g class="lamp lamp-2" transform="translate(287 95)">
-          <g class="lamp-pivot" style="--sway: 1.8deg; --swayDur: 3.6s;">
-            <path class="cord" d="M 0 0 L 0 110" stroke="#8a6a2f" stroke-width="1" fill="none" stroke-linecap="round"/>
-            <g transform="translate(0 110)">
-              <g class="lamp-body">
-                <circle class="halo" r="30" fill="url(#halo)"/>
-                <path d="M-9 -7 L 9 -7 L 7 -4 L -7 -4 Z" fill="url(#brass-side)"/>
-                <path d="M-11 -4 Q 0 22 11 -4 Z" fill="url(#brass)" stroke="#5a4218" stroke-width="0.6"/>
-                <ellipse cx="0" cy="-4" rx="11" ry="2.4" fill="#e2b872" stroke="#5a4218" stroke-width="0.5"/>
-                <circle cx="0" cy="3" r="3.6" fill="url(#flame)"/>
-              </g>
-            </g>
-          </g>
-        </g>
-        <g class="lamp lamp-3" transform="translate(400 65)">
-          <g class="lamp-pivot" style="--sway: 2.6deg; --swayDur: 4.6s;">
-            <path class="cord" d="M 0 0 L 0 145" stroke="#8a6a2f" stroke-width="1" fill="none" stroke-linecap="round"/>
-            <g transform="translate(0 145)">
-              <g class="lamp-body">
-                <circle class="halo" r="38" fill="url(#halo)"/>
-                <path d="M-12 -10 L 12 -10 L 10 -5 L -10 -5 Z" fill="url(#brass-side)"/>
-                <path d="M-14 -5 Q 0 28 14 -5 Z" fill="url(#brass)" stroke="#5a4218" stroke-width="0.6"/>
-                <ellipse cx="0" cy="-5" rx="14" ry="3" fill="#e2b872" stroke="#5a4218" stroke-width="0.5"/>
-                <circle cx="0" cy="5" r="4.6" fill="url(#flame)"/>
-              </g>
-            </g>
-          </g>
-        </g>
-        <g class="lamp lamp-4" transform="translate(513 95)">
-          <g class="lamp-pivot" style="--sway: 1.8deg; --swayDur: 3.6s;">
-            <path class="cord" d="M 0 0 L 0 110" stroke="#8a6a2f" stroke-width="1" fill="none" stroke-linecap="round"/>
-            <g transform="translate(0 110)">
-              <g class="lamp-body">
-                <circle class="halo" r="30" fill="url(#halo)"/>
-                <path d="M-9 -7 L 9 -7 L 7 -4 L -7 -4 Z" fill="url(#brass-side)"/>
-                <path d="M-11 -4 Q 0 22 11 -4 Z" fill="url(#brass)" stroke="#5a4218" stroke-width="0.6"/>
-                <ellipse cx="0" cy="-4" rx="11" ry="2.4" fill="#e2b872" stroke="#5a4218" stroke-width="0.5"/>
-                <circle cx="0" cy="3" r="3.6" fill="url(#flame)"/>
-              </g>
-            </g>
-          </g>
-        </g>
-        <g class="lamp lamp-5" transform="translate(625 140)">
-          <g class="lamp-pivot" style="--sway: 2.4deg; --swayDur: 4.2s;">
-            <path class="cord" d="M 0 0 L 0 70" stroke="#8a6a2f" stroke-width="1" fill="none" stroke-linecap="round"/>
-            <g transform="translate(0 70)">
-              <g class="lamp-body">
-                <circle class="halo" r="32" fill="url(#halo)"/>
-                <path d="M-10 -8 L 10 -8 L 8 -4 L -8 -4 Z" fill="url(#brass-side)"/>
-                <path d="M-12 -4 Q 0 24 12 -4 Z" fill="url(#brass)" stroke="#5a4218" stroke-width="0.6"/>
-                <ellipse cx="0" cy="-4" rx="12" ry="2.6" fill="#e2b872" stroke="#5a4218" stroke-width="0.5"/>
-                <circle cx="0" cy="4" r="4" fill="url(#flame)"/>
-              </g>
-            </g>
-          </g>
-        </g>
+    <!-- Decorative floral branch, bottom-right -->
+    <div class="floral-accent" aria-hidden="true">
+      <svg viewBox="0 0 200 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M80 350 C90 280 130 220 120 150 C110 80 135 40 140 0"
+              stroke="#5A5A5A" stroke-width="2.5" stroke-linecap="round"/>
+        <ellipse cx="145" cy="240" rx="35" ry="25" fill="#9A9A96" opacity="0.5"/>
+        <ellipse cx="125" cy="225" rx="30" ry="20" fill="#5A5A5A" opacity="0.6"/>
+        <ellipse cx="160" cy="255" rx="25" ry="18" fill="#7A7A76" opacity="0.4"/>
+        <ellipse cx="105" cy="160" rx="22" ry="14" fill="#4A4A4A" opacity="0.4"/>
+        <ellipse cx="135" cy="140" rx="28" ry="18" fill="#5A5A5A" opacity="0.5"/>
+        <ellipse cx="130" cy="70"  rx="26" ry="18" fill="#9A9A96" opacity="0.5"/>
+        <ellipse cx="150" cy="85"  rx="22" ry="15" fill="#5A5A5A" opacity="0.4"/>
       </svg>
+    </div>
 
-      <p class="w-eyebrow">The Wedding Reception of</p>
-
-      <div class="w-names">
-        <span class="script w-name shimmer">{groom.firstName}</span>
-        <span class="script w-amp shimmer">&amp;</span>
-        <span class="script w-name shimmer">{bride.firstName}</span>
+    <div class="cover-inner">
+      <!-- Translucent reading card: holds the texts that sit directly on the
+           frame-bg image (invocation, names, invite-line) so they stay legible
+           against the painted backdrop. Pills and the open-btn have their own
+           surfaces and stay outside this card. -->
+      <div class="read-card">
+      <!-- Invocation: Ganesha + blessing -->
+      <div class="invocation">
+        <svg class="ganesha" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="72" height="72" fill-rule="evenodd" role="img" aria-label="Lord Ganesha">
+          <path d="m 15.852517,1022.8076 c 0.05753,0 0.160081,0.04 0.28125,0.2363 0.121169,0.1961 0.21875,0.5176 0.21875,0.8809 0,0.3633 -0.09758,0.6868 -0.21875,0.8828 -0.121169,0.1961 -0.223721,0.2363 -0.28125,0.2363 -0.05753,0 -0.160081,-0.04 -0.28125,-0.2363 -0.121169,-0.196 -0.21875,-0.5195 -0.21875,-0.8828 0,-0.3633 0.09758,-0.6848 0.21875,-0.8809 0.121169,-0.196 0.22372,-0.2363 0.28125,-0.2363 z" transform="translate(0 -1020.362)"/>
+          <path d="m 17.10447,1025.1005 c -0.037,0.08 -0.07403,0.1594 -0.119141,0.2325 -0.24076,0.3896 -0.638057,0.7109 -1.132812,0.7109 -0.494755,0 -0.892053,-0.3213 -1.132813,-0.7109 -0.04419,-0.072 -0.07881,-0.1505 -0.115234,-0.2285 -2.010635,0.5193 -3.481755,2.2185 -3.705078,4.2871 1.17785,0.3154 2.102634,1.3911 2.302734,2.5918 l 0.462891,2.7773 c 0.103657,0.6219 0.374009,1.2022 0.78125,1.6836 l 2.410156,2.8516 c 1.508841,1.7832 1.399766,4.4363 -0.251953,6.0879 l -0.07813,0.076 a 0.50005,0.50005 0 0 0 -0.002,0 c -1.181932,1.182 -1.364688,3.0254 -0.4375,4.4161 l 0.02734,0.041 0.873047,-0.024 c -0.284874,-0.7365 -0.590156,-1.4455 -0.503906,-2.0937 0.113083,-0.85 0.638004,-1.59 1.550781,-2.457 1.400334,-1.5754 1.869651,-3.7689 1.236328,-5.7793 l -0.769531,-2.4375 c -0.241016,-0.7653 -0.297908,-1.5757 -0.166016,-2.3672 l 0.462891,-2.7774 c 0.184028,-1.1043 0.980755,-2.106 2.023438,-2.5058 -0.190915,-2.105 -1.677628,-3.8461 -3.716797,-4.375 z m -2.382813,1.4394 c 1.014182,-0.091 1.840335,0.2999 2.449219,0.2149 0.06865,-0.01 0.29454,-0.087 0.466797,-0.1661 a 0.50038298,0.50038298 0 1 1 0.416015,0.9103 c -0.209363,0.096 -0.455614,0.2061 -0.74414,0.2461 -1.019797,0.1424 -1.865302,-0.266 -2.5,-0.209 -0.169361,0.015 -0.5204,0.1043 -0.798828,0.1934 a 0.50005,0.50005 0 1 1 -0.304688,-0.9512 c 0.308752,-0.099 0.673686,-0.2073 1.015625,-0.2383 z m 1.123047,2.9083 a 0.50005,0.50005 0 0 1 0.507813,0.5078 l 0,1.2285 a 1,1 0 0 1 0.5,0.8653 1,1 0 0 1 -1,1 1,1 0 0 1 -1,-1 1,1 0 0 1 0.5,-0.8653 l 0,-1.2285 a 0.50005,0.50005 0 0 1 0.492187,-0.5078 z" transform="translate(0 -1020.362)"/>
+          <path d="m 10.196267,1030.2881 c -1.142911,0.01 -2.159512,0.304 -3.169922,1.2578 1.050787,1.414 1.69957,2.7169 2.007812,3.9199 0.172717,0.6741 0.515337,1.2277 0.949219,1.5723 0.433882,0.3447 0.9488,0.5019 1.59375,0.3847 l 2.083984,-0.3789 c -0.505358,-0.611 -0.851939,-1.3383 -0.982422,-2.1211 l -0.46289,-2.7773 c -0.154211,-0.9253 -1.134045,-1.8674 -2.019531,-1.8574 z m -0.591797,0.9687 c 1.029671,-0.013 1.881273,0.8554 2.042968,1.834 l 0.152344,0.9297 a 0.3750375,0.3750375 0 1 1 -0.740234,0.1211 l -0.152344,-0.9278 c -0.09907,-0.5996 -0.739045,-1.217 -1.294922,-1.207 a 0.3750375,0.3750375 0 1 1 -0.0078,-0.75 z" transform="translate(0 -1020.362)"/>
+          <path d="m 21.803688,1030.288 a 0.50005,0.50005 0 0 0 0.002,0 c 1.141572,0.01 2.157301,0.3033 3.167968,1.2579 -1.050787,1.414 -1.69957,2.7168 -2.007812,3.9199 -0.172641,0.6738 -0.510615,1.2074 -0.931641,1.5254 -0.421025,0.318 -0.918379,0.4479 -1.558593,0.2988 l -0.753907,-0.1758 -0.1875,-0.043 -0.07813,-0.2461 c -0.193741,-0.6151 -0.240773,-1.2663 -0.134765,-1.9024 l 0.46289,-2.7773 c 0.154203,-0.9252 1.134045,-1.8648 2.019531,-1.8574 z" transform="translate(0 -1020.362)"/>
+        </svg>
+        {wedding.cardBlessing && (
+          <p class="blessing">{wedding.cardBlessing.toUpperCase()}</p>
+        )}
       </div>
 
-      <div class="w-rule" aria-hidden="true"><span></span>&#10022;<span></span></div>
+      <!-- Couple names (full names) -->
+      <div class="names">
+        <h1 class="name silver-glaze">{groom.fullName}</h1>
+        <div class="name-divider" aria-hidden="true">
+          <span class="hr"></span>
+          <span class="amp silver-glaze">&amp;</span>
+          <span class="hr"></span>
+        </div>
+        <h1 class="name silver-glaze">{bride.fullName}</h1>
+      </div>
 
-      <p class="w-tagline">{wedding.tagline}</p>
+      <!-- Family invitation line (after the names) -->
+      <p class="invite-line">{wedding.tagline}</p>
+      </div>
 
-      <p class="w-date">
-        {weddingDate.weekday} &nbsp;·&nbsp; {weddingDate.day} {weddingDate.monthLong} {weddingDate.year}
-      </p>
-      <p class="w-when">{weddingDate.time}</p>
+      <!-- Three glass pills: date, time, venue -->
+      <div class="info-pills">
+        <div class="pill-row">
+          <div class="info-pill">
+            <svg class="pi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/>
+            </svg>
+            <span>{weddingDate.day} {weddingDate.monthShort} {weddingDate.year}</span>
+          </div>
+          <div class="info-pill">
+            <svg class="pi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+            </svg>
+            <span>{weddingDate.time}</span>
+          </div>
+        </div>
+        <div class="info-pill info-pill-full">
+          <svg class="pi-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          <span>{wedding.venue.name}, {wedding.venue.address}</span>
+        </div>
+      </div>
 
-      <div class="w-count">
+      <!-- Countdown -->
+      <div class="count-wrap">
         <Countdown minimal />
       </div>
 
-      <div class="w-enter" aria-hidden="true">
-        <span class="w-enter-glow"></span>
-        <span class="w-enter-label">Tap to open</span>
-        <span class="w-enter-ico">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
-            <path d="M8 5l8 7-8 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- Open Invitation button with diya -->
+      <button type="button" class="open-btn" data-open-btn aria-label="Light diya and open invitation">
+        <span class="diya-ring">
+          <span class="halo" aria-hidden="true"></span>
+          <span class="diya">
+            <svg viewBox="0 0 32 32" class="diya-svg" fill="none" aria-hidden="true">
+              <defs>
+                <radialGradient id="diya-glow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%"  stop-color="#FFF4C2" stop-opacity="0.95"/>
+                  <stop offset="60%" stop-color="#F7DF94" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#F7DF94" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <path d="M6 19 C6 24 10 26.5 16 26.5 C22 26.5 26 24 26 19 C22 19 19 20.5 16 20.5 C13 20.5 10 19 6 19 Z"
+                    fill="#9A9A96" stroke="#5A5A5A" stroke-width="0.6"/>
+              <path d="M8 19 C10 17 13 16.5 16 16.5 C19 16.5 22 17 24 19"
+                    stroke="#B8B6B1" stroke-width="0.8" stroke-linecap="round"/>
+              <line x1="16" y1="16.5" x2="16" y2="13.5" stroke="#3A3A3A" stroke-width="0.9" stroke-linecap="round"/>
+              <circle class="flame-glow" cx="16" cy="12" r="7" fill="url(#diya-glow)"/>
+              <path class="flame-core"
+                    d="M16 7 Q13 11 13 13 Q13 15.5 16 15.5 Q19 15.5 19 13 Q19 11 16 7 Z"
+                    fill="#F7DF94"/>
+              <circle class="flame" cx="16" cy="12" r="2" fill="#FFF4C2"/>
+            </svg>
+          </span>
+          <span class="sparks" aria-hidden="true">
+            <span class="spark s1"></span>
+            <span class="spark s2"></span>
+            <span class="spark s3"></span>
+            <span class="spark s4"></span>
+            <span class="spark s5"></span>
+          </span>
+        </span>
+        <span class="open-text">
+          <span class="open-title">Open Invitation</span>
+          <span class="open-sub">Tap to light Diya</span>
+        </span>
+        <span class="open-chev" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6"/>
           </svg>
         </span>
-      </div>
+      </button>
     </div>
   </div>
 </section>
 
 <style>
   .welcome {
-    /* Scoped parchment palette — warm gold/brown to match the frame artwork. */
-    --p-gold: #b0894a;
-    --p-gold-deep: #8a6a2f;
-    --p-ink: #6b5433;
-    --p-script: #7c5c30;
-
     position: fixed;
     inset: 0;
     z-index: 50;
     display: flex;
-    align-items: stretch;
+    align-items: center;
     justify-content: center;
-    padding: 10px;
+    padding: 0;
+    background-color: var(--cream);
+    /* Temple-arch frame covers the whole cover; content sits inside the frame. */
+    background-image: url('/bg/frame-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    /* Inherit the body's royal-damask pattern so the welcome and inner page
-       share the exact same backdrop; the solid --cream still sits beneath
-       the pattern image for a continuous base during the page-flip. */
-    background:
-      radial-gradient(ellipse at center top, rgba(246, 236, 221, 0.6), transparent 55%),
-      var(--cream);
-    /* The page lifts from the TOP edge and flips UPWARD, revealing the
-       invitation behind it — like turning a page up on a flip-chart. */
-    transform-origin: center top;
-    backface-visibility: hidden;
-    transition:
-      transform 1.15s cubic-bezier(0.66, 0.02, 0.28, 1),
-      box-shadow 1.15s ease;
-    will-change: transform;
-  }
-  /* When returning from the inner page we add `.is-replay` for one frame
-     to force the entrance animations to restart from the beginning. */
-  .welcome.is-replay .arch-stem,
-  .welcome.is-replay .leaves use,
-  .welcome.is-replay .bloom,
-  .welcome.is-replay .cord,
-  .welcome.is-replay .lamp-body,
-  .welcome.is-replay .lamp-pivot,
-  .welcome.is-replay .halo,
-  .welcome.is-replay .invite-page {
-    animation: none !important;
+    transition: transform 1s cubic-bezier(0.32, 0.72, 0, 1),
+                opacity 1s cubic-bezier(0.32, 0.72, 0, 1);
+    will-change: transform, opacity;
   }
   .welcome.is-flipping {
-    /* Negative rotateX around the top edge sends the bottom of the page
-       up toward the viewer, then over the top and behind. 170deg (not a
-       full 180) hides the back-face flatness and keeps a sense of depth. */
-    transform: perspective(2200px) rotateX(-170deg);
-    box-shadow: 0 -40px 90px rgba(80, 55, 20, 0.3);
+    transform: translateY(-100%);
+    opacity: 0;
   }
-  /* Shading that sweeps across the page as it lifts, for depth. The
-     gradient runs vertically now so the darkening reads along the fold. */
-  .welcome::after {
+
+  .cover {
+    position: relative;
+    width: 100%;
+    min-height: 100dvh;
+    padding: clamp(28px, 7vw, 56px) clamp(22px, 6vw, 44px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(20px, 4vh, 36px);
+    cursor: pointer;
+    user-select: none;
+    animation: fade-up 0.9s ease both;
+  }
+  .cover:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: -14px;
+  }
+
+  .frame-outer,
+  .frame-inner {
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .frame-outer {
+    inset: 12px;
+    border: 1px solid rgba(60, 60, 60, 0.35);
+    border-radius: 16px;
+  }
+  .frame-inner {
+    inset: 20px;
+    border: 1px solid rgba(60, 60, 60, 0.20);
+    border-radius: 12px;
+  }
+  @media (min-width: 420px) {
+    .frame-outer { inset: 20px; }
+    .frame-inner { inset: 28px; }
+  }
+
+  .floral-accent {
+    position: absolute;
+    right: -6px;
+    bottom: 40px;
+    width: clamp(140px, 32vw, 220px);
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .cover-inner {
+    position: relative;
+    /* Above the drape so content is never clipped by the swag fabric. */
+    z-index: 3;
+    width: 100%;
+    /* Wider so the larger couple names (bumped to 82px max) fit on one
+       line without clipping on mid-size viewports. */
+    max-width: 540px;
+    margin: 0 auto;
+    padding-top: clamp(20px, 5vw, 48px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: clamp(16px, 3.4vh, 28px);
+  }
+
+  /* iOS-style frosted-glass reading card: a thin pane of "liquid glass" that
+     sits behind the invocation, names, and invite-line. The tint stays very
+     light (~5% cream) — the readability lift comes from the heavy backdrop
+     blur + saturation, mimicking iOS material. A hairline white border and
+     an inner top-edge highlight give the pane its characteristic rim-light. */
+  .read-card {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(14px, 3vh, 24px);
+    padding: clamp(18px, 4vw, 28px) clamp(16px, 4vw, 26px);
+    border-radius: 24px;
+    background: rgba(252, 246, 234, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow:
+      inset 0 1px 0 0 hsla(0, 0%, 100%, 0.55),
+      inset 0 -1px 0 0 hsla(0, 0%, 100%, 0.08),
+      0 10px 40px rgba(60, 40, 20, 0.12),
+      0 2px 8px rgba(60, 40, 20, 0.06);
+    backdrop-filter: blur(22px) saturate(180%);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
+  }
+  /* Subtle diagonal sheen so the pane catches "light" like real glass. */
+  .read-card::before {
     content: '';
     position: absolute;
     inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg,
+      hsla(0, 0%, 100%, 0.18) 0%,
+      hsla(0, 0%, 100%, 0.04) 40%,
+      hsla(0, 0%, 100%, 0) 60%);
     pointer-events: none;
-    background: linear-gradient(0deg, rgba(60, 40, 15, 0) 55%, rgba(60, 40, 15, 0.22) 100%);
-    opacity: 0;
-    transition: opacity 1.15s ease;
   }
-  .welcome.is-flipping::after {
-    opacity: 1;
-  }
+  /* Keep the text above the sheen. */
+  .read-card > * { position: relative; z-index: 1; }
 
-  .invite-page {
-    position: relative;
-    width: min(92vw, 560px);
-    min-height: 100%;
-    cursor: pointer;
-    animation: fade-up 1s ease both;
-    border-radius: 4px;
-    display: flex;
-    flex: 0 0 auto;
-  }
-  .invite-page:focus-visible {
-    outline: 2px solid var(--p-gold);
-    outline-offset: 10px;
-  }
-
-  .page-content {
-    padding: 8px 12px;
+  /* Invocation (Ganesha + blessing) */
+  .invocation {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    text-align: center;
-    gap: 0;
+    gap: 8px;
     width: 100%;
-    min-height: 100%;
+    max-width: 420px;
   }
-
-  /* ── Floral arch with hanging lamps ───────────────────────────────────── */
-  .arch {
-    /* Fill the content column so the arch always matches the invitation's
-       horizontal width. The viewBox's `preserveAspectRatio="xMidYMin meet"`
-       keeps the artwork horizontally centred inside the SVG viewport, and
-       `height: auto` scales the SVG proportionally for any screen width.
-       Cap max-height so the arch never dominates short viewports. */
-    display: block;
-    width: 100%;
+  .ganesha {
+    width: clamp(38px, 9vw, 54px);
     height: auto;
-    max-height: clamp(110px, 22vh, 180px);
-    margin: 0 auto clamp(4px, 1.2vh, 12px);
-    overflow: visible;
-    pointer-events: none;
+    display: block;
   }
-
-  /* Arch stem draws in from both ends toward the apex */
-  .arch-stem {
-    stroke-dasharray: 1600;
-    stroke-dashoffset: 1600;
-    animation: draw 1.6s cubic-bezier(0.22, 0.68, 0.3, 1) 0.1s forwards;
-  }
-  .arch-stem-2 {
-    animation-delay: 0.25s;
-  }
-
-  /* Leaves fade in softly after the stem starts (opacity-only to avoid
-     conflicting with each leaf's inline rotate transform attribute). */
-  .leaves use {
-    opacity: 0;
-    animation: fade 0.8s ease-out forwards;
-  }
-  .leaves use:nth-child(1)  { animation-delay: 0.55s; }
-  .leaves use:nth-child(2)  { animation-delay: 0.62s; }
-  .leaves use:nth-child(3)  { animation-delay: 0.70s; }
-  .leaves use:nth-child(4)  { animation-delay: 0.80s; }
-  .leaves use:nth-child(5)  { animation-delay: 0.80s; }
-  .leaves use:nth-child(6)  { animation-delay: 0.70s; }
-  .leaves use:nth-child(7)  { animation-delay: 0.62s; }
-  .leaves use:nth-child(8)  { animation-delay: 0.55s; }
-  .leaves use:nth-child(9)  { animation-delay: 0.90s; }
-  .leaves use:nth-child(10) { animation-delay: 0.90s; }
-
-  /* Flowers bloom in waves, from the outer edges inward toward the apex */
-  .bloom {
-    opacity: 0;
-    transform-box: fill-box;
-    transform-origin: center;
-    transform: scale(0.2) rotate(-12deg);
-    animation: bloom 0.9s cubic-bezier(0.2, 0.9, 0.3, 1.4) forwards;
-  }
-  .b1, .b13 { animation-delay: 0.70s; }
-  .b2, .b12 { animation-delay: 0.80s; }
-  .b3, .b11 { animation-delay: 0.90s; }
-  .b4, .b10 { animation-delay: 1.00s; }
-  .b5, .b9  { animation-delay: 1.10s; }
-  .b6, .b8  { animation-delay: 1.20s; }
-  .b7       { animation-delay: 1.35s; }
-
-  /* Lamp cord grows down from the arch (stroke-dash draws the line in).
-     The dash length covers the longest cord (lamp-3 = 145px). Shorter cords
-     start just as "hidden" and finish at offset 0 which still shows them. */
-  .cord {
-    stroke-dasharray: 160;
-    stroke-dashoffset: 160;
-    animation: draw-cord 0.6s cubic-bezier(0.3, 0.6, 0.3, 1) forwards;
-  }
-  .lamp-1 .cord { animation-delay: 1.20s; }
-  .lamp-2 .cord { animation-delay: 1.35s; }
-  .lamp-3 .cord { animation-delay: 1.45s; }
-  .lamp-4 .cord { animation-delay: 1.35s; }
-  .lamp-5 .cord { animation-delay: 1.20s; }
-
-  /* Pivot swings gently around the anchor (top of cord). No attribute
-     transform here, so CSS rotate is free to apply without conflict. The
-     gyroscope-driven override lives in global.css (CSS animations beat inline
-     styles in the cascade, so JS can only control the pivot once the keyframe
-     animation is suppressed). */
-  .lamp-pivot {
-    transform-origin: 0 0;
-    animation: lamp-sway var(--swayDur, 4s) ease-in-out infinite alternate;
-    animation-delay: 2.4s;
-  }
-
-  /* Lamp body drops in with a soft bounce; symbol content is centered at
-     origin so translate/scale work predictably. */
-  .lamp-body {
-    opacity: 0;
-    transform-origin: 0 0;
-    animation: lamp-drop 0.75s cubic-bezier(0.2, 0.9, 0.35, 1.25) forwards;
-  }
-  .lamp-1 .lamp-body { animation-delay: 1.30s; }
-  .lamp-2 .lamp-body { animation-delay: 1.45s; }
-  .lamp-3 .lamp-body { animation-delay: 1.55s; }
-  .lamp-4 .lamp-body { animation-delay: 1.45s; }
-  .lamp-5 .lamp-body { animation-delay: 1.30s; }
-
-  /* Halo breathes */
-  .halo {
-    transform-origin: center;
-    transform-box: fill-box;
-    animation: halo-pulse 2.6s ease-in-out infinite alternate;
-    animation-delay: 2.4s;
-  }
-
-  @keyframes draw-cord {
-    to { stroke-dashoffset: 0; }
-  }
-  @keyframes fade {
-    to { opacity: 1; }
-  }
-
-  @keyframes draw {
-    to { stroke-dashoffset: 0; }
-  }
-  @keyframes bloom {
-    0%   { opacity: 0; transform: scale(0.2) rotate(-12deg); }
-    60%  { opacity: 1; transform: scale(1.08) rotate(3deg); }
-    100% { opacity: 1; transform: scale(1) rotate(0); }
-  }
-  @keyframes lamp-drop {
-    0%   { opacity: 0; transform: translate(0, -70px) scale(0.85); }
-    65%  { opacity: 1; transform: translate(0, 6px) scale(1.03); }
-    100% { opacity: 1; transform: translate(0, 0) scale(1); }
-  }
-  @keyframes lamp-sway {
-    0%   { transform: rotate(calc(-1 * var(--sway, 2deg))); }
-    100% { transform: rotate(var(--sway, 2deg)); }
-  }
-  @keyframes halo-pulse {
-    0%   { opacity: 0.75; transform: scale(1); }
-    100% { opacity: 1;    transform: scale(1.08); }
-  }
-
-  .w-eyebrow {
-    font-family: var(--font-body);
-    font-size: clamp(0.9rem, 3.8vw, 1.1rem);
-    letter-spacing: 0.22em;
+  .ganesha path { fill: var(--gold); }
+  .blessing {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(0.84rem, 3vw, 1rem);
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--p-ink);
-    margin-bottom: clamp(4px, 1.2vh, 10px);
+    color: var(--gold);
+    line-height: 1.4;
   }
-  .w-names {
+
+  /* Family invitation line, between names and pills */
+  .invite-line {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: clamp(0.76rem, 2.6vw, 0.88rem);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    line-height: 1.65;
+    max-width: 42ch;
+    margin: 2px auto 0;
+    text-align: center;
+  }
+
+  /* Names */
+  .names {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: clamp(0px, 0.4vh, 4px);
+    gap: 2px;
   }
-  .w-name {
-    font-size: clamp(3rem, 14.5vw, 4.8rem);
-    line-height: 1.15;
-    padding: 0.06em 0.12em;
-    display: inline-block;
+  .name {
+    font-family: var(--font-script);
+    font-weight: 400;
+    /* Bumped up so the names feel like the hero of the cover — min 38px
+       stays legible on narrow phones, max 82px gives real presence on
+       larger screens; the wider cover-inner below lets the longer name
+       ("Chi. Sau. Pooja") sit on one line without clipping. */
+    font-size: clamp(38px, 12.5vw, 82px);
+    line-height: 1.05;
+    letter-spacing: 0;
+    color: var(--ink);
+    margin: 0;
+    /* Keep the name on one line; shrink to fit container width if the
+       render ends up wider than available space. */
+    white-space: nowrap;
+    max-width: 100%;
+    padding: 0.04em 0.08em;
   }
-  .w-amp {
-    font-size: clamp(1.8rem, 7.8vw, 2.6rem);
-    line-height: 1.15;
-    padding: 0.04em 0.1em;
-    display: inline-block;
+  .name-divider {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    margin: 4px 0;
   }
-  .w-rule {
+  .name-divider .hr {
+    height: 1px;
+    width: 36px;
+    background: var(--gold-wash);
+  }
+  .name-divider .amp {
+    font-family: var(--font-script);
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2.4rem;
+    color: var(--ink);
+    line-height: 1;
+  }
+  /* Force the silver-glaze's transparent fill to win over the scoped
+     name/amp colour (component styles have higher specificity than the
+     global utility, so without this the gradient would be hidden). */
+  .name.silver-glaze,
+  .amp.silver-glaze {
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Info pills */
+  .info-pills {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .pill-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .info-pill {
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    color: var(--p-gold);
-    font-size: 0.8rem;
-    margin: clamp(4px, 1.2vh, 10px) 0;
-  }
-  .w-rule span {
-    height: 1px;
-    width: clamp(30px, 10vw, 56px);
-    background: linear-gradient(to right, transparent, var(--p-gold));
-  }
-  .w-rule span:last-child {
-    background: linear-gradient(to left, transparent, var(--p-gold));
-  }
-  .w-tagline {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: clamp(1.25rem, 5vw, 1.6rem);
-    color: var(--p-ink);
-    margin-bottom: clamp(4px, 1.2vh, 10px);
-  }
-
-  .w-date {
-    font-family: var(--font-display);
+    gap: 8px;
+    padding: 0 12px;
+    border-radius: 16px;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
     font-weight: 600;
-    font-size: clamp(1.3rem, 5.4vw, 1.75rem);
-    color: var(--p-gold-deep);
-    letter-spacing: 0.02em;
+    /* liquid-glass-gold style */
+    background: linear-gradient(135deg,
+      rgba(252, 239, 222, 0.92),
+      rgba(236, 232, 224, 0.86) 45%,
+      rgba(210, 210, 212, 0.80) 100%);
+    border: 1px solid rgba(60, 60, 60, 0.2);
+    box-shadow: inset 0 2px 0 0 hsla(0, 0%, 100%, 0.9),
+                0 4px 14px rgba(90, 66, 49, 0.08);
   }
-  .w-when {
-    font-family: var(--font-body);
-    font-size: clamp(0.92rem, 3.8vw, 1.1rem);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--p-ink);
-    margin-top: 2px;
-  }
+  .info-pill span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .info-pill-full span { white-space: normal; text-align: center; }
+  .pi-ico { width: 14px; height: 14px; flex-shrink: 0; color: var(--gold); }
 
-  .w-count {
-    margin-top: clamp(6px, 1.6vh, 14px);
+  /* Countdown wrap */
+  .count-wrap {
     width: 100%;
   }
 
-  .w-enter {
+  /* Open Invitation button */
+  .open-btn {
+    width: 100%;
+    max-width: 280px;
     position: relative;
-    margin-top: clamp(8px, 2vh, 18px);
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 18px 10px 20px;
+    gap: 12px;
+    padding: 6px 20px 6px 6px;
     border-radius: 999px;
-    color: #fff;
-    background: linear-gradient(135deg, var(--p-gold) 0%, var(--p-gold-deep) 100%);
+    /* Lotus-leaf green gradient — matches the deep green of the lotus
+       leaves at the bottom of the frame-bg image, so the CTA feels like
+       it belongs to the illustration. */
+    background: linear-gradient(135deg,
+      #8CA86F 0%,
+      #4E6B34 55%,
+      #2E4A1C 100%);
+    border: 1px solid #2E4A1C;
     box-shadow:
-      0 8px 22px rgba(138, 106, 47, 0.45),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    animation: w-enter-pulse 1.8s ease-in-out infinite;
-  }
-  .w-enter-glow {
-    position: absolute;
-    inset: -4px;
-    border-radius: 999px;
-    pointer-events: none;
-    box-shadow: 0 0 0 2px rgba(176, 137, 74, 0.35);
-    animation: w-enter-ring 1.8s ease-out infinite;
-  }
-  .w-enter-label {
+      inset 0 1px 0 0 hsla(96, 30%, 85%, 0.55),
+      inset 0 -1px 0 0 rgba(20, 40, 10, 0.3),
+      0 10px 32px rgba(74, 100, 50, 0.45),
+      0 2px 8px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    overflow: hidden;
     font-family: var(--font-body);
-    font-size: clamp(1.05rem, 4.2vw, 1.25rem);
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
-    font-weight: 700;
+    /* Gentle breathing pulse so the button is impossible to miss. */
+    animation: open-btn-pulse 2.2s ease-in-out infinite;
   }
-  .w-enter-ico {
-    display: grid;
-    place-items: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
-    animation: w-enter-arrow 1.4s ease-in-out infinite;
+  .open-btn:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      inset 0 1px 0 0 hsla(96, 30%, 88%, 0.6),
+      inset 0 -1px 0 0 rgba(20, 40, 10, 0.3),
+      0 14px 40px rgba(74, 100, 50, 0.55),
+      0 2px 10px rgba(0, 0, 0, 0.14);
   }
-  @keyframes w-enter-pulse {
+  @keyframes open-btn-pulse {
     0%, 100% {
-      transform: scale(1);
       box-shadow:
-        0 10px 28px rgba(138, 106, 47, 0.45),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        inset 0 1px 0 0 hsla(96, 30%, 85%, 0.55),
+        inset 0 -1px 0 0 rgba(20, 40, 10, 0.3),
+        0 10px 32px rgba(74, 100, 50, 0.45),
+        0 0 0 0 rgba(140, 168, 111, 0.55);
     }
-    50% {
-      transform: scale(1.05);
+    60% {
       box-shadow:
-        0 14px 36px rgba(138, 106, 47, 0.6),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        inset 0 1px 0 0 hsla(96, 30%, 88%, 0.6),
+        inset 0 -1px 0 0 rgba(20, 40, 10, 0.3),
+        0 12px 36px rgba(74, 100, 50, 0.5),
+        0 0 0 14px rgba(140, 168, 111, 0);
     }
   }
-  @keyframes w-enter-ring {
-    0%   { opacity: 0.9; transform: scale(1); }
-    100% { opacity: 0;   transform: scale(1.25); }
+  @media (prefers-reduced-motion: reduce) {
+    .open-btn { animation: none; }
   }
-  @keyframes w-enter-arrow {
-    0%, 100% { transform: translateX(0); }
-    50%      { transform: translateX(3px); }
+  .open-btn:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
   }
 
+  .diya-ring {
+    position: relative;
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, var(--gold-pale), var(--gold));
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .open-btn:hover .diya-ring { transform: scale(1.05); }
+
+  /* Golden halo behind the diya — invisible at rest, flares on ignition. */
+  .halo {
+    position: absolute;
+    inset: -14px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 220, 130, 0.9) 0%,
+                                        rgba(247, 223, 148, 0.4) 40%,
+                                        rgba(247, 223, 148, 0) 72%);
+    opacity: 0;
+    transform: scale(0.6);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .diya {
+    position: relative;
+    z-index: 1;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 6px;
+    overflow: hidden;
+  }
+  .diya-svg { width: 32px; height: 32px; }
+
+  /* Flame layers — at rest the bigger core/glow are hidden, only tiny
+     dot of flame flickers. Once lit, all layers come alive. */
+  .flame-glow,
+  .flame-core {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: 16px 18px;
+    transform: scale(0.1);
+  }
+  .flame {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: flame-flicker 1.8s ease-in-out infinite;
+  }
+  @keyframes flame-flicker {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.85; transform: scale(1.1); }
+  }
+
+  /* Sparks — five tiny dots that float upward on ignition */
+  .sparks {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .spark {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #FFE28C;
+    box-shadow: 0 0 6px 2px rgba(255, 220, 130, 0.9);
+    opacity: 0;
+    transform: translate(-50%, -50%);
+  }
+
+  /* ── Ignition state ─────────────────────────────────────────────────── */
+  /* When the button is tapped, the whole pill shifts from leaf-green to a
+     rich gold gradient — a short flourish to complete the "lighting". */
+  .open-btn.is-lighting {
+    background: linear-gradient(135deg,
+      #F4DD9E 0%,
+      #D4AF37 55%,
+      #9A7C2F 100%);
+    border-color: #8A6A2F;
+    animation: none;
+    transition: background 0.5s ease, border-color 0.5s ease;
+  }
+  .open-btn.is-lighting .diya-ring {
+    box-shadow: 0 0 36px 6px rgba(247, 223, 148, 0.75),
+                0 0 72px 18px rgba(247, 223, 148, 0.35);
+    transform: scale(1.08);
+  }
+  .open-btn.is-lighting .halo {
+    animation: halo-burst 1s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  }
+  .open-btn.is-lighting .flame {
+    animation: flame-ignite 1s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  }
+  .open-btn.is-lighting .flame-core {
+    animation: flame-core-ignite 1s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  }
+  .open-btn.is-lighting .flame-glow {
+    animation: flame-glow-ignite 1s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  }
+  .open-btn.is-lighting .spark {
+    animation: spark-rise 0.9s ease-out forwards;
+  }
+  .open-btn.is-lighting .spark.s1 { animation-delay: 0.10s; --sx: -14px; --sy: -34px; }
+  .open-btn.is-lighting .spark.s2 { animation-delay: 0.16s; --sx:  12px; --sy: -30px; }
+  .open-btn.is-lighting .spark.s3 { animation-delay: 0.22s; --sx:  -4px; --sy: -42px; }
+  .open-btn.is-lighting .spark.s4 { animation-delay: 0.28s; --sx:   8px; --sy: -38px; }
+  .open-btn.is-lighting .spark.s5 { animation-delay: 0.34s; --sx: -10px; --sy: -28px; }
+
+  @keyframes halo-burst {
+    0%   { opacity: 0;    transform: scale(0.6); }
+    50%  { opacity: 1;    transform: scale(1.15); }
+    100% { opacity: 0.85; transform: scale(1); }
+  }
+  @keyframes flame-ignite {
+    0%   { opacity: 1;    transform: scale(1); }
+    40%  { opacity: 1;    transform: scale(1.8); }
+    100% { opacity: 0.95; transform: scale(1.3); }
+  }
+  @keyframes flame-core-ignite {
+    0%   { opacity: 0; transform: scale(0.1); }
+    45%  { opacity: 1; transform: scale(1.15); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes flame-glow-ignite {
+    0%   { opacity: 0;    transform: scale(0.1); }
+    50%  { opacity: 0.95; transform: scale(1.2); }
+    100% { opacity: 0.8;  transform: scale(1); }
+  }
+  @keyframes spark-rise {
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+    15%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0;
+           transform: translate(calc(-50% + var(--sx, 0)),
+                                calc(-50% + var(--sy, -30px))) scale(0.4); }
+  }
+
+  .open-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .open-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1.1;
+    /* White title on the leaf-green button reads strongly and matches the
+       classic "tap me" CTA in traditional invitation sites. */
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(20, 40, 10, 0.3);
+    letter-spacing: 0.02em;
+  }
+  .open-sub {
+    font-size: 11px;
+    /* Pale cream on deep leaf-green reads crisply and keeps the sub-label
+       distinct from the white title above it. */
+    color: #F0E9CE;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .open-chev {
+    flex-shrink: 0;
+    color: #ffffff;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 1px 1px rgba(60, 40, 10, 0.3));
+  }
+  .open-btn:hover .open-chev { transform: translateX(4px); }
+
   @media (prefers-reduced-motion: reduce) {
-    .welcome {
-      transition: opacity 0.5s ease;
+    .welcome { transition: opacity 0.4s ease; }
+    .welcome.is-flipping { transform: none; opacity: 0; }
+    .flame { animation: none; }
+    .cover { animation: none; }
+    /* Reduced motion: show the lit state instantly, skip the sparks. */
+    .open-btn.is-lighting .halo,
+    .open-btn.is-lighting .flame,
+    .open-btn.is-lighting .flame-core,
+    .open-btn.is-lighting .flame-glow,
+    .open-btn.is-lighting .spark {
+      animation: none;
     }
-    .welcome.is-flipping {
-      transform: none;
-      opacity: 0;
-    }
-    .w-enter { animation: none; }
-    .w-enter-glow, .w-enter-ico { animation: none; }
-    .invite-page { animation: none; }
-    /* Arch & lamps: skip the staged entrance, show the final state. */
-    .arch-stem { stroke-dashoffset: 0; animation: none; }
-    .cord { stroke-dashoffset: 0; animation: none; }
-    .leaves use { opacity: 1; animation: none; }
-    .bloom { opacity: 1; transform: none; animation: none; }
-    .lamp-body { opacity: 1; animation: none; }
-    .lamp-pivot { animation: none; }
-    .halo { animation: none; }
+    .open-btn.is-lighting .halo,
+    .open-btn.is-lighting .flame-core,
+    .open-btn.is-lighting .flame-glow { opacity: 1; transform: scale(1); }
   }
 </style>

@@ -2,201 +2,128 @@
 import { weddingDate } from '../data/format';
 
 interface Props {
-  /** Minimal, flat styling for the parchment welcome card (no glass cards). */
+  /** Compact gold-pill countdown shown on the cover. */
   minimal?: boolean;
 }
 const { minimal = false } = Astro.props;
 ---
 
 <div class={`countdown ${minimal ? 'countdown--minimal' : ''}`} data-target={weddingDate.iso} aria-live="polite">
-  {
-    minimal ? (
-      <div class="cd-min" data-cd-live>
-        <div class="cd-m-unit">
-          <span class="cd-m-val" data-days>—</span>
-          <span class="cd-m-lab">Days</span>
-        </div>
-        <div class="cd-m-unit">
-          <span class="cd-m-val" data-hours>00</span>
-          <span class="cd-m-lab">Hrs</span>
-        </div>
-        <div class="cd-m-unit">
-          <span class="cd-m-val" data-minutes>00</span>
-          <span class="cd-m-lab">Min</span>
-        </div>
-        <div class="cd-m-unit">
-          <span class="cd-m-val" data-seconds>00</span>
-          <span class="cd-m-lab">Sec</span>
-        </div>
-      </div>
-    ) : (
-      <>
-        <div class="cd-card cd-days glass-card reveal" data-cd-live>
-          <div class="cd-number" data-days>—</div>
-          <div class="cd-label">Days to Go</div>
-        </div>
-        <div class="cd-card cd-time glass-card reveal" data-cd-live>
-          <div class="cd-time-grid">
-            <div class="cd-unit"><span class="cd-val" data-hours>00</span><span class="cd-unit-label">Hours</span></div>
-            <span class="cd-colon">:</span>
-            <div class="cd-unit"><span class="cd-val" data-minutes>00</span><span class="cd-unit-label">Minutes</span></div>
-            <span class="cd-colon">:</span>
-            <div class="cd-unit"><span class="cd-val" data-seconds>00</span><span class="cd-unit-label">Seconds</span></div>
-          </div>
-          <div class="cd-label">Until We Say "I Do"</div>
-        </div>
-      </>
-    )
-  }
+  <div class="cd-row" data-cd-live>
+    <div class="cd-cell">
+      <div class="cd-box"><span class="cd-val" data-days>00</span></div>
+      <span class="cd-lab">Days</span>
+    </div>
+    <span class="cd-sep">:</span>
+    <div class="cd-cell">
+      <div class="cd-box"><span class="cd-val" data-hours>00</span></div>
+      <span class="cd-lab">Hours</span>
+    </div>
+    <span class="cd-sep">:</span>
+    <div class="cd-cell">
+      <div class="cd-box"><span class="cd-val" data-minutes>00</span></div>
+      <span class="cd-lab">Minutes</span>
+    </div>
+    <span class="cd-sep">:</span>
+    <div class="cd-cell">
+      <div class="cd-box"><span class="cd-val" data-seconds>00</span></div>
+      <span class="cd-lab">Seconds</span>
+    </div>
+  </div>
 
-  <!-- Shown when the countdown reaches zero -->
-  <div class={`cd-arrived ${minimal ? 'cd-arrived--min' : 'glass-card'} reveal`} data-arrived hidden>
-    <span class="script">The day is here</span>
-    <p>Our celebration has begun — thank you for being part of it.</p>
+  <div class="cd-arrived" data-arrived hidden>
+    <p class="cd-arrived-title">The day is here</p>
+    <p class="cd-arrived-sub">Our celebration has begun — thank you for being part of it.</p>
   </div>
 </div>
 
 <style>
   .countdown {
-    display: grid;
-    grid-template-columns: 1fr 1.4fr;
-    gap: 18px;
-    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
-  .cd-card {
-    border-radius: 20px;
-    padding: 22px 18px;
-    text-align: center;
+  .cd-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
   }
-  .cd-days {
+  @media (min-width: 420px) {
+    .cd-row { gap: 12px; }
+  }
+
+  .cd-cell {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
   }
-  .cd-number {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: clamp(3.2rem, 14vw, 4.6rem);
-    line-height: 1;
-    color: var(--gold-deep);
-  }
-  .cd-label {
-    font-size: 0.68rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--muted-gold);
-    margin-top: 10px;
-    font-weight: 600;
-  }
-  .cd-time {
+  .cd-box {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .cd-time-grid {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 6px;
-  }
-  .cd-unit {
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    min-width: 58px;
+    justify-content: center;
+    background: linear-gradient(135deg,
+      rgba(252, 239, 222, 0.92),
+      rgba(236, 232, 224, 0.86) 45%,
+      rgba(210, 210, 212, 0.80) 100%);
+    border: 1px solid rgba(60, 60, 60, 0.2);
+    box-shadow: inset 0 2px 0 0 hsla(0, 0%, 100%, 0.9),
+                0 4px 14px rgba(90, 66, 49, 0.08);
   }
+  @media (min-width: 420px) {
+    .cd-box { width: 72px; height: 72px; }
+  }
+
   .cd-val {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: clamp(2.1rem, 9vw, 2.9rem);
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.85rem;
     line-height: 1;
     color: var(--ink);
+    letter-spacing: -0.02em;
     font-variant-numeric: tabular-nums;
   }
-  .cd-unit-label {
-    font-size: 0.56rem;
-    letter-spacing: 0.18em;
+  @media (min-width: 420px) {
+    .cd-val { font-size: 2.1rem; }
+  }
+  .cd-lab {
+    font-size: 11px;
+    color: var(--ink-label);
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--ink-soft);
-    margin-top: 8px;
-  }
-  .cd-colon {
-    font-family: var(--font-display);
-    font-size: clamp(1.8rem, 8vw, 2.6rem);
-    color: var(--gold-soft);
-    line-height: 1.1;
-  }
-  .cd-arrived {
-    grid-column: 1 / -1;
-    text-align: center;
-    border-radius: 20px;
-    padding: 26px 20px;
-  }
-  .cd-arrived .script {
-    font-size: 2.4rem;
-    display: block;
-    margin-bottom: 6px;
-  }
-  .cd-arrived p {
-    color: var(--ink-soft);
-  }
-
-  /* ── Minimal variant (parchment welcome card) ──────────────────────────── */
-  .countdown--minimal {
-    display: block;
-    margin-top: 0;
-  }
-  .cd-min {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: clamp(10px, 4vw, 20px);
-  }
-  .cd-m-unit {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 46px;
-  }
-  .cd-m-val {
-    font-family: var(--font-display);
     font-weight: 600;
-    font-size: clamp(1.6rem, 7vw, 2.1rem);
-    line-height: 1;
-    color: var(--p-gold-deep, #8a6a2f);
-    font-variant-numeric: tabular-nums;
-  }
-  .cd-m-lab {
-    font-size: 0.56rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--p-ink, #6b5433);
     margin-top: 7px;
   }
-  .cd-arrived--min {
-    text-align: center;
-    padding: 4px 0;
+  @media (min-width: 420px) {
+    .cd-lab { font-size: 12px; }
   }
-  .cd-arrived--min .script {
-    font-size: 1.8rem;
-    display: block;
-    color: var(--p-gold-deep, #8a6a2f);
-  }
-  .cd-arrived--min p {
-    color: var(--p-ink, #6b5433);
-    font-size: 0.82rem;
-    margin-top: 2px;
+  .cd-sep {
+    color: rgba(60, 60, 60, 0.6);
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    user-select: none;
   }
 
-  @media (max-width: 540px) {
-    .countdown:not(.countdown--minimal) {
-      grid-template-columns: 1fr;
-    }
-    .cd-unit {
-      min-width: 0;
-      flex: 1;
-    }
+  .cd-arrived {
+    text-align: center;
+    width: 100%;
+    padding: 6px 0;
+  }
+  .cd-arrived-title {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--gold);
+    line-height: 1.2;
+  }
+  .cd-arrived-sub {
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    margin-top: 4px;
   }
 </style>
 
@@ -209,7 +136,7 @@ const { minimal = false } = Astro.props;
     const hoursEl = root.querySelector('[data-hours]') as HTMLElement | null;
     const minsEl = root.querySelector('[data-minutes]') as HTMLElement | null;
     const secsEl = root.querySelector('[data-seconds]') as HTMLElement | null;
-    const liveEls = Array.from(root.querySelectorAll<HTMLElement>('[data-cd-live]'));
+    const liveEl = root.querySelector('[data-cd-live]') as HTMLElement | null;
     const arrived = root.querySelector('[data-arrived]') as HTMLElement | null;
 
     const pad = (n: number) => String(n).padStart(2, '0');
@@ -220,8 +147,7 @@ const { minimal = false } = Astro.props;
       let diff = Math.floor((target - now) / 1000);
 
       if (diff <= 0) {
-        // Countdown reached zero — reveal the celebratory message.
-        liveEls.forEach((el) => (el.hidden = true));
+        if (liveEl) liveEl.hidden = true;
         if (arrived) arrived.hidden = false;
         window.clearInterval(timer);
         return;
@@ -234,7 +160,7 @@ const { minimal = false } = Astro.props;
       const mins = Math.floor(diff / 60);
       const secs = diff - mins * 60;
 
-      if (daysEl) daysEl.textContent = String(days);
+      if (daysEl) daysEl.textContent = pad(days);
       if (hoursEl) hoursEl.textContent = pad(hours);
       if (minsEl) minsEl.textContent = pad(mins);
       if (secsEl) secsEl.textContent = pad(secs);

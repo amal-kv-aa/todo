@@ -62,6 +62,12 @@ export interface WeddingConfig {
   /** Optional extra ceremony/reception lines shown in the details card. */
   extraDetails?: { label: string; value: string }[];
 
+  /** Short quote shown in the footer. */
+  footerQuote?: string;
+
+  /** Footer closing lines. */
+  footerRegards?: string;
+
   welcomeMessage: string;
 
   /** Wording printed on the downloadable invitation card. */
@@ -82,52 +88,60 @@ export interface WeddingConfig {
 }
 
 export const wedding: WeddingConfig = {
-  siteTitle: 'Govind & Pooja — Wedding Reception Invitation',
+  siteTitle: 'Govind & Pooja — Wedding Invitation',
 
   couple: {
     groom: {
       firstName: 'Govind',
-      fullName: 'Govind Bhat',
-      parents: 'Son of Smt. Veena & Sri. M. R. Sreenivas Bhat',
-      family: 'Memana House, Kochi',
+      fullName: 'Chi. Govind',
+      parents: 'Son of Smt. Veena & Sri. M.R. Sreenivas Bhat',
+      family:
+        'Grandson of late Smt. Sunandha Bai & late M.V. Ramachandra Bhat, Kochi · Grandson of Smt. Nalini Prabhu & late Sri. C. Rajagopala Prabhu, Kozhikode',
     },
     bride: {
       firstName: 'Pooja',
-      fullName: 'Pooja Jose',
-      parents: 'Daughter of Mr. P. U. Jose & Mrs. Beena Jose',
-      family: 'Parekkudiyil House, Sultan Bathery',
+      fullName: 'Chi. Sau. Pooja',
+      parents: 'D/o Smt. Beena Jose & Sri. P.U. Jose',
+      family: 'Parekkudiyil House, Moolankave P.O, Sulthan Bathery, Wayanad, Kerala',
     },
   },
 
-  tagline: 'Together with their families',
+  tagline:
+    'Smt. Sandhya & Sri. M.R. Premachandra Bhat cordially invite you and your family for the wedding ceremony',
 
-  // Saturday, December 12, 2026 · 7:00 PM to 9:30 PM IST
-  dateISO: '2026-12-12T19:00:00+05:30',
-  endISO: '2026-12-12T21:30:00+05:30',
-  timeLabel: '7:00 PM to 9:30 PM',
+  // Sunday, December 6, 2026 · 11:35 AM to 12:15 PM IST (Kumbha Lagham)
+  dateISO: '2026-12-06T11:35:00+05:30',
+  endISO: '2026-12-06T12:15:00+05:30',
+  timeLabel: '11:35 AM to 12:15 PM',
 
   venue: {
-    name: 'The Mercy Luxury Business Hotel',
-    address: 'MG Road, Ernakulam',
+    name: 'Sri. Sukratheendra Kalamandir',
+    address: 'Kozhikode',
     photo: '',
-    note: 'We would be delighted to have you join us for the celebration.',
+    note: 'We would be delighted to have you join us for the ceremony.',
   },
 
   extraDetails: [
-    { label: 'Occasion', value: 'Wedding Reception' },
+    { label: 'Muhurtham', value: '11:35 AM to 12:15 PM (Kumbha Lagham)' },
     { label: 'RSVP', value: '+91 90484 11097' },
   ],
 
+  footerQuote:
+    'Two lives, two hearts, joined together in friendship, united forever in love.',
+
+  footerRegards:
+    'With warm regards, Smt. Sandhya & Sri. M.R. Premachandra Bhat and Family',
+
   welcomeMessage:
-    'With hearts full of joy and gratitude, we warmly welcome you to celebrate the beginning of our beautiful journey together. Your presence and blessings will make our special day even more meaningful.',
+    'Smt. Sandhya & Sri. M.R. Premachandra Bhat cordially invite you and your family for the wedding ceremony of Govind & Pooja. Your presence is our greatest blessing.',
 
   invitationMessage:
-    'Your presence will make our celebration more special.',
+    'Your presence is our greatest blessing. Presents in blessings only.',
 
   cardBlessing: '|| Shree Kula Devatha Prasanna ||',
 
   music: {
-    src: '/music/audio_bg.mp3',
+    src: '/music/audio_wedding.mp3',
     volume: 0.35,
   },
 };

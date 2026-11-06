@@ -1,11 +1,9 @@
 ---
 import { wedding } from '../data/wedding';
 import { weddingDate } from '../data/format';
-import Ornament from './Ornament.astro';
 
 const { groom, bride } = wedding.couple;
 
-// Everything the canvas renderer needs, serialised for the client download script.
 const cardData = {
   eyebrow: 'Together with their families, we invite you to the wedding of',
   groom: groom.fullName,
@@ -25,249 +23,49 @@ const cardData = {
 };
 ---
 
-<section class="card-section" aria-labelledby="card-heading">
-  <div class="container">
-    <p class="eyebrow reveal" style="text-align:center">Keep & share</p>
-    <h2 id="card-heading" class="section-title reveal">Your Invitation</h2>
-    <div class="divider reveal"><Ornament type="flourish" /></div>
+<article class="inv-card liquid-glass-gold reveal" aria-labelledby="card-heading">
+  <h4 id="card-heading" class="ic-title">Wedding Invitation Card</h4>
+  <p class="ic-sub">Download the official invitation card</p>
 
-    <!-- Visible, on-screen invitation card -->
-    <div class="invite-wrap reveal">
-      <article class="invite-card" data-invite-card>
-        <div class="frame">
-          <span class="corner c-tl"><Ornament type="corner" /></span>
-          <span class="corner c-tr"><Ornament type="corner" /></span>
-          <span class="corner c-bl"><Ornament type="corner" /></span>
-          <span class="corner c-br"><Ornament type="corner" /></span>
+  <!-- Live preview card (also used as the download canvas source) -->
+  <div class="ic-preview">
+    <div class="ic-preview-frame">
+      <div class="ic-preview-inner" data-invite-card>
+        {cardData.blessing && <p class="ic-blessing">{cardData.blessing}</p>}
+        <p class="ic-eyebrow">{cardData.eyebrow}</p>
 
-          <div class="invite-inner">
-            {cardData.blessing && <p class="ic-blessing">{cardData.blessing}</p>}
-            <div class="ic-sprig"><Ornament type="monogram-sprig" /></div>
-            <p class="ic-eyebrow">{cardData.eyebrow}</p>
+        <h3 class="ic-name">{groom.fullName}</h3>
+        <p class="ic-parents">{groom.parents}</p>
 
-            <h3 class="ic-name">{groom.fullName}</h3>
-            <p class="ic-parents">{groom.parents}</p>
+        <span class="ic-amp">&amp;</span>
 
-            <div class="ic-amp"><span class="script">&amp;</span></div>
+        <h3 class="ic-name">{bride.fullName}</h3>
+        <p class="ic-parents">{bride.parents}</p>
 
-            <h3 class="ic-name">{bride.fullName}</h3>
-            <p class="ic-parents">{bride.parents}</p>
-
-            <div class="divider ic-div"><Ornament type="leaf" /></div>
-
-            <div class="ic-when">
-              <span class="ic-weekday">{weddingDate.weekday}</span>
-              <span class="ic-date">{weddingDate.monthLong} {weddingDate.day}, {weddingDate.year}</span>
-              <span class="ic-time">{weddingDate.time}</span>
-            </div>
-
-            <p class="ic-venue-name">{wedding.venue.name}</p>
-            <p class="ic-venue-addr">{wedding.venue.address}</p>
-
-            <p class="ic-message">{cardData.message}</p>
-          </div>
+        <div class="ic-divider">
+          <span class="hr"></span><span class="star">✦</span><span class="hr"></span>
         </div>
-      </article>
-    </div>
 
-    <div class="card-actions reveal">
-      <button class="btn-gold" data-download-card type="button">
-        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true">
-          <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span data-download-label>Download Wedding Invitation</span>
-      </button>
-      <p class="card-hint">High-resolution image · perfect for WhatsApp &amp; social sharing</p>
+        <p class="ic-when">{weddingDate.weekday}, {weddingDate.monthLong} {weddingDate.day}, {weddingDate.year}</p>
+        <p class="ic-time">{weddingDate.time}</p>
+
+        <p class="ic-venue">{wedding.venue.name}</p>
+        <p class="ic-venue-addr">{wedding.venue.address}</p>
+
+        <p class="ic-msg">{cardData.message}</p>
+      </div>
     </div>
   </div>
 
-  <script type="application/json" data-card-json set:html={JSON.stringify(cardData)} />
-</section>
+  <button class="btn-dark ic-btn" data-download-card type="button">
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/>
+    </svg>
+    <span data-download-label>Download Card</span>
+  </button>
 
-<style>
-  .card-section {
-    padding: 40px 0 72px;
-  }
-  .section-title {
-    text-align: center;
-    font-size: clamp(2rem, 8vw, 3rem);
-  }
-  .invite-wrap {
-    display: flex;
-    justify-content: center;
-    perspective: 1200px;
-  }
-  .invite-card {
-    width: 100%;
-    max-width: 480px;
-    aspect-ratio: 5 / 7;
-    background:
-      radial-gradient(120% 90% at 50% 0%, #fffdf6, var(--cream) 70%),
-      var(--cream);
-    border-radius: 10px;
-    box-shadow: var(--shadow-lg);
-    padding: 14px;
-    position: relative;
-    transition: transform 0.4s ease;
-  }
-  .invite-card:hover {
-    transform: translateY(-4px);
-  }
-  .frame {
-    position: relative;
-    height: 100%;
-    border: 1.5px solid var(--gold);
-    border-radius: 4px;
-    outline: 4px solid var(--cream);
-    box-shadow: inset 0 0 0 1px var(--gold-soft);
-  }
-  .corner {
-    position: absolute;
-    width: 46px;
-    height: 46px;
-    color: var(--gold);
-    opacity: 0.85;
-  }
-  .corner :global(svg) {
-    width: 100%;
-    height: 100%;
-  }
-  .c-tl { top: 6px; left: 6px; }
-  .c-tr { top: 6px; right: 6px; transform: scaleX(-1); }
-  .c-bl { bottom: 6px; left: 6px; transform: scaleY(-1); }
-  .c-br { bottom: 6px; right: 6px; transform: scale(-1); }
-
-  .invite-inner {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: clamp(12px, 4.5%, 28px);
-    gap: 0;
-    overflow: hidden;
-  }
-  .ic-blessing {
-    font-family: var(--font-display);
-    font-style: italic;
-    color: var(--muted-gold);
-    font-size: clamp(0.7rem, 2.8vw, 0.9rem);
-    margin-bottom: 4px;
-    max-width: 100%;
-  }
-  .ic-sprig {
-    color: var(--gold);
-    width: clamp(38px, 11%, 48px);
-    margin-bottom: 4px;
-  }
-  .ic-sprig :global(svg) {
-    width: 100%;
-    height: auto;
-  }
-  .ic-eyebrow {
-    font-size: clamp(0.52rem, 2.1vw, 0.66rem);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    max-width: 28ch;
-    margin-bottom: 8px;
-    line-height: 1.4;
-  }
-  .ic-name {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: clamp(1.25rem, 6vw, 1.9rem);
-    line-height: 1.05;
-    color: var(--ink);
-    max-width: 100%;
-    word-break: break-word;
-  }
-  .ic-parents {
-    font-size: clamp(0.58rem, 2.4vw, 0.7rem);
-    color: var(--ink-soft);
-    margin-top: 2px;
-    line-height: 1.3;
-    max-width: 100%;
-  }
-  .ic-amp {
-    margin: 2px 0;
-  }
-  .ic-amp .script {
-    font-size: clamp(1.4rem, 6.5vw, 2.1rem);
-    color: var(--gold-deep);
-    line-height: 1;
-  }
-  .ic-div {
-    margin: 8px auto;
-  }
-  .ic-div :global(svg) {
-    width: 16px;
-    height: 16px;
-  }
-  .ic-when {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    margin-bottom: 8px;
-  }
-  .ic-weekday {
-    font-size: clamp(0.55rem, 2.2vw, 0.66rem);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted-gold);
-    font-weight: 600;
-  }
-  .ic-date {
-    font-family: var(--font-display);
-    font-size: clamp(0.95rem, 4.2vw, 1.3rem);
-    color: var(--gold-deep);
-    font-weight: 600;
-    line-height: 1.2;
-  }
-  .ic-time {
-    font-size: clamp(0.68rem, 2.6vw, 0.8rem);
-    color: var(--ink-soft);
-  }
-  .ic-venue-name {
-    font-family: var(--font-display);
-    font-size: clamp(0.88rem, 3.8vw, 1.1rem);
-    color: var(--ink);
-    font-weight: 600;
-    line-height: 1.2;
-    max-width: 100%;
-  }
-  .ic-venue-addr {
-    font-size: clamp(0.56rem, 2.4vw, 0.7rem);
-    color: var(--ink-soft);
-    max-width: 32ch;
-    margin: 2px auto 0;
-    line-height: 1.3;
-  }
-  .ic-message {
-    margin-top: 8px;
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: clamp(0.66rem, 2.8vw, 0.85rem);
-    color: var(--ink-soft);
-    max-width: 34ch;
-    line-height: 1.4;
-  }
-
-  .card-actions {
-    margin-top: 32px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
-  .card-hint {
-    font-size: 0.74rem;
-    letter-spacing: 0.08em;
-    color: var(--muted-gold);
-    text-align: center;
-  }
-</style>
+  <script type="application/json" data-card-json set:html={JSON.stringify(cardData)} is:inline />
+</article>
 
 <script>
   import { downloadInvitationCard } from '../scripts/downloadCard';
@@ -282,13 +80,13 @@ const cardData = {
       if (btn.dataset.busy) return;
       btn.dataset.busy = '1';
       const original = label?.textContent ?? '';
-      if (label) label.textContent = 'Preparing image…';
+      if (label) label.textContent = 'Preparing…';
       try {
         await downloadInvitationCard(data);
         if (label) label.textContent = 'Downloaded ✓';
       } catch (err) {
         console.error('Invitation download failed:', err);
-        if (label) label.textContent = 'Download failed — try again';
+        if (label) label.textContent = 'Try again';
       } finally {
         window.setTimeout(() => {
           if (label) label.textContent = original;
@@ -298,3 +96,138 @@ const cardData = {
     });
   }
 </script>
+
+<style>
+  .inv-card {
+    border-radius: 18px;
+    padding: 20px;
+    text-align: center;
+  }
+  .ic-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--ink);
+  }
+  .ic-sub {
+    font-size: 0.75rem;
+    color: var(--ink-label);
+    margin-top: 2px;
+    margin-bottom: 14px;
+  }
+
+  .ic-preview {
+    max-width: 260px;
+    margin: 0 auto 16px;
+    background: var(--cream);
+    border: 2px solid rgba(60, 60, 60, 0.4);
+    border-radius: 12px;
+    padding: 6px;
+    box-shadow: var(--shadow-md);
+  }
+  .ic-preview-frame {
+    aspect-ratio: 3 / 4;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #FEFCF7;
+    position: relative;
+  }
+  .ic-preview-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 14px 12px;
+    color: var(--ink);
+    overflow: hidden;
+  }
+  .ic-blessing {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.6rem;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .ic-eyebrow {
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .ic-name {
+    font-family: var(--font-script);
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--gold);
+    margin-top: 2px;
+  }
+  .ic-parents {
+    font-size: 7.5px;
+    color: var(--ink-mute);
+    margin-top: 1px;
+    line-height: 1.3;
+    max-width: 96%;
+  }
+  .ic-amp {
+    font-family: var(--font-script);
+    font-style: normal;
+    font-size: 1.2rem;
+    color: var(--gold);
+    margin: 4px 0 2px;
+    line-height: 1;
+  }
+  .ic-divider {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 8px 0;
+  }
+  .ic-divider .hr { height: 1px; width: 24px; background: rgba(60, 60, 60, 0.5); }
+  .ic-divider .star { color: var(--gold); font-size: 9px; }
+  .ic-when {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 0.72rem;
+    color: var(--gold);
+  }
+  .ic-time {
+    font-size: 8px;
+    color: var(--ink-mute);
+    margin-top: 1px;
+  }
+  .ic-venue {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.72rem;
+    color: var(--ink);
+    margin-top: 6px;
+  }
+  .ic-venue-addr {
+    font-size: 7.5px;
+    color: var(--ink-mute);
+    margin-top: 1px;
+    line-height: 1.3;
+  }
+  .ic-msg {
+    margin-top: 6px;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 8px;
+    color: var(--ink-mute);
+    max-width: 92%;
+    line-height: 1.4;
+  }
+
+  .ic-btn {
+    min-width: 200px;
+    padding: 11px 20px;
+    font-size: 0.78rem;
+  }
+  .ic-btn svg { color: var(--gold-pale); }
+</style>
