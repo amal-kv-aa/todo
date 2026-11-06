@@ -96,28 +96,43 @@ function initMusic(runtime: Runtime) {
     }
   });
 
-  // Attempt autoplay on page load. Mobile/Safari will usually reject this
-  // without a user gesture — if so, arm a one-shot listener that starts the
-  // music on the first tap/key/scroll anywhere on the page.
+  // Start (or try to start) music the moment the user lands on the welcome
+  // screen. On desktops the autoplay attempt usually succeeds outright. On
+  // mobile — where browsers require a user gesture — we arm a one-shot
+  // listener BEFORE the autoplay attempt resolves, so the very first tap on
+  // the welcome cover (or anywhere else) will unlock playback. Arming eagerly
+  // is the key: if we waited for the autoplay promise to resolve first, a
+  // quick tap could land before the fallback was registered and we'd miss
+  // the gesture window entirely.
+  let unlocked = false;
   function armFirstInteractionFallback() {
+    if (unlocked) return;
     const start = () => {
+      if (unlocked) return;
       if (getPref() === 'off') return;
+      unlocked = true;
       controller.play().then(() => {
         reflect(controller.isPlaying());
         if (controller.isPlaying()) setPref('on');
+        else unlocked = false; // let a later gesture try again
       });
     };
-    const opts = { once: true, passive: true } as AddEventListenerOptions;
+    const opts = { capture: true, passive: true } as AddEventListenerOptions;
     window.addEventListener('pointerdown', start, opts);
     window.addEventListener('keydown', start, opts);
     window.addEventListener('touchstart', start, opts);
   }
 
   if (getPref() !== 'off') {
+    // Arm the gesture fallback up-front so a tap during the first few
+    // hundred ms can still start music.
+    armFirstInteractionFallback();
     controller.play().then(() => {
-      reflect(controller.isPlaying());
-      if (controller.isPlaying()) setPref('on');
-      else armFirstInteractionFallback();
+      if (controller.isPlaying()) {
+        unlocked = true;
+        reflect(true);
+        setPref('on');
+      }
     });
   }
 
